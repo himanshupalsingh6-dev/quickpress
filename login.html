@@ -2,195 +2,184 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>QuickPress Login</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuickPress | Login</title>
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --yellow: #FFD400;
-  --dark-yellow: #F5C400;
-  --text: #222;
-  --muted: #777;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
 }
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+body{
+  min-height:100vh;
+  background:#FFD400;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
-
-body {
-  background: var(--yellow);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.card{
+  width:100%;
+  max-width:360px;
+  background:#fff;
+  border-radius:22px;
+  padding:26px;
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
-
-.login-wrapper {
-  width: 100%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 22px;
-  padding: 28px 22px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+.logo{
+  text-align:center;
+  margin-bottom:16px;
 }
-
-/* Logo */
-.logo-box {
-  text-align: center;
-  margin-bottom: 18px;
+.logo img{
+  width:150px;
 }
-
-.logo-box img {
-  width: 160px;
+h2{
+  text-align:center;
+  font-size:18px;
 }
-
-/* Title */
-.login-title {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 6px;
+p{
+  text-align:center;
+  font-size:13px;
+  color:#666;
+  margin-bottom:16px;
 }
-
-.login-sub {
-  text-align: center;
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 22px;
+input{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  margin-bottom:12px;
+  font-size:14px;
 }
-
-/* Input */
-.input-group {
-  margin-bottom: 14px;
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  background:#FFD400;
+  font-weight:600;
+  font-size:15px;
+  cursor:pointer;
 }
-
-.input-group label {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.input-group input {
-  width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  margin-top: 6px;
-  font-size: 14px;
-}
-
-.input-group input:focus {
-  outline: none;
-  border-color: var(--yellow);
-}
-
-/* Button */
-.login-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--yellow);
-  border: none;
-  border-radius: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.login-btn:hover {
-  background: var(--dark-yellow);
-}
-
-/* Divider */
-.divider {
-  text-align: center;
-  font-size: 12px;
-  color: var(--muted);
-  margin: 16px 0;
-}
-
-/* Alt login */
-.alt-login {
-  text-align: center;
-}
-
-.alt-login button {
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 12px;
-  border-radius: 12px;
-  width: 100%;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-/* Terms */
-.terms {
-  text-align: center;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 14px;
+#otpStep{display:none}
+.footer{
+  text-align:center;
+  font-size:12px;
+  margin-top:12px;
+  color:#666;
 }
 </style>
 </head>
 
 <body>
 
-<div class="login-wrapper">
+<div class="card">
 
-  <!-- Logo -->
-  <div class="logo-box">
-    <img src="../assets/logo.png" alt="QuickPress">
+  <div class="logo">
+    <img src="assets/logo.png" alt="QuickPress">
   </div>
 
-  <div class="login-title">Login to QuickPress</div>
-  <div class="login-sub">Fast ironing & laundry at your doorstep</div>
+  <h2>Login to QuickPress</h2>
+  <p>OTP will be sent to your phone</p>
 
-  <!-- Phone -->
-  <div class="input-group">
-    <label>Phone Number</label>
-    <input type="tel" placeholder="Enter phone number">
+  <!-- PHONE STEP -->
+  <div id="phoneStep">
+    <input id="phone" type="tel" placeholder="Enter 10 digit phone number">
+    <button onclick="sendOTP()">Send OTP</button>
   </div>
 
-  <!-- Email -->
-  <div class="input-group">
-    <label>Email (optional)</label>
-    <input type="email" placeholder="Enter email">
+  <!-- OTP STEP -->
+  <div id="otpStep">
+    <input id="otp" type="number" placeholder="Enter 6 digit OTP">
+    <button onclick="verifyOTP()">Verify OTP</button>
   </div>
 
-  <!-- Login -->
-  <button class="login-btn" onclick="login()">Continue</button>
-
-  <div class="divider">OR</div>
-
-  <!-- Google -->
-  <div class="alt-login">
-    <button onclick="googleLogin()">Continue with Google</button>
-  </div>
-
-  <div class="terms">
-    By continuing, you agree to our <br>
-    <b>Terms</b> & <b>Privacy Policy</b>
+  <div class="footer">
+    Powered by QuickPress
   </div>
 
 </div>
 
-<script>
-function login() {
-  alert("Login logic Firebase se connect hoga");
-  // later redirect
-  // window.location.href = "customer/home.html";
-}
+<div id="recaptcha"></div>
 
-function googleLogin() {
-  alert("Google login Firebase se connect hoga");
-}
+<!-- 🔥 FIREBASE + OTP SCRIPT -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { 
+  getAuth, 
+  signInWithPhoneNumber, 
+  RecaptchaVerifier 
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+
+/* 🔑 FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d",
+  storageBucket: "quickpress-e486d.firebasestorage.app",
+  messagingSenderId: "572695394794",
+  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
+};
+
+/* INIT */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+/* INVISIBLE CAPTCHA */
+window.recaptchaVerifier = new RecaptchaVerifier(
+  auth,
+  "recaptcha",
+  { size: "invisible" }
+);
+
+/* SEND OTP */
+window.sendOTP = function(){
+  const phone = document.getElementById("phone").value;
+
+  if(phone.length !== 10){
+    alert("Enter valid 10 digit number");
+    return;
+  }
+
+  signInWithPhoneNumber(
+    auth,
+    "+91" + phone,
+    window.recaptchaVerifier
+  )
+  .then((confirmationResult)=>{
+    window.confirmationResult = confirmationResult;
+    alert("OTP Sent ✅");
+    document.getElementById("phoneStep").style.display="none";
+    document.getElementById("otpStep").style.display="block";
+  })
+  .catch((error)=>{
+    alert(error.message);
+  });
+};
+
+/* VERIFY OTP */
+window.verifyOTP = function(){
+  const otp = document.getElementById("otp").value;
+
+  if(otp.length !== 6){
+    alert("Enter 6 digit OTP");
+    return;
+  }
+
+  window.confirmationResult.confirm(otp)
+    .then((result)=>{
+      alert("Login Successful 🎉");
+
+      /* TEMP REDIRECT */
+      window.location.href = "index.html";
+    })
+    .catch(()=>{
+      alert("Wrong OTP ❌");
+    });
+};
 </script>
 
 </body>
