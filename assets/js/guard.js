@@ -1,52 +1,52 @@
 import { auth, db } from "./firebase.js";
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 
-import { onAuthStateChanged, signOut } from
-  "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-import { doc, getDoc } from
-  "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+/*
+  ROLE BASED PAGE PROTECTION
+*/
 
-/**
- * Page Guard
- * @param allowedRoles array → ["admin"], ["customer"], etc.
- */
 export function protectPage(allowedRoles = []) {
 
   onAuthStateChanged(auth, async (user) => {
 
-    // ❌ Not logged in
+    // ❌ Not logged in → go to correct login page
     if (!user) {
-      window.location.href = "/login.html";
+      window.location.href = "/quickpress/login.html";
       return;
     }
 
-    // 🔍 Fetch user data
     const snap = await getDoc(doc(db, "users", user.uid));
 
+    // ❌ No user profile
     if (!snap.exists()) {
-      await signOut(auth);
-      window.location.href = "/login.html";
+      alert("User profile not found");
+      window.location.href = "/quickpress/login.html";
       return;
     }
 
     const data = snap.data();
 
-    // ❌ Blocked user
+    // ❌ Inactive user
     if (data.status !== "active") {
-      alert("Account blocked by admin");
-      await signOut(auth);
-      window.location.href = "/login.html";
+      alert("Account inactive");
+      window.location.href = "/quickpress/login.html";
       return;
     }
 
     // ❌ Role not allowed
     if (!allowedRoles.includes(data.role)) {
       alert("Unauthorized access");
-      window.location.href = "/login.html";
+      window.location.href = "/quickpress/login.html";
       return;
     }
 
-    // ✅ Allowed
-    console.log("Access granted:", data.role);
+    // ✅ Authorized → page allowed
   });
 }
