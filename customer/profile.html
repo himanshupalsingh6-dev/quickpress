@@ -1,1 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QuickPress – My Account</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<style>
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Arial}
+body{margin:0;background:#f5f6f7;color:#222}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,#ffec9f,#ffe16b);
+  padding:16px;
+}
+.profile{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.avatar{
+  width:60px;height:60px;
+  border-radius:50%;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  font-weight:700;
+}
+.profile b{font-size:18px}
+.profile small{opacity:.7}
+
+/* WALLET */
+.wallet{
+  background:#fff;
+  margin:14px;
+  padding:14px;
+  border-radius:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.wallet b{font-size:16px}
+
+/* MENU */
+.menu{
+  background:#fff;
+  margin:14px;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.menu-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
+}
+.menu-item:last-child{border:none}
+.menu-item span{font-size:18px}
+.menu-item b{font-size:14px}
+
+/* TOGGLE */
+.toggle{
+  margin-left:auto;
+  width:42px;height:22px;
+  border-radius:20px;
+  background:#ddd;
+  position:relative;
+}
+.knob{
+  width:18px;height:18px;
+  background:#fff;
+  border-radius:50%;
+  position:absolute;
+  top:2px;left:2px;
+}
+
+/* LOGOUT */
+.logout{
+  margin:20px 14px 80px;
+  background:#ef4444;
+  color:#fff;
+  text-align:center;
+  padding:14px;
+  border-radius:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  display:flex;
+}
+.bottom-nav div{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+  cursor:pointer;
+}
+.bottom-nav span{
+  display:block;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="profile">
+    <div class="avatar">H</div>
+    <div>
+      <b>Himanshu</b><br>
+      <small>+91 9XXXXXXXXX</small>
+    </div>
+  </div>
+</div>
+
+<!-- WALLET -->
+<div class="wallet">
+  <div>
+    <small>Wallet Balance</small><br>
+    <b>₹50</b>
+  </div>
+  <div onclick="goWallet()">➕ Add</div>
+</div>
+
+<!-- MENU -->
+<div class="menu">
+  <div class="menu-item" onclick="goOrders()">
+    <span>🧾</span>
+    <b>My Orders</b>
+  </div>
+
+  <div class="menu-item">
+    <span>📍</span>
+    <b>Saved Address</b>
+  </div>
+
+  <div class="menu-item">
+    <span>⭐</span>
+    <b>My Reviews</b>
+  </div>
+
+  <div class="menu-item">
+    <span>🌙</span>
+    <b>Dark Mode</b>
+    <div class="toggle">
+      <div class="knob"></div>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <span>❓</span>
+    <b>Help & Support</b>
+  </div>
+</div>
+
+<!-- LOGOUT -->
+<div class="logout" onclick="logout()">Logout</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div onclick="goHome()"><span>🏠</span>Home</div>
+  <div onclick="goCategory()"><span>📂</span>Category</div>
+  <div onclick="goOrders()"><span>🧾</span>Orders</div>
+  <div><span>👤</span>Account</div>
+</div>
+
+<script>
+function goHome(){location.href="home.html"}
+function goCategory(){location.href="category.html"}
+function goOrders(){location.href="orders.html"}
+function goWallet(){alert("Wallet page next")}
+function logout(){
+  alert("Logged out (demo)");
+  location.href="../login.html";
+}
+</script>
+
+</body>
+</html>
