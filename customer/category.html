@@ -1,91 +1,279 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Categories</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/blinkit-category.css">
+<meta charset="UTF-8">
+<title>QuickPress – Categories</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Arial}
+body{margin:0;background:#f5f6f7;color:#222}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,#ffec9f,#ffe16b);
+  padding:14px;
+}
+.header-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.header-top b{font-size:18px}
+
+/* SEARCH */
+.search-box{
+  margin-top:12px;
+  background:#fff;
+  border-radius:14px;
+  padding:10px;
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.search-box input{
+  border:none;
+  outline:none;
+  width:100%;
+}
+
+/* CATEGORY BAR */
+.cat-bar{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:12px;
+  background:#fff;
+}
+.cat-chip{
+  padding:8px 14px;
+  border-radius:20px;
+  background:#eee;
+  font-size:13px;
+  white-space:nowrap;
+  cursor:pointer;
+}
+.cat-chip.active{
+  background:#ffdc5e;
+  font-weight:700;
+}
+
+/* PRODUCT GRID */
+.products{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  padding:14px;
+}
+.product{
+  background:#fff;
+  border-radius:16px;
+  padding:10px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  position:relative;
+}
+.product img{
+  width:100%;
+  border-radius:12px;
+}
+.badge{
+  position:absolute;
+  top:10px;left:10px;
+  background:#22c55e;
+  color:#fff;
+  font-size:11px;
+  padding:4px 6px;
+  border-radius:8px;
+}
+.product h4{
+  font-size:14px;
+  margin:6px 0 2px;
+}
+.product small{opacity:.7}
+.price{
+  margin:4px 0;
+}
+.price b{font-size:15px}
+.price del{font-size:12px;opacity:.5;margin-left:4px}
+
+/* ADD BUTTON */
+.add-btn{
+  width:100%;
+  background:#22c55e;
+  color:#fff;
+  border:none;
+  padding:8px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* QTY */
+.qty{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#22c55e;
+  color:#fff;
+  border-radius:20px;
+  padding:6px 12px;
+  font-weight:700;
+}
+
+/* VIEW CART */
+.cart-bar{
+  position:fixed;
+  bottom:56px;
+  left:14px;
+  right:14px;
+  background:#22c55e;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:700;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  display:flex;
+}
+.bottom-nav div{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+  cursor:pointer;
+}
+.bottom-nav span{
+  display:block;
+  font-size:18px;
+}
+</style>
 </head>
+
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="back" onclick="history.back()">←</div>
-  <div class="title">Services</div>
-</div>
-
-<!-- LAYOUT -->
-<div class="layout">
-
-  <!-- LEFT CATEGORY -->
-  <div class="left">
-    <div class="cat active" onclick="loadCat('iron',this)">Iron</div>
-    <div class="cat" onclick="loadCat('steam',this)">Steam</div>
-    <div class="cat" onclick="loadCat('wash',this)">Wash</div>
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <span onclick="goHome()">←</span>
+    <b>Categories</b>
   </div>
 
-  <!-- RIGHT PRODUCTS -->
-  <div class="right">
-    <div id="products" class="grid"></div>
+  <div class="search-box">
+    🔍 <input placeholder='Search "shirt ironing"'> 🎤
+  </div>
+</div>
+
+<!-- CATEGORY BAR -->
+<div class="cat-bar">
+  <div class="cat-chip active">All</div>
+  <div class="cat-chip">Ironing</div>
+  <div class="cat-chip">Steam</div>
+  <div class="cat-chip">Washing</div>
+  <div class="cat-chip">Dry Cleaning</div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products">
+
+  <div class="product">
+    <div class="badge">10 MIN</div>
+    <img src="https://i.imgur.com/8QfQY5m.png">
+    <h4>Shirt Iron</h4>
+    <small>Per piece</small>
+    <div class="price"><b>₹5</b> <del>₹7</del></div>
+    <button class="add-btn" onclick="add(this)">ADD</button>
+  </div>
+
+  <div class="product">
+    <div class="badge">FAST</div>
+    <img src="https://i.imgur.com/9x6K5iY.png">
+    <h4>Pant Iron</h4>
+    <small>Per piece</small>
+    <div class="price"><b>₹7</b></div>
+    <button class="add-btn" onclick="add(this)">ADD</button>
+  </div>
+
+  <div class="product">
+    <div class="badge">STEAM</div>
+    <img src="https://i.imgur.com/b0ZVQZ6.png">
+    <h4>Steam Press</h4>
+    <small>Premium</small>
+    <div class="price"><b>₹10</b></div>
+    <button class="add-btn" onclick="add(this)">ADD</button>
+  </div>
+
+  <div class="product">
+    <div class="badge">CLEAN</div>
+    <img src="https://i.imgur.com/4AiXzf8.jpeg">
+    <h4>Dry Cleaning</h4>
+    <small>Per cloth</small>
+    <div class="price"><b>₹25</b></div>
+    <button class="add-btn" onclick="add(this)">ADD</button>
   </div>
 
 </div>
 
 <!-- CART BAR -->
-<div id="cartBar" class="cart-bar" style="display:none">
-  <div id="cartCount">1 item</div>
-  <div onclick="goCart()">View Cart →</div>
+<div class="cart-bar" id="cartBar" style="display:none" onclick="goCart()">
+  <span id="cartItems">1 item</span>
+  <b>View Cart →</b>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div onclick="goHome()"><span>🏠</span>Home</div>
+  <div><span>📂</span>Category</div>
+  <div onclick="goOrders()"><span>🧾</span>Orders</div>
+  <div onclick="goAccount()"><span>👤</span>Account</div>
 </div>
 
 <script>
-/* DEMO DATA (later Firebase se aayega) */
-const data={
-  iron:[
-    {id:1,name:"Shirt Iron",price:5,off:10,img:"https://i.imgur.com/8QfQY5m.png"},
-    {id:2,name:"Pant Iron",price:6,off:15,img:"https://i.imgur.com/9x6K5iY.png"}
-  ],
-  steam:[
-    {id:3,name:"Steam Shirt",price:8,off:12,img:"https://i.imgur.com/b0ZVQZ6.png"}
-  ],
-  wash:[
-    {id:4,name:"Wash & Iron",price:15,off:20,img:"https://i.imgur.com/8QfQY5m.png"}
-  ]
-};
+let items=0;
 
-let cart={};
-
-function loadCat(cat,el){
-  document.querySelectorAll(".cat").forEach(c=>c.classList.remove("active"));
-  el.classList.add("active");
-
-  const box=document.getElementById("products");
-  box.innerHTML="";
-  data[cat].forEach(p=>{
-    box.innerHTML+=`
-      <div class="card">
-        <img src="${p.img}">
-        <h4>${p.name}</h4>
-        <div class="price">₹${p.price}
-          <span class="off">${p.off}% OFF</span>
-        </div>
-        <button class="add-btn" onclick="add(${p.id},'${cat}')">ADD</button>
-      </div>
-    `;
-  });
+function add(btn){
+  items++;
+  btn.outerHTML=`
+    <div class="qty">
+      <span onclick="dec(this)">−</span>
+      <b>1</b>
+      <span onclick="inc(this)">+</span>
+    </div>`;
+  updateCart();
 }
-
-function add(id,cat){
-  cart[id]=(cart[id]||0)+1;
-  document.getElementById("cartBar").style.display="flex";
-  document.getElementById("cartCount").innerText=
-    Object.values(cart).reduce((a,b)=>a+b,0)+" items";
+function inc(el){
+  let b=el.parentElement.querySelector("b");
+  b.innerText=+b.innerText+1;
+  items++;
+  updateCart();
 }
-
-function goCart(){
-  alert("Cart page – MODULE 4");
+function dec(el){
+  let box=el.parentElement;
+  let b=box.querySelector("b");
+  if(+b.innerText>1){
+    b.innerText=+b.innerText-1;
+    items--;
+  }
+  updateCart();
 }
-
-/* initial load */
-loadCat("iron",document.querySelector(".cat"));
+function updateCart(){
+  if(items>0){
+    cartBar.style.display="flex";
+    cartItems.innerText=items+" item"+(items>1?"s":"");
+  }
+}
+function goHome(){location.href="home.html"}
+function goCart(){location.href="cart.html"}
+function goOrders(){location.href="orders.html"}
+function goAccount(){location.href="profile.html"}
 </script>
 
 </body>
