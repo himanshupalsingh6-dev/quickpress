@@ -1,4 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress – Partner Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  Partner Dashboard
+</div>
+
+<!-- Orders Container -->
+<div style="padding:16px" id="ordersBox">
+  Loading orders...
+</div>
+
+<!-- Bottom space -->
+<div style="height:60px"></div>
+
+<!-- Auth Guard -->
 <script type="module">
   import { protectPage } from "../assets/js/guard.js";
   protectPage(["partner"]);
 </script>
+
+<!-- Partner Logic -->
+<script type="module">
+  import { auth, db } from "../assets/js/firebase.js";
+  import {
+    collection,
+    query,
+    where,
+    getDocs,
+    updateDoc,
+    doc,
+    arrayUnion
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const box = document.getElementById("ordersBox");
+
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) return;
+
+    // Orders jo abhi tak kisi partner ne accept nahi kiye
+    const q = query(
+      collection(db, "orders"),
+      where("status", "==", "Order Placed")
+    );
+
+    const snap = await getDocs(q);
+    box.innerHTML = "";
+
+    if (snap.empty) {
+      box.innerHTML = "<p>No new orders</p>";
+      return;
+    }
+
+    snap.forEach((docSnap) => {
+      const order = docSnap.data();
+
+      box.innerHTML += `
+        <div class="card">
+          <h3>🧾 New Order</h3>
+          <p><b>Total:</b> ₹${order.total}</p>
+
+          <button class="btn" onclick="acceptOrder('${docSnap.id}')">
+            Accept Order
+          </button>
+
+          <button class="btn" style="margin-top:8px;background:#333"
+            onclick="markReady('${docSnap.id}')">
+            Ready for Pickup
+          </button>
+        </div>
+      `;
+    });
+  });
+
+  // Accept Order
+  window.acceptOrder = async function(orderId) {
+    await updateDoc(doc(db, "orders", orderId), {
+      status: "Partner Accepted",
+      partnerStatus: "accepted",
+      timeline: arrayUnion({
+        status: "Partner Accepted",
+        time: Date.now()
+      })
+    });
+    alert("✅ Order Accepted");
+    location.reload();
+  };
+
+  // Mark Ready
+  window.markReady = async function(orderId) {
+    await updateDoc(doc(db, "orders", orderId), {
+      status: "Ready for Pickup",
+      timeline: arrayUnion({
+        status: "Ready for Pickup",
+        time: Date.now()
+      })
+    });
+    alert("🧺 Order Ready for Pickup");
+    location.reload();
+  };
+</script>
+
+</body>
+</html>
