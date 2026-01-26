@@ -1,4 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickPress – Home</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="header">
+  QuickPress 🚀
+</div>
+
+<div style="padding:16px">
+
+  <!-- Hero -->
+  <div class="card" style="background:#e53935;color:#fff">
+    <h2>10-Minute Ironing</h2>
+    <p>Fast • Clean • Doorstep</p>
+  </div>
+
+  <!-- Stats -->
+  <div style="display:flex;gap:10px">
+    <div class="card" style="flex:1;text-align:center">
+      ⭐ 4.8 Rating
+    </div>
+    <div class="card" style="flex:1;text-align:center">
+      🧺 12k+ Orders
+    </div>
+  </div>
+
+  <!-- Services -->
+  <h3>Our Services</h3>
+
+  <div class="card">
+    👕 Shirt Ironing – ₹5 / pair
+  </div>
+
+  <div class="card">
+    👖 Pant Ironing – ₹6 / pair
+  </div>
+
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+  <a class="active" href="home.html">Home</a>
+  <a href="orders.html">Orders</a>
+  <a href="profile.html">Profile</a>
+</div>
+
+<!-- Auth Guard -->
 <script type="module">
   import { protectPage } from "../assets/js/guard.js";
   protectPage(["customer"]);
 </script>
+
+</body>
+</html>
