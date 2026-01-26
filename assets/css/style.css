@@ -1,0 +1,88 @@
+/* ========== QUICKPRESS GLOBAL STYLE ========== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #f9f9f9;
+  color: #222;
+}
+
+/* Theme colors */
+:root {
+  --primary: #e53935;   /* QuickPress Red */
+  --dark: #111;
+  --light: #ffffff;
+  --gray: #777;
+}
+
+/* Buttons */
+.btn {
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn:disabled {
+  background: #ccc;
+}
+
+/* Inputs */
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+/* Card UI */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+
+/* Header */
+.header {
+  background: var(--primary);
+  color: #fff;
+  padding: 14px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Bottom Navigation (App-ready) */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.bottom-nav a {
+  color: var(--gray);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.bottom-nav a.active {
+  color: var(--primary);
+  font-weight: bold;
+}
