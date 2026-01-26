@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Checkout</title>
+  <title>QuickPress – Checkout</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -11,29 +11,71 @@
 <div style="padding:16px">
 
   <div class="card">
-    <h3>Bill</h3>
     Subtotal: ₹<span id="sub">0</span><br>
     Delivery: ₹20<br>
     GST (18%): ₹<span id="gst">0</span><br>
     <b>Total: ₹<span id="total">0</span></b>
   </div>
 
+  <div class="card">
+    Wallet Balance: ₹<b id="wallet">0</b><br>
+    <label>
+      <input type="checkbox" id="useWallet" onchange="recalc()">
+      Use wallet
+    </label>
+  </div>
+
   <button class="btn" onclick="place()">Place Order</button>
 </div>
 
-<script>
-const cart=JSON.parse(localStorage.getItem("cart")||"[]");
-let sub=cart.reduce((a,b)=>a+b.p,0);
-let gst=Math.round(sub*0.18);
-let total=sub+gst+20;
+<script type="module">
+import { auth, db } from "../assets/js/firebase.js";
+import {
+  doc, getDoc, updateDoc, addDoc, collection, increment
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+const cart = JSON.parse(localStorage.getItem("cart")||"[]");
+let sub = cart.reduce((a,b)=>a+b.p,0);
+let gst = Math.round(sub*0.18);
+let total = sub + gst + 20;
 
 subEl.innerText=sub;
 gstEl.innerText=gst;
 totalEl.innerText=total;
 
-function place(){
+let uid, wallet=0;
+
+auth.onAuthStateChanged(async u=>{
+  if(!u) return;
+  uid=u.uid;
+  const snap=await getDoc(doc(db,"users",uid));
+  wallet = snap.data().wallet || 0;
+  walletEl.innerText = wallet;
+});
+
+window.recalc = function(){
+  if(useWallet.checked){
+    const used = Math.min(wallet, total);
+    totalEl.innerText = total - used;
+  }else{
+    totalEl.innerText = total;
+  }
+}
+
+window.place = async function(){
+  let used = 0;
+  if(useWallet.checked){
+    used = Math.min(wallet, total);
+    await updateDoc(doc(db,"users",uid),{
+      wallet: increment(-used)
+    });
+    await addDoc(collection(db,"wallet_txn"),{
+      uid, amount:used, type:"use", createdAt:Date.now()
+    });
+  }
+
   localStorage.removeItem("cart");
-  alert("Order placed");
+  alert("✅ Order placed");
   location.href="home.html";
 }
 </script>
