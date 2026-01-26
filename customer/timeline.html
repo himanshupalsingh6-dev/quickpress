@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickPress – Order Timeline</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="header">Order Timeline</div>
+
+<div style="padding:16px" id="timelineBox">
+  Loading...
+</div>
+
+<div class="bottom-nav">
+  <a href="home.html">Home</a>
+  <a class="active" href="orders.html">Orders</a>
+  <a href="profile.html">Profile</a>
+</div>
+
+<script type="module">
+  import { auth, db } from "../assets/js/firebase.js";
+  import { protectPage } from "../assets/js/guard.js";
+  import {
+    query,
+    collection,
+    where,
+    orderBy,
+    limit,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  protectPage(["customer"]);
+
+  const box = document.getElementById("timelineBox");
+
+  auth.onAuthStateChanged(async user => {
+    if (!user) return;
+
+    const q = query(
+      collection(db, "orders"),
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc"),
+      limit(1)
+    );
+
+    const snap = await getDocs(q);
+
+    if (snap.empty) {
+      box.innerHTML = "No orders found";
+      return;
+    }
+
+    const order = snap.docs[0].data();
+    let html = `<div class="card"><h3>Status Timeline</h3>`;
+
+    order.timeline.forEach(t => {
+      html += `<p>✔️ ${t.status}</p>`;
+    });
+
+    html += `<h4>Total: ₹${order.total}</h4></div>`;
+    box.innerHTML = html;
+  });
+</script>
+
+</body>
+</html>
