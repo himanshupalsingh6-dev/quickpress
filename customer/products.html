@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <b>Ironing Services</b>
+</div>
+
+<div class="product-grid">
+
+  <div class="product-card">
+    <div class="product-img">👕</div>
+    <div class="product-info">
+      <b>Shirt Iron</b>
+      <p>₹5 / piece</p>
+      <button onclick="add('Shirt',5)">ADD</button>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <div class="product-img">👖</div>
+    <div class="product-info">
+      <b>Pant Iron</b>
+      <p>₹6 / piece</p>
+      <button onclick="add('Pant',6)">ADD</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="checkout-bar" onclick="openCheckout()">
+  View Cart • <span id="count">0</span> items
+</div>
+
+<script>
+function getCart(){return JSON.parse(localStorage.getItem("cart")||"[]")}
+function add(n,p){
+  const c=getCart(); c.push({n,p});
+  localStorage.setItem("cart",JSON.stringify(c));
+  document.getElementById("count").innerText=c.length;
+}
+function openCheckout(){
+  location.href="cart.html";
+}
+document.getElementById("count").innerText=getCart().length;
+</script>
+
+</body>
+</html>
