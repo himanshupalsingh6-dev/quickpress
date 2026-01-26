@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>QuickPress – Home</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 
@@ -12,100 +11,20 @@
       --card:#fff;
       --text:#000;
     }
-
     body.dark{
       --bg:#121212;
       --card:#1e1e1e;
       --text:#fff;
     }
-
-    body{
-      background:var(--bg);
-      color:var(--text);
-      transition:0.3s;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:12px;
-    }
-
-    .city{
-      font-weight:bold;
-    }
-
-    .toggle{
-      cursor:pointer;
-      font-size:14px;
-    }
-
-    .hero{
-      background:linear-gradient(135deg,#FFC107,#FFD54F);
-      padding:20px;
-      border-radius:16px;
-      color:#000;
-    }
-
-    .slider{
-      display:flex;
-      overflow-x:auto;
-      gap:12px;
-      margin-top:12px;
-    }
-    .slide{
-      min-width:260px;
-      background:#FFF8E1;
-      padding:14px;
-      border-radius:14px;
-      font-weight:bold;
-    }
-
-    .wallet{
-      background:var(--card);
-      padding:14px;
-      border-radius:14px;
-      margin-top:14px;
-    }
-
-    .categories{
-      display:flex;
-      gap:12px;
-      margin-top:16px;
-    }
-
-    .cat{
-      flex:1;
-      background:var(--card);
-      padding:14px;
-      border-radius:14px;
-      text-align:center;
-      font-weight:bold;
-      cursor:pointer;
-    }
-
-    .section{
-      margin-top:22px;
-      font-weight:bold;
-    }
-
-    .service{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-
-    .cart-fab{
-      position:fixed;
-      right:16px;
-      bottom:80px;
-      background:#000;
-      color:#fff;
-      padding:14px;
-      border-radius:50%;
-      font-weight:bold;
-    }
+    body{background:var(--bg);color:var(--text);transition:.3s}
+    .top{display:flex;justify-content:space-between}
+    .hero{background:linear-gradient(135deg,#FFC107,#FFD54F);padding:18px;border-radius:16px}
+    .slider{margin-top:12px;overflow:hidden}
+    .slide{display:none;background:#FFF8E1;padding:14px;border-radius:12px}
+    .wallet,.cat,.card{background:var(--card)}
+    .cats{display:flex;gap:10px;margin-top:12px}
+    .cat{flex:1;padding:14px;border-radius:12px;text-align:center}
+    .fab{position:fixed;right:16px;bottom:80px;background:#000;color:#fff;padding:14px;border-radius:50%}
   </style>
 </head>
 <body>
@@ -114,93 +33,94 @@
 
 <div style="padding:16px">
 
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="city">📍 Kasganj</div>
-    <div class="toggle" onclick="toggleMode()">🌙 Dark</div>
+  <div class="top">
+    <div id="city">📍 Loading...</div>
+    <div onclick="toggleMode()">🌙</div>
   </div>
 
-  <!-- HERO -->
   <div class="hero">
     <h2>⚡ 10-Minute Ironing</h2>
     <p>Fast • Clean • Doorstep</p>
   </div>
 
-  <!-- SLIDER ADS -->
-  <div class="slider">
-    <div class="slide">🎉 Flat 20% OFF</div>
-    <div class="slide">🪙 Use Wallet & Save</div>
-    <div class="slide">⚡ Express Delivery</div>
-  </div>
+  <!-- ADS -->
+  <div class="slider" id="adsBox"></div>
 
   <!-- WALLET -->
-  <div class="wallet">
-    💳 Wallet Balance: <b>₹120</b>
+  <div class="card">
+    💳 Wallet Balance: ₹<span id="wallet">0</span>
   </div>
 
   <!-- CATEGORIES -->
-  <div class="section">Categories</div>
-  <div class="categories">
+  <div class="cats">
     <div class="cat">🔥 Steam</div>
     <div class="cat">🧼 Wash</div>
     <div class="cat">👕 Iron</div>
   </div>
 
   <!-- SERVICES -->
-  <div class="section">Ironing Services</div>
-
   <div class="card service">
-    <div>👕 Shirt</div>
-    <div>₹5</div>
-    <button class="btn" onclick="addToCart('Shirt',5)">Add</button>
+    👕 Shirt ₹5 <button class="btn" onclick="addToCart('Shirt',5)">Add</button>
   </div>
-
   <div class="card service">
-    <div>👖 Pant</div>
-    <div>₹6</div>
-    <button class="btn" onclick="addToCart('Pant',6)">Add</button>
+    👖 Pant ₹6 <button class="btn" onclick="addToCart('Pant',6)">Add</button>
   </div>
 
 </div>
 
-<!-- FLOATING CART -->
-<div class="cart-fab" onclick="goCart()">
-  🛒 <span id="cartCount">0</span>
-</div>
+<div class="fab" onclick="goCart()">🛒 <span id="count">0</span></div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <a class="active">Home</a>
   <a href="cart.html">Cart</a>
   <a href="profile.html">Profile</a>
 </div>
 
-<script>
-  function getCart(){
-    return JSON.parse(localStorage.getItem("cart")||"[]");
-  }
+<script type="module">
+import { auth, db } from "../assets/js/firebase.js";
+import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-  function updateCart(){
-    document.getElementById("cartCount").innerText = getCart().length;
-  }
+let ads=[],i=0;
 
-  function addToCart(name,price){
-    const cart=getCart();
-    cart.push({name,price});
-    localStorage.setItem("cart",JSON.stringify(cart));
-    updateCart();
-  }
+auth.onAuthStateChanged(async u=>{
+  if(!u) return;
 
-  function goCart(){
-    window.location.href="cart.html";
-  }
+  // city + wallet
+  const snap = await getDoc(doc(db,"users",u.uid));
+  document.getElementById("city").innerText = "📍 " + (snap.data().city || "Not set");
+  document.getElementById("wallet").innerText = snap.data().wallet || 0;
 
-  function toggleMode(){
-    document.body.classList.toggle("dark");
-  }
+  // ads
+  const adsSnap = await getDocs(collection(db,"ads"));
+  adsSnap.forEach(d=>{
+    if(d.data().status==="active"){
+      ads.push(d.data().title);
+    }
+  });
+  showAd();
+});
 
-  updateCart();
+function showAd(){
+  if(ads.length===0) return;
+  const box=document.getElementById("adsBox");
+  box.innerHTML=`<div class="slide">${ads[i]}</div>`;
+  box.firstChild.style.display="block";
+  i=(i+1)%ads.length;
+  setTimeout(showAd,3000);
+}
+
+function getCart(){return JSON.parse(localStorage.getItem("cart")||"[]")}
+function addToCart(n,p){const c=getCart();c.push({n,p});localStorage.setItem("cart",JSON.stringify(c));update()}
+function update(){document.getElementById("count").innerText=getCart().length}
+function goCart(){location.href="cart.html"}
+
+function toggleMode(){
+  document.body.classList.toggle("dark");
+  localStorage.setItem("mode",document.body.classList.contains("dark"));
+}
+if(localStorage.getItem("mode")==="true") document.body.classList.add("dark");
+
+update();
 </script>
-
 </body>
 </html>
