@@ -1,4 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress – Rider Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  Rider Dashboard
+</div>
+
+<!-- Orders Container -->
+<div style="padding:16px" id="ordersBox">
+  Loading delivery requests...
+</div>
+
+<div style="height:60px"></div>
+
+<!-- Auth Guard -->
 <script type="module">
   import { protectPage } from "../assets/js/guard.js";
   protectPage(["delivery"]);
 </script>
+
+<!-- Rider Logic -->
+<script type="module">
+  import { auth, db } from "../assets/js/firebase.js";
+  import {
+    collection,
+    query,
+    where,
+    getDocs,
+    updateDoc,
+    doc,
+    arrayUnion
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const box = document.getElementById("ordersBox");
+
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) return;
+
+    // Rider ko sirf "Ready for Pickup" orders dikhenge
+    const q = query(
+      collection(db, "orders"),
+      where("status", "==", "Ready for Pickup")
+    );
+
+    const snap = await getDocs(q);
+    box.innerHTML = "";
+
+    if (snap.empty) {
+      box.innerHTML = "<p>No delivery requests right now</p>";
+      return;
+    }
+
+    snap.forEach((docSnap) => {
+      const order = docSnap.data();
+
+      box.innerHTML += `
+        <div class="card">
+          <h3>🚴 Delivery Request</h3>
+          <p><b>Total:</b> ₹${order.total}</p>
+
+          <button class="btn" onclick="acceptDelivery('${docSnap.id}')">
+            Accept Delivery
+          </button>
+
+          <button class="btn" style="margin-top:8px;background:#333"
+            onclick="markDelivered('${docSnap.id}')">
+            Mark Delivered
+          </button>
+        </div>
+      `;
+    });
+  });
+
+  // Accept delivery (Pickup)
+  window.acceptDelivery = async function(orderId) {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    await updateDoc(doc(db, "orders", orderId), {
+      status: "Picked Up",
+      riderId: user.uid,
+      timeline: arrayUnion({
+        status: "Picked Up",
+        time: Date.now()
+      })
+    });
+
+    alert("📦 Order Picked Up");
+    location.reload();
+  };
+
+  // Mark Delivered
+  window.markDelivered = async function(orderId) {
+    await updateDoc(doc(db, "orders", orderId), {
+      status: "Delivered",
+      timeline: arrayUnion({
+        status: "Delivered",
+        time: Date.now()
+      })
+    });
+
+    alert("✅ Order Delivered");
+    location.reload();
+  };
+</script>
+
+</body>
+</html>
