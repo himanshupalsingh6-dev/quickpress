@@ -1,87 +1,245 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Product</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/blinkit-product.css">
+<meta charset="UTF-8">
+<title>QuickPress – Product Details</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Arial}
+body{margin:0;background:#f5f6f7;color:#222}
+
+/* HEADER */
+.header{
+  background:#fff;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.header b{font-size:16px}
+.header span{font-size:18px;cursor:pointer}
+
+/* PRODUCT IMAGE */
+.product-img{
+  background:#fff;
+  padding:16px;
+}
+.product-img img{
+  width:100%;
+  border-radius:18px;
+}
+
+/* INFO */
+.info{
+  background:#fff;
+  margin:12px;
+  padding:14px;
+  border-radius:18px;
+}
+.info h2{margin:0 0 6px}
+.delivery{
+  font-size:12px;
+  color:#16a34a;
+  margin-bottom:6px;
+}
+.price b{font-size:20px}
+.price del{font-size:13px;opacity:.6;margin-left:6px}
+.discount{
+  display:inline-block;
+  background:#ffdc5e;
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:12px;
+  margin-left:6px;
+}
+
+/* QTY */
+.qty{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#22c55e;
+  color:#fff;
+  border-radius:24px;
+  padding:8px 16px;
+  font-weight:700;
+  width:140px;
+  margin-top:10px;
+}
+.qty span{cursor:pointer}
+
+/* SECTION */
+.section{
+  font-weight:700;
+  margin:16px 14px 8px;
+}
+
+/* SUGGESTIONS */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  padding:0 14px 100px;
+}
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:10px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.card img{
+  width:100%;
+  border-radius:12px;
+}
+.card h4{
+  font-size:14px;
+  margin:6px 0 2px;
+}
+.card button{
+  width:100%;
+  background:#22c55e;
+  color:#fff;
+  border:none;
+  padding:8px;
+  border-radius:12px;
+  font-weight:700;
+}
+
+/* BOTTOM BAR */
+.cart-bar{
+  position:fixed;
+  bottom:56px;
+  left:14px;
+  right:14px;
+  background:#22c55e;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:26px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:700;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  display:flex;
+}
+.bottom-nav div{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+  cursor:pointer;
+}
+.bottom-nav span{
+  display:block;
+  font-size:18px;
+}
+</style>
 </head>
+
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="left">
-    <div class="icon" onclick="history.back()">←</div>
-    <b>Product</b>
-  </div>
-  <div class="icon">♡</div>
+<!-- HEADER -->
+<div class="header">
+  <span onclick="goBack()">←</span>
+  <b>Product</b>
+  <span>♡</span>
 </div>
 
 <!-- IMAGE -->
-<div class="image-box">
+<div class="product-img">
   <img src="https://i.imgur.com/8QfQY5m.png">
 </div>
 
 <!-- INFO -->
 <div class="info">
-  <span class="chip">⏱ 10 mins</span>
   <h2>Shirt Iron</h2>
+  <div class="delivery">⏱ Delivery in 10 minutes</div>
 
-  <div>
-    <span class="price">₹5</span>
-    <span class="mrp">₹7</span>
-    <span class="off">30% OFF</span>
+  <div class="price">
+    <b>₹5</b>
+    <del>₹7</del>
+    <span class="discount">13% OFF</span>
   </div>
 
-  <!-- QUANTITY -->
-  <div class="qty-box">
-    <b>Quantity</b>
-    <div class="qty">
-      <span onclick="dec()">−</span>
-      <b id="count">1</b>
-      <span onclick="inc()">+</span>
-    </div>
+  <div class="qty">
+    <span onclick="dec()">−</span>
+    <b id="qty">1</b>
+    <span onclick="inc()">+</span>
   </div>
 </div>
 
-<!-- ALSO BOUGHT -->
+<!-- DESCRIPTION -->
+<div class="info">
+  <b>About this service</b>
+  <p style="font-size:13px;opacity:.8">
+    Professional ironing with steam press. Clothes delivered fresh, wrinkle-free
+    and neatly packed.
+  </p>
+</div>
+
+<!-- SUGGESTIONS -->
 <div class="section">People also bought</div>
+
 <div class="grid">
   <div class="card">
     <img src="https://i.imgur.com/9x6K5iY.png">
     <h4>Pant Iron</h4>
-    <button>ADD</button>
+    <button onclick="goCategory()">ADD</button>
   </div>
   <div class="card">
     <img src="https://i.imgur.com/b0ZVQZ6.png">
-    <h4>Steam Shirt</h4>
-    <button>ADD</button>
+    <h4>Steam Press</h4>
+    <button onclick="goCategory()">ADD</button>
   </div>
 </div>
 
-<!-- BOTTOM BAR -->
-<div class="bottom-bar">
-  <div><span id="total">₹5</span></div>
-  <div onclick="addCart()">Add to Cart</div>
+<!-- CART BAR -->
+<div class="cart-bar" onclick="goCart()">
+  <span><span id="qty2">1</span> item added</span>
+  <b>View Cart →</b>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div onclick="goHome()"><span>🏠</span>Home</div>
+  <div onclick="goCategory()"><span>📂</span>Category</div>
+  <div onclick="goOrders()"><span>🧾</span>Orders</div>
+  <div onclick="goAccount()"><span>👤</span>Account</div>
 </div>
 
 <script>
-let qty=1;
-const price=5;
+let q=1;
 
 function inc(){
-  qty++;
-  update();
+  q++;
+  qty.innerText=q;
+  qty2.innerText=q;
 }
 function dec(){
-  if(qty>1){qty--;update();}
+  if(q>1){
+    q--;
+    qty.innerText=q;
+    qty2.innerText=q;
+  }
 }
-function update(){
-  document.getElementById("count").innerText=qty;
-  document.getElementById("total").innerText="₹"+(qty*price);
-}
-function addCart(){
-  alert("Added to cart");
-}
+
+function goBack(){history.back()}
+function goHome(){location.href="home.html"}
+function goCategory(){location.href="category.html"}
+function goCart(){location.href="cart.html"}
+function goOrders(){location.href="orders.html"}
+function goAccount(){location.href="profile.html"}
 </script>
 
 </body>
