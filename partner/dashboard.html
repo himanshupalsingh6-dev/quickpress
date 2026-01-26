@@ -1,110 +1,752 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>QuickPress – Partner Dashboard</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Partner Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#FFD400;
+  --text:#222;
+  --muted:#777;
+  --bg:#f6f6f6;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* HEADER */
+.header{
+  background:#fff;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.header img{
+  height:28px;
+}
+.status-toggle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+}
+.toggle{
+  width:42px;
+  height:22px;
+  background:#ccc;
+  border-radius:20px;
+  position:relative;
+  cursor:pointer;
+}
+.knob{
+  width:18px;
+  height:18px;
+  background:#fff;
+  border-radius:50%;
+  position:absolute;
+  top:2px;
+  left:2px;
+  transition:.2s;
+}
+.toggle.active{
+  background:var(--yellow);
+}
+.toggle.active .knob{
+  left:22px;
+}
+
+/* MAIN */
+.main{
+  padding:16px;
+}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:16px;
+}
+.stat{
+  background:#fff;
+  padding:16px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.stat small{
+  color:var(--muted);
+}
+.stat b{
+  display:block;
+  font-size:20px;
+  margin-top:6px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  padding:16px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  margin-bottom:16px;
+}
+.card h3{
+  font-size:15px;
+  margin-bottom:10px;
+}
+
+/* ORDER */
+.order{
+  border-bottom:1px solid #eee;
+  padding:10px 0;
+}
+.order:last-child{border:none}
+.order b{
+  font-size:14px;
+}
+.order small{
+  color:var(--muted);
+}
+.order-actions{
+  margin-top:8px;
+  display:flex;
+  gap:8px;
+}
+.order-actions button{
+  flex:1;
+  padding:8px;
+  border:none;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+.accept{
+  background:var(--yellow);
+}
+.reject{
+  background:#eee;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  display:flex;
+}
+.bottom-nav div{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+}
+.bottom-nav span{
+  display:block;
+  font-size:18px;
+}
+</style>
 </head>
+
 <body>
 
-<!-- Header -->
+<!-- HEADER -->
 <div class="header">
-  Partner Dashboard
+  <img src="../assets/logo.png" alt="QuickPress">
+  <div class="status-toggle">
+    <span id="statusText">Offline</span>
+    <div class="toggle" onclick="toggleStatus()" id="toggle">
+      <div class="knob"></div>
+    </div>
+  </div>
 </div>
 
-<!-- Orders Container -->
-<div style="padding:16px" id="ordersBox">
-  Loading orders...
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <small>Today Orders</small>
+      <b>6</b>
+    </div>
+    <div class="stat">
+      <small>Today Earnings</small>
+      <b>₹180</b>
+    </div>
+  </div>
+
+  <!-- PENDING ORDERS -->
+  <div class="card">
+    <h3>New Orders</h3>
+
+    <div class="order">
+      <b>Order #QP1031</b><br>
+      <small>Ironing • 5 Clothes</small>
+      <div class="order-actions">
+        <button class="accept">Accept</button>
+        <button class="reject">Reject</button>
+      </div>
+    </div>
+
+    <div class="order">
+      <b>Order #QP1032</b><br>
+      <small>Wash + Iron • 3 Clothes</small>
+      <div class="order-actions">
+        <button class="accept">Accept</button>
+        <button class="reject">Reject</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WALLET -->
+  <div class="card">
+    <h3>Wallet</h3>
+    <small>Current Balance</small>
+    <b style="font-size:20px;">₹1,250</b>
+  </div>
+
 </div>
 
-<!-- Bottom space -->
-<div style="height:60px"></div>
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div><span>🏠</span>Home</div>
+  <div><span>📦</span>Orders</div>
+  <div><span>💰</span>Wallet</div>
+  <div><span>👤</span>Profile</div>
+</div>
 
-<!-- Auth Guard -->
-<script type="module">
-  import { protectPage } from "../assets/js/guard.js";
-  protectPage(["partner"]);
+<script>
+function toggleStatus(){
+  const t=document.getElementById("toggle");
+  const text=document.getElementById("statusText");
+  t.classList.toggle("active");
+  if(t.classList.contains("active")){
+    text.innerText="Online";
+  }else{
+    text.innerText="Offline";
+  }
+}
 </script>
 
-<!-- Partner Logic -->
-<script type="module">
-  import { auth, db } from "../assets/js/firebase.js";
-  import {
-    collection,
-    query,
-    where,
-    getDocs,
-    updateDoc,
-    doc,
-    arrayUnion
-  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Partner Dashboard</title>
 
-  const box = document.getElementById("ordersBox");
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-  auth.onAuthStateChanged(async (user) => {
-    if (!user) return;
+<style>
+:root{
+  --yellow:#FFD400;
+  --text:#222;
+  --muted:#777;
+  --bg:#f6f6f6;
+}
 
-    // Orders jo abhi tak kisi partner ne accept nahi kiye
-    const q = query(
-      collection(db, "orders"),
-      where("status", "==", "Order Placed")
-    );
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
 
-    const snap = await getDocs(q);
-    box.innerHTML = "";
+body{
+  background:var(--bg);
+  color:var(--text);
+}
 
-    if (snap.empty) {
-      box.innerHTML = "<p>No new orders</p>";
-      return;
-    }
+/* HEADER */
+.header{
+  background:#fff;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.header img{
+  height:28px;
+}
+.status-toggle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+}
+.toggle{
+  width:42px;
+  height:22px;
+  background:#ccc;
+  border-radius:20px;
+  position:relative;
+  cursor:pointer;
+}
+.knob{
+  width:18px;
+  height:18px;
+  background:#fff;
+  border-radius:50%;
+  position:absolute;
+  top:2px;
+  left:2px;
+  transition:.2s;
+}
+.toggle.active{
+  background:var(--yellow);
+}
+.toggle.active .knob{
+  left:22px;
+}
 
-    snap.forEach((docSnap) => {
-      const order = docSnap.data();
+/* MAIN */
+.main{
+  padding:16px;
+}
 
-      box.innerHTML += `
-        <div class="card">
-          <h3>🧾 New Order</h3>
-          <p><b>Total:</b> ₹${order.total}</p>
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:16px;
+}
+.stat{
+  background:#fff;
+  padding:16px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.stat small{
+  color:var(--muted);
+}
+.stat b{
+  display:block;
+  font-size:20px;
+  margin-top:6px;
+}
 
-          <button class="btn" onclick="acceptOrder('${docSnap.id}')">
-            Accept Order
-          </button>
+/* CARD */
+.card{
+  background:#fff;
+  padding:16px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  margin-bottom:16px;
+}
+.card h3{
+  font-size:15px;
+  margin-bottom:10px;
+}
 
-          <button class="btn" style="margin-top:8px;background:#333"
-            onclick="markReady('${docSnap.id}')">
-            Ready for Pickup
-          </button>
-        </div>
-      `;
-    });
-  });
+/* ORDER */
+.order{
+  border-bottom:1px solid #eee;
+  padding:10px 0;
+}
+.order:last-child{border:none}
+.order b{
+  font-size:14px;
+}
+.order small{
+  color:var(--muted);
+}
+.order-actions{
+  margin-top:8px;
+  display:flex;
+  gap:8px;
+}
+.order-actions button{
+  flex:1;
+  padding:8px;
+  border:none;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+.accept{
+  background:var(--yellow);
+}
+.reject{
+  background:#eee;
+}
 
-  // Accept Order
-  window.acceptOrder = async function(orderId) {
-    await updateDoc(doc(db, "orders", orderId), {
-      status: "Partner Accepted",
-      partnerStatus: "accepted",
-      timeline: arrayUnion({
-        status: "Partner Accepted",
-        time: Date.now()
-      })
-    });
-    alert("✅ Order Accepted");
-    location.reload();
-  };
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  display:flex;
+}
+.bottom-nav div{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+}
+.bottom-nav span{
+  display:block;
+  font-size:18px;
+}
+</style>
+</head>
 
-  // Mark Ready
-  window.markReady = async function(orderId) {
-    await updateDoc(doc(db, "orders", orderId), {
-      status: "Ready for Pickup",
-      timeline: arrayUnion({
-        status: "Ready for Pickup",
-        time: Date.now()
-      })
-    });
-    alert("🧺 Order Ready for Pickup");
-    location.reload();
-  };
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img src="../assets/logo.png" alt="QuickPress">
+  <div class="status-toggle">
+    <span id="statusText">Offline</span>
+    <div class="toggle" onclick="toggleStatus()" id="toggle">
+      <div class="knob"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <small>Today Orders</small>
+      <b>6</b>
+    </div>
+    <div class="stat">
+      <small>Today Earnings</small>
+      <b>₹180</b>
+    </div>
+  </div>
+
+  <!-- PENDING ORDERS -->
+  <div class="card">
+    <h3>New Orders</h3>
+
+    <div class="order">
+      <b>Order #QP1031</b><br>
+      <small>Ironing • 5 Clothes</small>
+      <div class="order-actions">
+        <button class="accept">Accept</button>
+        <button class="reject">Reject</button>
+      </div>
+    </div>
+
+    <div class="order">
+      <b>Order #QP1032</b><br>
+      <small>Wash + Iron • 3 Clothes</small>
+      <div class="order-actions">
+        <button class="accept">Accept</button>
+        <button class="reject">Reject</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WALLET -->
+  <div class="card">
+    <h3>Wallet</h3>
+    <small>Current Balance</small>
+    <b style="font-size:20px;">₹1,250</b>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div><span>🏠</span>Home</div>
+  <div><span>📦</span>Orders</div>
+  <div><span>💰</span>Wallet</div>
+  <div><span>👤</span>Profile</div>
+</div>
+
+<script>
+function toggleStatus(){
+  const t=document.getElementById("toggle");
+  const text=document.getElementById("statusText");
+  t.classList.toggle("active");
+  if(t.classList.contains("active")){
+    text.innerText="Online";
+  }else{
+    text.innerText="Offline";
+  }
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Partner Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#FFD400;
+  --text:#222;
+  --muted:#777;
+  --bg:#f6f6f6;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* HEADER */
+.header{
+  background:#fff;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.header img{
+  height:28px;
+}
+.status-toggle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+}
+.toggle{
+  width:42px;
+  height:22px;
+  background:#ccc;
+  border-radius:20px;
+  position:relative;
+  cursor:pointer;
+}
+.knob{
+  width:18px;
+  height:18px;
+  background:#fff;
+  border-radius:50%;
+  position:absolute;
+  top:2px;
+  left:2px;
+  transition:.2s;
+}
+.toggle.active{
+  background:var(--yellow);
+}
+.toggle.active .knob{
+  left:22px;
+}
+
+/* MAIN */
+.main{
+  padding:16px;
+}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:16px;
+}
+.stat{
+  background:#fff;
+  padding:16px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.stat small{
+  color:var(--muted);
+}
+.stat b{
+  display:block;
+  font-size:20px;
+  margin-top:6px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  padding:16px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  margin-bottom:16px;
+}
+.card h3{
+  font-size:15px;
+  margin-bottom:10px;
+}
+
+/* ORDER */
+.order{
+  border-bottom:1px solid #eee;
+  padding:10px 0;
+}
+.order:last-child{border:none}
+.order b{
+  font-size:14px;
+}
+.order small{
+  color:var(--muted);
+}
+.order-actions{
+  margin-top:8px;
+  display:flex;
+  gap:8px;
+}
+.order-actions button{
+  flex:1;
+  padding:8px;
+  border:none;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+.accept{
+  background:var(--yellow);
+}
+.reject{
+  background:#eee;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  display:flex;
+}
+.bottom-nav div{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+}
+.bottom-nav span{
+  display:block;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img src="../assets/logo.png" alt="QuickPress">
+  <div class="status-toggle">
+    <span id="statusText">Offline</span>
+    <div class="toggle" onclick="toggleStatus()" id="toggle">
+      <div class="knob"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <small>Today Orders</small>
+      <b>6</b>
+    </div>
+    <div class="stat">
+      <small>Today Earnings</small>
+      <b>₹180</b>
+    </div>
+  </div>
+
+  <!-- PENDING ORDERS -->
+  <div class="card">
+    <h3>New Orders</h3>
+
+    <div class="order">
+      <b>Order #QP1031</b><br>
+      <small>Ironing • 5 Clothes</small>
+      <div class="order-actions">
+        <button class="accept">Accept</button>
+        <button class="reject">Reject</button>
+      </div>
+    </div>
+
+    <div class="order">
+      <b>Order #QP1032</b><br>
+      <small>Wash + Iron • 3 Clothes</small>
+      <div class="order-actions">
+        <button class="accept">Accept</button>
+        <button class="reject">Reject</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WALLET -->
+  <div class="card">
+    <h3>Wallet</h3>
+    <small>Current Balance</small>
+    <b style="font-size:20px;">₹1,250</b>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div><span>🏠</span>Home</div>
+  <div><span>📦</span>Orders</div>
+  <div><span>💰</span>Wallet</div>
+  <div><span>👤</span>Profile</div>
+</div>
+
+<script>
+function toggleStatus(){
+  const t=document.getElementById("toggle");
+  const text=document.getElementById("statusText");
+  t.classList.toggle("active");
+  if(t.classList.contains("active")){
+    text.innerText="Online";
+  }else{
+    text.innerText="Offline";
+  }
+}
 </script>
 
 </body>
