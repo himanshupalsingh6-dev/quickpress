@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>QuickPress – Order</title>
+  <title>QuickPress – Create Order</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -10,18 +10,20 @@
 
 <div style="padding:16px">
 
+  <!-- Products -->
   <div class="card">
-    <h3>Shirt</h3>
+    <h3>👕 Shirt</h3>
     <p>₹5 / pair</p>
     <button class="btn" onclick="addItem('Shirt',5)">Add</button>
   </div>
 
   <div class="card">
-    <h3>Pant</h3>
+    <h3>👖 Pant</h3>
     <p>₹6 / pair</p>
     <button class="btn" onclick="addItem('Pant',6)">Add</button>
   </div>
 
+  <!-- Cart -->
   <div class="card">
     <h3>🛒 Cart</h3>
     <div id="cart"></div>
@@ -37,20 +39,28 @@
   <a href="profile.html">Profile</a>
 </div>
 
+<!-- Guard -->
 <script type="module">
   import { protectPage } from "../assets/js/guard.js";
   protectPage(["customer"]);
 </script>
 
-<script>
+<script type="module">
+  import { auth, db } from "../assets/js/firebase.js";
+  import {
+    addDoc,
+    collection,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
   let cart = [];
   let total = 0;
 
-  function addItem(name, price) {
+  window.addItem = function(name, price) {
     cart.push({ name, price });
     total += price;
     render();
-  }
+  };
 
   function render() {
     cartDiv.innerHTML = "";
@@ -60,9 +70,36 @@
     totalEl.innerText = total;
   }
 
-  function placeOrder() {
-    alert("Order placed (next step me Firestore connect)");
-  }
+  window.placeOrder = async function () {
+    if (cart.length === 0) {
+      alert("Cart empty");
+      return;
+    }
+
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Login required");
+      return;
+    }
+
+    await addDoc(collection(db, "orders"), {
+      userId: user.uid,
+      items: cart,
+      total: total,
+      status: "Order Placed",
+      timeline: [
+        { status: "Order Placed", time: Date.now() }
+      ],
+      createdAt: serverTimestamp()
+    });
+
+    alert("✅ Order placed successfully");
+    cart = [];
+    total = 0;
+    render();
+
+    window.location.href = "timeline.html";
+  };
 
   const cartDiv = document.getElementById("cart");
   const totalEl = document.getElementById("total");
