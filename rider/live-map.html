@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress – Live Tracking</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- Google Maps API -->
+  <!-- ⚠️ YAHAN APNI GOOGLE MAPS API KEY DAALNI HAI -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+
+  <style>
+    #map {
+      width: 100%;
+      height: 80vh;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  🚴 Live Delivery Tracking
+</div>
+
+<div style="padding:16px">
+  <div id="map"></div>
+</div>
+
+<div style="height:60px"></div>
+
+<!-- Auth Guard -->
+<script type="module">
+  import { protectPage } from "../assets/js/guard.js";
+  protectPage(["delivery", "admin"]);
+</script>
+
+<script type="module">
+  import { auth, db } from "../assets/js/firebase.js";
+  import {
+    doc,
+    updateDoc
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  let map;
+  let marker;
+
+  // Initialize map
+  function initMap(lat, lng) {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat, lng },
+      zoom: 15
+    });
+
+    marker = new google.maps.Marker({
+      position: { lat, lng },
+      map: map,
+      title: "Rider Location 🚴"
+    });
+  }
+
+  // Update marker position
+  function updateLocation(lat, lng) {
+    const pos = { lat, lng };
+    marker.setPosition(pos);
+    map.setCenter(pos);
+  }
+
+  // Get live location
+  auth.onAuthStateChanged(user => {
+    if (!user) return;
+
+    if (!navigator.geolocation) {
+      alert("Geolocation not supported");
+      return;
+    }
+
+    navigator.geolocation.watchPosition(
+      async position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        if (!map) {
+          initMap(lat, lng);
+        } else {
+          updateLocation(lat, lng);
+        }
+
+        // 🔴 SAVE LIVE LOCATION TO FIRESTORE
+        await updateDoc(doc(db, "users", user.uid), {
+          liveLocation: {
+            lat: lat,
+            lng: lng,
+            updatedAt: Date.now()
+          }
+        });
+
+      },
+      error => {
+        alert("Location access denied");
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 5000
+      }
+    );
+  });
+</script>
+
+</body>
+</html>
