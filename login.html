@@ -1,55 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>QuickPress – Login</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8">
+<title>QuickPress – Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
+body{
+  margin:0;
+  background:#f6fbfc;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+/* BACKGROUND PRODUCT GRID */
+.bg{
+  padding:18px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.bg img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:contain;
+  background:#eaf7f7;
+  border-radius:18px;
+}
+
+/* LOGIN CARD */
+.card{
+  background:#fff;
+  margin: -40px 16px 0;
+  padding:22px;
+  border-radius:22px;
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
+  text-align:center;
+  z-index:2;
+}
+
+/* LOGO */
+.logo{
+  width:64px;height:64px;
+  margin:-54px auto 8px;
+  background:#ffdc5e;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:18px;
+}
+
+/* TEXT */
+.title{
+  font-size:20px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+.user{
+  background:#f3f4f6;
+  padding:14px;
+  border-radius:14px;
+  margin-bottom:16px;
+}
+.user b{display:block}
+.user small{opacity:.6}
+
+/* BUTTON */
+.btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  background:#22c55e;
+  color:#fff;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+}
+.btn:active{transform:scale(.98)}
+
+/* ALT */
+.alt{
+  margin:16px 0;
+  font-size:14px;
+}
+.alt a{
+  color:#16a34a;
+  font-weight:700;
+  text-decoration:none;
+}
+
+/* FOOTER */
+.footer{
+  margin-top:auto;
+  padding:16px;
+  font-size:12px;
+  text-align:center;
+  color:#777;
+}
+.footer a{color:#555;text-decoration:none;font-weight:600}
+</style>
 </head>
+
 <body>
 
-<div class="header">Login</div>
-
-<div style="padding:16px">
-
-  <div class="card">
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-
-    <button class="btn" id="loginBtn">Login</button>
-    <button class="btn" id="googleBtn" style="margin-top:8px;background:#333">
-      Login with Google
-    </button>
-
-    <p style="margin-top:12px">
-      New user?
-      <a href="register.html">Register</a>
-    </p>
-  </div>
-
+<!-- BACKGROUND GRID -->
+<div class="bg">
+  <img src="https://i.imgur.com/Y4QZ1ZB.png">
+  <img src="https://i.imgur.com/smZQx4n.png">
+  <img src="https://i.imgur.com/dgGZq3K.png">
+  <img src="https://i.imgur.com/vfZ1Z8I.png">
+  <img src="https://i.imgur.com/V9R5F5V.png">
+  <img src="https://i.imgur.com/0n9d6xA.png">
 </div>
 
-<!-- 🔐 LOGIN LOGIC -->
-<script type="module">
-  import { loginUser, googleLogin } from "./assets/js/auth.js";
+<!-- LOGIN CARD -->
+<div class="card">
+  <div class="logo">QP</div>
 
-  const loginBtn = document.getElementById("loginBtn");
-  const googleBtn = document.getElementById("googleBtn");
+  <div class="title">India’s fastest ironing app</div>
 
-  loginBtn.addEventListener("click", () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  <div class="user">
+    <b>Himanshu Pal</b>
+    <small>925873XXXX</small>
+  </div>
 
-    if (!email || !password) {
-      alert("Please enter email and password");
-      return;
-    }
+  <button class="btn" onclick="login()">Login to QuickPress</button>
 
-    loginUser(email, password);
-  });
+  <div class="alt">
+    <a href="#">or login with phone number</a>
+  </div>
+</div>
 
-  googleBtn.addEventListener("click", () => {
-    googleLogin();
-  });
+<!-- FOOTER -->
+<div class="footer">
+  By continuing, you agree to our  
+  <a href="#">Terms</a> & <a href="#">Privacy Policy</a>
+</div>
+
+<script>
+function login(){
+  // demo redirect
+  window.location.href="customer/home.html";
+}
 </script>
 
 </body>
