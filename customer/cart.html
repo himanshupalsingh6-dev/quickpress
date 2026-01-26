@@ -1,53 +1,220 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Cart</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+<meta charset="UTF-8">
+<title>QuickPress – Cart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Arial}
+body{margin:0;background:#f5f6f7;color:#222}
+
+/* HEADER */
+.header{
+  background:#fff;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+/* CART ITEM */
+.item{
+  background:#fff;
+  margin:12px;
+  padding:12px;
+  border-radius:16px;
+  display:flex;
+  gap:12px;
+}
+.item img{
+  width:90px;
+  height:90px;
+  border-radius:14px;
+  object-fit:cover;
+}
+.item h4{margin:0}
+.item small{opacity:.6}
+.price{font-weight:700;margin-top:4px}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#22c55e;
+  color:#fff;
+  padding:6px 12px;
+  border-radius:20px;
+  font-weight:700;
+  width:110px;
+  justify-content:space-between;
+}
+.qty span{cursor:pointer}
+
+.remove{
+  color:#ef4444;
+  font-size:12px;
+  cursor:pointer;
+  margin-top:6px;
+}
+
+/* BILL */
+.bill{
+  background:#fff;
+  margin:12px;
+  padding:14px;
+  border-radius:16px;
+}
+.bill div{
+  display:flex;
+  justify-content:space-between;
+  margin:6px 0;
+}
+.bill b{font-size:15px}
+
+/* SUGGESTIONS */
+.section{margin:16px 12px 8px;font-weight:700}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  padding:0 12px 120px;
+}
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:10px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.card img{
+  width:100%;
+  border-radius:12px;
+}
+.card h4{font-size:14px;margin:6px 0}
+.card button{
+  width:100%;
+  background:#22c55e;
+  color:#fff;
+  border:none;
+  padding:8px;
+  border-radius:12px;
+  font-weight:700;
+}
+
+/* CHECKOUT BAR */
+.checkout{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  padding:10px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.checkout button{
+  background:#22c55e;
+  color:#fff;
+  border:none;
+  padding:14px 22px;
+  border-radius:26px;
+  font-weight:700;
+  font-size:15px;
+}
+.total{
+  font-weight:700;
+}
+</style>
 </head>
+
 <body>
 
-<div class="topbar"><b>Your Cart</b></div>
-
-<div id="items"></div>
-
-<div class="checkout-fixed">
-  <b>Total ₹<span id="total">0</span></b>
-  <button onclick="showCheckout()">Checkout</button>
+<!-- HEADER -->
+<div class="header">
+  <span onclick="goBack()">←</span>
+  <b>Your Cart</b>
 </div>
 
-<!-- CHECKOUT MODAL -->
-<div id="checkoutModal" class="modal">
-  <div class="modal-box">
-    <h3>Checkout</h3>
-    <p>Delivery: ₹20</p>
-    <p>GST: 18%</p>
-    <button onclick="place()">Place Order</button>
-    <button class="close" onclick="hide()">Close</button>
+<!-- ITEM -->
+<div class="item">
+  <img src="https://i.imgur.com/8QfQY5m.png">
+  <div style="flex:1">
+    <h4>Shirt Iron</h4>
+    <small>Delivery in 10 mins</small>
+    <div class="price">₹<span id="price">5</span></div>
+
+    <div class="qty">
+      <span onclick="dec()">−</span>
+      <span id="qty">1</span>
+      <span onclick="inc()">+</span>
+    </div>
+
+    <div class="remove" onclick="removeItem()">Remove</div>
   </div>
 </div>
 
+<!-- BILL -->
+<div class="bill">
+  <div><span>Item total</span><span>₹<span id="itemTotal">5</span></span></div>
+  <div><span>Delivery charges</span><span>₹<span id="delivery">10</span></span></div>
+  <div><span>GST</span><span>₹<span id="gst">1</span></span></div>
+  <hr>
+  <div><b>To Pay</b><b>₹<span id="grand">16</span></b></div>
+</div>
+
+<!-- SUGGESTIONS -->
+<div class="section">You may also like</div>
+
+<div class="grid">
+  <div class="card">
+    <img src="https://i.imgur.com/b0ZVQZ6.png">
+    <h4>Steam Press</h4>
+    <button>Add</button>
+  </div>
+  <div class="card">
+    <img src="https://i.imgur.com/9x6K5iY.png">
+    <h4>Pant Iron</h4>
+    <button>Add</button>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="checkout">
+  <div class="total">₹<span id="final">16</span></div>
+  <button onclick="goCheckout()">Proceed →</button>
+</div>
+
 <script>
-const cart=JSON.parse(localStorage.getItem("cart")||"[]");
-let total=0;
-const box=document.getElementById("items");
+let q=1;
+let price=5;
+let delivery=10;
 
-cart.forEach(i=>{
-  total+=i.p;
-  box.innerHTML+=`<div class="cart-item">${i.n} ₹${i.p}</div>`;
-});
-document.getElementById("total").innerText=total;
+function calc(){
+  let item=q*price;
+  let gst=Math.round(item*0.18);
+  let total=item+gst+delivery;
 
-function showCheckout(){
-  document.getElementById("checkoutModal").style.display="flex";
+  itemTotal.innerText=item;
+  gst.innerText=gst;
+  grand.innerText=total;
+  final.innerText=total;
 }
-function hide(){
-  document.getElementById("checkoutModal").style.display="none";
+
+function inc(){q++;qty.innerText=q;calc()}
+function dec(){if(q>1){q--;qty.innerText=q;calc()}}
+
+function removeItem(){
+  alert("Item removed (demo)");
 }
-function place(){
-  localStorage.removeItem("cart");
-  alert("Order placed");
-  location.href="home.html";
-}
+
+function goBack(){history.back()}
+function goCheckout(){location.href="checkout.html"}
 </script>
 
 </body>
