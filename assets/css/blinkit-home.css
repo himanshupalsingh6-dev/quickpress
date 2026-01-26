@@ -1,0 +1,94 @@
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Arial}
+body{margin:0;background:#f5f6f8}
+
+/* HEADER */
+.header{
+  background:linear-gradient(180deg,#f2c94c,#f7d56b);
+  padding:16px 14px 22px;
+  color:#000;
+}
+.header-top{
+  display:flex;justify-content:space-between;align-items:center;
+}
+.header-left small{opacity:.8}
+.header-right{
+  display:flex;gap:10px;align-items:center;
+}
+.wallet{
+  background:#fff;padding:6px 10px;border-radius:20px;font-weight:600;
+}
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+}
+
+/* SEARCH */
+.search-box{
+  margin-top:14px;
+  background:#fff;border-radius:14px;
+  display:flex;align-items:center;padding:10px 12px;
+}
+.search-box input{
+  border:none;outline:none;flex:1;font-size:14px;
+}
+
+/* CATEGORY ICON ROW */
+.cat-icons{
+  display:flex;gap:18px;overflow-x:auto;
+  padding:14px 6px 4px;
+}
+.cat-icon{
+  text-align:center;font-size:12px;min-width:54px;
+}
+.cat-icon div{
+  font-size:20px;margin-bottom:4px;
+}
+
+/* WELCOME BANNER */
+.welcome{
+  background:linear-gradient(180deg,#e1b44c,#f4ce63);
+  margin:12px;border-radius:18px;
+  padding:18px;text-align:center;
+}
+.welcome h2{margin:0 0 6px}
+
+/* OFFERS */
+.offers{
+  display:flex;gap:10px;padding:0 12px;
+}
+.offer-card{
+  flex:1;background:#ffe08a;border-radius:14px;
+  padding:12px;font-size:13px;font-weight:600;
+}
+
+/* SECTION TITLE */
+.section{
+  padding:14px 12px 6px;
+  font-weight:700;font-size:16px;
+}
+
+/* CATEGORY GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;padding:0 12px 12px;
+}
+.grid-card{
+  background:#fff;border-radius:16px;
+  padding:10px;text-align:center;font-size:13px;
+}
+.grid-card img{
+  width:100%;border-radius:12px;margin-bottom:6px;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:#fff;border-top:1px solid #ddd;
+  display:flex;justify-content:space-around;
+  padding:8px 0;
+}
+.bottom-nav div{
+  text-align:center;font-size:12px;
+}
+.bottom-nav span{display:block;font-size:18px}
