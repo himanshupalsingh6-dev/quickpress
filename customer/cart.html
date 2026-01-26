@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickPress – Cart</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="header">Your Cart</div>
+
+<div style="padding:16px">
+  <div id="cartBox"></div>
+
+  <div class="card">
+    <h3>Total: ₹<span id="total">0</span></h3>
+    <button class="btn" onclick="checkout()">Proceed to Checkout</button>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <a href="home.html">Home</a>
+  <a class="active">Cart</a>
+  <a href="profile.html">Profile</a>
+</div>
+
+<script>
+  const cartBox = document.getElementById("cartBox");
+  const totalEl = document.getElementById("total");
+
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  let total = 0;
+
+  cart.forEach(i=>{
+    total += i.price;
+    cartBox.innerHTML += `
+      <div class="card">
+        ${i.name} – ₹${i.price}
+      </div>
+    `;
+  });
+
+  totalEl.innerText = total;
+
+  function checkout(){
+    window.location.href = "checkout.html";
+  }
+</script>
+
+</body>
+</html>
