@@ -1,49 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>QuickPress – Cart</title>
+  <title>Cart</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 
-<div class="header">Your Cart</div>
+<div class="topbar"><b>Your Cart</b></div>
 
-<div style="padding:16px">
-  <div id="cartBox"></div>
+<div id="items"></div>
 
-  <div class="card">
-    <h3>Total: ₹<span id="total">0</span></h3>
-    <button class="btn" onclick="checkout()">Proceed to Checkout</button>
+<div class="checkout-fixed">
+  <b>Total ₹<span id="total">0</span></b>
+  <button onclick="showCheckout()">Checkout</button>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkoutModal" class="modal">
+  <div class="modal-box">
+    <h3>Checkout</h3>
+    <p>Delivery: ₹20</p>
+    <p>GST: 18%</p>
+    <button onclick="place()">Place Order</button>
+    <button class="close" onclick="hide()">Close</button>
   </div>
 </div>
 
-<div class="bottom-nav">
-  <a href="home.html">Home</a>
-  <a class="active">Cart</a>
-  <a href="profile.html">Profile</a>
-</div>
-
 <script>
-  const cartBox = document.getElementById("cartBox");
-  const totalEl = document.getElementById("total");
+const cart=JSON.parse(localStorage.getItem("cart")||"[]");
+let total=0;
+const box=document.getElementById("items");
 
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  let total = 0;
+cart.forEach(i=>{
+  total+=i.p;
+  box.innerHTML+=`<div class="cart-item">${i.n} ₹${i.p}</div>`;
+});
+document.getElementById("total").innerText=total;
 
-  cart.forEach(i=>{
-    total += i.price;
-    cartBox.innerHTML += `
-      <div class="card">
-        ${i.name} – ₹${i.price}
-      </div>
-    `;
-  });
-
-  totalEl.innerText = total;
-
-  function checkout(){
-    window.location.href = "checkout.html";
-  }
+function showCheckout(){
+  document.getElementById("checkoutModal").style.display="flex";
+}
+function hide(){
+  document.getElementById("checkoutModal").style.display="none";
+}
+function place(){
+  localStorage.removeItem("cart");
+  alert("Order placed");
+  location.href="home.html";
+}
 </script>
 
 </body>
