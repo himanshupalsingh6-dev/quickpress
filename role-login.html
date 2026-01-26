@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Role Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#FFD400;
+  --yellow-dark:#F2C200;
+  --text:#222;
+  --muted:#777;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:var(--yellow);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.card{
+  width:100%;
+  max-width:440px;
+  background:#fff;
+  border-radius:22px;
+  padding:26px 22px;
+  box-shadow:0 18px 40px rgba(0,0,0,.15);
+}
+
+/* LOGO */
+.logo{
+  text-align:center;
+  margin-bottom:14px;
+}
+.logo img{
+  width:150px;
+}
+
+/* TITLE */
+h2{
+  text-align:center;
+  font-size:18px;
+  color:var(--text);
+}
+p{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin:6px 0 18px;
+}
+
+/* ROLE SELECT */
+.roles{
+  display:flex;
+  gap:10px;
+  margin-bottom:18px;
+}
+.role{
+  flex:1;
+  border:2px solid #eee;
+  border-radius:16px;
+  padding:14px 6px;
+  text-align:center;
+  cursor:pointer;
+  transition:.2s;
+}
+.role span{
+  font-size:22px;
+  display:block;
+}
+.role b{
+  font-size:13px;
+}
+.role.active{
+  border-color:var(--yellow);
+  background:#FFF7CC;
+}
+
+/* INPUT */
+.input-group{
+  margin-bottom:14px;
+}
+.input-group label{
+  font-size:13px;
+  color:var(--muted);
+}
+.input-group input{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  margin-top:6px;
+  font-size:14px;
+}
+.input-group input:focus{
+  outline:none;
+  border-color:var(--yellow);
+}
+
+/* BUTTON */
+.btn{
+  width:100%;
+  padding:14px;
+  background:var(--yellow);
+  border:none;
+  border-radius:16px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+}
+.btn:hover{
+  background:var(--yellow-dark);
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:14px;
+}
+.footer a{
+  color:#000;
+  font-weight:600;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- LOGO -->
+  <div class="logo">
+    <img src="../assets/logo.png" alt="QuickPress">
+  </div>
+
+  <h2>Login to QuickPress</h2>
+  <p>Select your role to continue</p>
+
+  <!-- ROLE SELECT -->
+  <div class="roles">
+    <div class="role active" onclick="setRole('admin',this)">
+      <span>🛠️</span>
+      <b>Admin</b>
+    </div>
+    <div class="role" onclick="setRole('partner',this)">
+      <span>🏬</span>
+      <b>Partner</b>
+    </div>
+    <div class="role" onclick="setRole('rider',this)">
+      <span>🛵</span>
+      <b>Rider</b>
+    </div>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div class="input-group">
+    <label>Email / Phone</label>
+    <input type="text" placeholder="Enter email or phone">
+  </div>
+
+  <div class="input-group">
+    <label>Password</label>
+    <input type="password" placeholder="Enter password">
+  </div>
+
+  <button class="btn" onclick="login()">Login</button>
+
+  <div class="footer">
+    Trouble logging in?
+    <a href="#">Contact support</a>
+  </div>
+
+</div>
+
+<script>
+let role="admin";
+
+function setRole(r,el){
+  role=r;
+  document.querySelectorAll(".role").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
+}
+
+function login(){
+  alert("Login as "+role+" (Firebase baad me)");
+  // Example redirects
+  // if(role==="admin") location.href="admin/dashboard.html";
+  // if(role==="partner") location.href="partner/dashboard.html";
+  // if(role==="rider") location.href="rider/dashboard.html";
+}
+</script>
+
+</body>
+</html>
