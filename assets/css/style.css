@@ -1,46 +1,59 @@
-body {
-  font-family: Arial, sans-serif;
-  margin:0;
+body{margin:0;font-family:Arial;background:#f5f5f5}
+.topbar{
+  display:flex;justify-content:space-between;
+  padding:14px;background:#fff;
+  position:sticky;top:0;z-index:10;
 }
-
-.header {
+.hero-banner{
   background:#FFC107;
-  padding:14px;
-  font-size:20px;
-  font-weight:bold;
+  padding:20px;margin:12px;border-radius:16px;
+}
+.section{margin:12px}
+.category-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;padding:12px;
+}
+.cat-card{
+  background:#fff;padding:16px;border-radius:14px;
+  text-align:center;font-weight:bold;
+}
+.ads-row{display:flex;gap:10px;padding:12px}
+.ad-card{
+  flex:1;padding:20px;border-radius:14px;color:#000;
+}
+.ad-card.dark{background:#222;color:#fff}
+.ad-card.yellow{background:#FFE082}
+
+.product-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:12px;padding:12px;
+}
+.product-card{
+  background:#fff;border-radius:14px;padding:10px;
+}
+.product-img{font-size:40px;text-align:center}
+.product-info button{
+  background:#FFC107;border:none;
+  padding:6px 10px;border-radius:6px;
 }
 
-.card {
-  background:#fff;
-  padding:14px;
-  margin-top:12px;
-  border-radius:12px;
+.checkout-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:#000;color:#fff;
+  padding:14px;text-align:center;
 }
 
-.btn {
-  background:#FFC107;
-  border:none;
-  padding:8px 14px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
+.checkout-fixed{
+  position:fixed;bottom:0;left:0;right:0;
+  background:#fff;padding:14px;
+  display:flex;justify-content:space-between;
 }
 
-.bottom-nav {
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  display:flex;
-  justify-content:space-around;
-  background:#fff;
-  border-top:1px solid #ddd;
-  padding:10px;
+.modal{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.5);
+  justify-content:center;align-items:center;
 }
-.bottom-nav a {
-  text-decoration:none;
-  color:#000;
-}
-.bottom-nav a.active {
-  font-weight:bold;
+.modal-box{
+  background:#fff;padding:20px;border-radius:14px;
 }
