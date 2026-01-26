@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Login | QuickPress</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#FFD93D;
+  font-family:Arial;
+}
+.card{
+  width:340px;
+  background:#fff;
+  padding:26px;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  text-align:center;
+}
+.logo{
+  font-size:26px;
+  font-weight:bold;
+  color:#E53935;
+}
+h2{margin:10px 0 20px;}
+input{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:1px solid #ddd;
+}
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#FFD93D;
+  font-weight:bold;
+  cursor:pointer;
+}
+.error{color:red;font-size:13px;margin-top:10px;}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <div class="logo">QuickPress</div>
+  <h2>Admin Login</h2>
+
+  <input id="email" type="email" placeholder="Admin Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+  <div class="error" id="err"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d",
+  storageBucket: "quickpress-e486d.firebasestorage.app",
+  messagingSenderId: "572695394794",
+  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.login = async () => {
+  try{
+    const email = email.value;
+    const password = password.value;
+
+    const res = await signInWithEmailAndPassword(auth,email,password);
+    const snap = await getDoc(doc(db,"users",res.user.uid));
+
+    if(snap.data().role !== "admin") throw "Not Admin";
+
+    location.href="/quickpress/admin/dashboard.html";
+  }catch(e){
+    err.innerText = "Unauthorized Admin";
+  }
+}
+</script>
+</body>
+</html>
