@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickPress – Order</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
 
+<div class="header">Create Order</div>
+
+<div style="padding:16px">
+
+  <div class="card">
+    <h3>Shirt</h3>
+    <p>₹5 / pair</p>
+    <button class="btn" onclick="addItem('Shirt',5)">Add</button>
+  </div>
+
+  <div class="card">
+    <h3>Pant</h3>
+    <p>₹6 / pair</p>
+    <button class="btn" onclick="addItem('Pant',6)">Add</button>
+  </div>
+
+  <div class="card">
+    <h3>🛒 Cart</h3>
+    <div id="cart"></div>
+    <h4>Total: ₹<span id="total">0</span></h4>
+    <button class="btn" onclick="placeOrder()">Place Order</button>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <a href="home.html">Home</a>
+  <a class="active" href="orders.html">Orders</a>
+  <a href="profile.html">Profile</a>
+</div>
+
+<script type="module">
+  import { protectPage } from "../assets/js/guard.js";
+  protectPage(["customer"]);
+</script>
+
+<script>
+  let cart = [];
+  let total = 0;
+
+  function addItem(name, price) {
+    cart.push({ name, price });
+    total += price;
+    render();
+  }
+
+  function render() {
+    cartDiv.innerHTML = "";
+    cart.forEach(i => {
+      cartDiv.innerHTML += `<p>${i.name} - ₹${i.price}</p>`;
+    });
+    totalEl.innerText = total;
+  }
+
+  function placeOrder() {
+    alert("Order placed (next step me Firestore connect)");
+  }
+
+  const cartDiv = document.getElementById("cart");
+  const totalEl = document.getElementById("total");
+</script>
+
+</body>
+</html>
