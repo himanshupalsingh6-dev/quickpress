@@ -1,1 +1,14 @@
+<h2>Login</h2>
 
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button id="loginBtn">Login</button>
+<button id="googleBtn">Login with Google</button>
+
+<script type="module">
+  import { loginUser, googleLogin } from "./assets/js/auth.js";
+
+  loginBtn.onclick = () => loginUser(email.value, password.value);
+  googleBtn.onclick = () => googleLogin();
+</script>
