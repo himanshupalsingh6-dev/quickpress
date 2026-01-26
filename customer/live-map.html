@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress – Live Tracking</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- Google Maps API (same key as rider) -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+
+  <style>
+    #map {
+      width: 100%;
+      height: 80vh;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  🚚 Track Your Order
+</div>
+
+<div style="padding:16px">
+  <div id="map">Loading map...</div>
+</div>
+
+<div style="height:60px"></div>
+
+<!-- Auth Guard -->
+<script type="module">
+  import { protectPage } from "../assets/js/guard.js";
+  protectPage(["customer"]);
+</script>
+
+<script type="module">
+  import { auth, db } from "../assets/js/firebase.js";
+  import {
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    onSnapshot,
+    getDocs,
+    doc
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  let map;
+  let marker;
+
+  function initMap(lat, lng) {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat, lng },
+      zoom: 15
+    });
+
+    marker = new google.maps.Marker({
+      position: { lat, lng },
+      map: map,
+      title: "Rider Location 🚴"
+    });
+  }
+
+  function updateMarker(lat, lng) {
+    const pos = { lat, lng };
+    marker.setPosition(pos);
+    map.setCenter(pos);
+  }
+
+  auth.onAuthStateChanged(async user => {
+    if (!user) return;
+
+    // Latest order of customer
+    const q = query(
+      collection(db, "orders"),
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc"),
+      limit(1)
+    );
+
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      alert("No active order found");
+      return;
+    }
+
+    const order = snap.docs[0].data();
+    const riderId = order.riderId;
+
+    if (!riderId) {
+      alert("Rider not assigned yet");
+      return;
+    }
+
+    // 🔴 LIVE LISTEN TO RIDER LOCATION
+    onSnapshot(doc(db, "users", riderId), snap => {
+      const data = snap.data();
+      if (!data || !data.liveLocation) return;
+
+      const { lat, lng } = data.liveLocation;
+
+      if (!map) {
+        initMap(lat, lng);
+      } else {
+        updateMarker(lat, lng);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
