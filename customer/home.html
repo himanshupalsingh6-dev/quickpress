@@ -104,34 +104,7 @@
 <!-- NAVBAR -->
 <div class="navbar">
   <div class="logo">QuickPress</div>
-  <script type="module">
-import { db } from "../assets/js/firebase.js";
-import {
-  collection, query, where, getDocs
-} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-window.searchService = async function(text){
-  if(text.length < 2) return;
-
-  const q = query(
-    collection(db,"services"),
-    where("name",">=",text),
-    where("name","<=",text+"\uf8ff")
-  );
-
-  const snap = await getDocs(q);
-  let html = "";
-  snap.forEach(d=>{
-    const s = d.data();
-    html += `<div class="card">${s.name} – ₹${s.price}</div>`;
-  });
-
-  document.getElementById("searchResult").innerHTML = html;
-}
-</script>
-
-<div id="searchResult"></div>
-
+  <input class="search" placeholder="Search services">
   <div class="cart-btn" onclick="goCart()">🛒</div>
 </div>
 
@@ -146,7 +119,7 @@ window.searchService = async function(text){
   <div class="stat">⭐ 4.8 Rating</div>
   <div class="stat">🧺 12,000+ Orders</div>
   <div class="stat">😊 5,000+ Customers</div>
-  <div class="stat">⚡ 11 Services</div>
+  <div class="stat">⚡ 3 Services</div>
 </div>
 
 <!-- OUR SERVICES -->
