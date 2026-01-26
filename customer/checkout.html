@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>QuickPress – Checkout</title>
+  <title>Checkout</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -11,29 +11,31 @@
 <div style="padding:16px">
 
   <div class="card">
-    <h3>📍 Delivery Address</h3>
-    <input placeholder="House / Flat">
-    <input placeholder="Area">
-    <input placeholder="City">
+    <h3>Bill</h3>
+    Subtotal: ₹<span id="sub">0</span><br>
+    Delivery: ₹20<br>
+    GST (18%): ₹<span id="gst">0</span><br>
+    <b>Total: ₹<span id="total">0</span></b>
   </div>
 
-  <div class="card">
-    <h3>💰 Payment</h3>
-    <p>Cash on Delivery</p>
-  </div>
-
-  <div class="card">
-    <button class="btn" onclick="placeOrder()">Place Order</button>
-  </div>
-
+  <button class="btn" onclick="place()">Place Order</button>
 </div>
 
 <script>
-  function placeOrder(){
-    localStorage.removeItem("cart");
-    alert("✅ Order placed successfully");
-    window.location.href = "home.html";
-  }
+const cart=JSON.parse(localStorage.getItem("cart")||"[]");
+let sub=cart.reduce((a,b)=>a+b.p,0);
+let gst=Math.round(sub*0.18);
+let total=sub+gst+20;
+
+subEl.innerText=sub;
+gstEl.innerText=gst;
+totalEl.innerText=total;
+
+function place(){
+  localStorage.removeItem("cart");
+  alert("Order placed");
+  location.href="home.html";
+}
 </script>
 
 </body>
