@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickPress – Ads System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="header">Admin – Ads System</div>
+
+<div style="padding:16px">
+
+  <!-- ADD AD -->
+  <div class="card">
+    <h3>📢 Create Ad</h3>
+    <input id="adTitle" placeholder="Ad Title">
+    <input id="adText" placeholder="Ad Text">
+    <button class="btn" onclick="createAd()">Create Ad</button>
+  </div>
+
+  <!-- ADS LIST -->
+  <div class="card">
+    <h3>📋 All Ads</h3>
+    <div id="adsBox">Loading ads...</div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { protectPage } from "../assets/js/guard.js";
+  protectPage(["admin"]);
+</script>
+
+<script type="module">
+  import { db } from "../assets/js/firebase.js";
+  import {
+    collection,
+    addDoc,
+    getDocs,
+    updateDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const adsBox = document.getElementById("adsBox");
+
+  window.createAd = async function () {
+    if (!adTitle.value || !adText.value) return alert("Fill all fields");
+
+    await addDoc(collection(db, "ads"), {
+      title: adTitle.value,
+      text: adText.value,
+      status: "active",
+      createdAt: Date.now()
+    });
+
+    adTitle.value = "";
+    adText.value = "";
+    loadAds();
+  };
+
+  async function loadAds() {
+    const snap = await getDocs(collection(db, "ads"));
+    adsBox.innerHTML = "";
+
+    snap.forEach(d => {
+      const a = d.data();
+      adsBox.innerHTML += `
+        <div class="card">
+          <b>${a.title}</b><br>
+          ${a.text}<br>
+          Status: ${a.status}<br>
+          <button class="btn"
+            onclick="toggleAd('${d.id}','${a.status}')">
+            ${a.status === "active" ? "Stop" : "Run"}
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  window.toggleAd = async function(id, status) {
+    await updateDoc(doc(db, "ads", id), {
+      status: status === "active" ? "inactive" : "active"
+    });
+    loadAds();
+  };
+
+  loadAds();
+</script>
+
+</body>
+</html>
