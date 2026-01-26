@@ -1,1 +1,24 @@
+<h2>Register</h2>
 
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<select id="role">
+  <option value="customer">Customer</option>
+  <option value="partner">Partner</option>
+  <option value="delivery">Delivery</option>
+</select>
+
+<button id="registerBtn">Register</button>
+
+<script type="module">
+  import { registerUser } from "./assets/js/auth.js";
+
+  document.getElementById("registerBtn").onclick = () => {
+    registerUser(
+      email.value,
+      password.value,
+      role.value
+    );
+  };
+</script>
