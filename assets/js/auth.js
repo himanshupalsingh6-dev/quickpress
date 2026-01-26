@@ -1,91 +1,94 @@
 import { auth, db } from "./firebase.js";
-
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup,
-  signOut
+  signInWithPopup
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 
 import {
   doc,
-  setDoc,
-  getDoc
+  getDoc,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-/* ================= REGISTER ================= */
-export async function registerUser(email, password, role) {
-  const userCred = await createUserWithEmailAndPassword(auth, email, password);
-  const user = userCred.user;
-
-  await setDoc(doc(db, "users", user.uid), {
-    email: email,
-    role: role,
-    status: "active",
-    createdAt: Date.now()
-  });
-
-  redirectByRole(role);
-}
-
-/* ================= LOGIN ================= */
+/* ======================
+   LOGIN WITH EMAIL
+====================== */
 export async function loginUser(email, password) {
-  const userCred = await signInWithEmailAndPassword(auth, email, password);
-  const user = userCred.user;
-
-  const snap = await getDoc(doc(db, "users", user.uid));
-  if (!snap.exists()) {
-    alert("User record not found");
-    return;
+  try {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    await redirectUser(res.user.uid);
+  } catch (err) {
+    alert("Login failed: " + err.message);
   }
-
-  const data = snap.data();
-  if (data.status !== "active") {
-    alert("Account blocked");
-    await signOut(auth);
-    return;
-  }
-
-  redirectByRole(data.role);
 }
 
-/* ================= GOOGLE LOGIN ================= */
-export async function googleLogin() {
-  const provider = new GoogleAuthProvider();
-  const result = await signInWithPopup(auth, provider);
-  const user = result.user;
+/* ======================
+   REGISTER USER
+====================== */
+export async function registerUser(email, password, role = "customer") {
+  try {
+    const res = await createUserWithEmailAndPassword(auth, email, password);
 
-  const ref = doc(db, "users", user.uid);
-  const snap = await getDoc(ref);
-
-  if (!snap.exists()) {
-    await setDoc(ref, {
-      email: user.email,
-      role: "customer",
+    await setDoc(doc(db, "users", res.user.uid), {
+      email: email,
+      role: role,
       status: "active",
       createdAt: Date.now()
     });
+
+    await redirectUser(res.user.uid);
+  } catch (err) {
+    alert("Register failed: " + err.message);
+  }
+}
+
+/* ======================
+   GOOGLE LOGIN
+====================== */
+export async function googleLogin() {
+  try {
+    const provider = new GoogleAuthProvider();
+    const res = await signInWithPopup(auth, provider);
+
+    const userRef = doc(db, "users", res.user.uid);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        email: res.user.email,
+        role: "customer",
+        status: "active",
+        createdAt: Date.now()
+      });
+    }
+
+    await redirectUser(res.user.uid);
+  } catch (err) {
+    alert("Google login failed: " + err.message);
+  }
+}
+
+/* ======================
+   ROLE BASED REDIRECT
+====================== */
+async function redirectUser(uid) {
+  const snap = await getDoc(doc(db, "users", uid));
+  if (!snap.exists()) {
+    alert("User profile not found");
+    return;
   }
 
-  redirectByRole("customer");
-}
+  const role = snap.data().role;
 
-/* ================= LOGOUT ================= */
-export async function logoutUser() {
-  await signOut(auth);
-  window.location.href = "/login.html";
-}
-
-/* ================= ROLE REDIRECT ================= */
-function redirectByRole(role) {
   if (role === "admin") {
-    window.location.href = "/admin/dashboard.html";
+    window.location.href = "admin/dashboard.html";
   } else if (role === "partner") {
-    window.location.href = "/partner/dashboard.html";
+    window.location.href = "partner/dashboard.html";
   } else if (role === "delivery") {
-    window.location.href = "/rider/dashboard.html";
+    window.location.href = "rider/dashboard.html";
   } else {
-    window.location.href = "/customer/home.html";
+    window.location.href = "customer/home.html";
   }
 }
