@@ -6,57 +6,97 @@
   <link rel="stylesheet" href="../assets/css/style.css">
 
   <style>
-    body { background:#f4f4f4; }
+    :root{
+      --yellow:#FFC107;
+      --bg:#f4f4f4;
+      --card:#fff;
+      --text:#000;
+    }
 
-    .hero {
+    body.dark{
+      --bg:#121212;
+      --card:#1e1e1e;
+      --text:#fff;
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      transition:0.3s;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+    }
+
+    .city{
+      font-weight:bold;
+    }
+
+    .toggle{
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    .hero{
       background:linear-gradient(135deg,#FFC107,#FFD54F);
-      padding:22px;
+      padding:20px;
       border-radius:16px;
       color:#000;
     }
 
-    .hero h2 { margin:0; }
-    .hero p { margin:6px 0 0; }
-
-    .stats {
+    .slider{
       display:flex;
-      justify-content:space-between;
+      overflow-x:auto;
+      gap:12px;
       margin-top:12px;
     }
-
-    .stat {
-      background:#fff;
-      flex:1;
-      margin:4px;
-      padding:10px;
-      border-radius:12px;
-      text-align:center;
-      font-size:13px;
+    .slide{
+      min-width:260px;
+      background:#FFF8E1;
+      padding:14px;
+      border-radius:14px;
+      font-weight:bold;
     }
 
-    .section-title {
+    .wallet{
+      background:var(--card);
+      padding:14px;
+      border-radius:14px;
+      margin-top:14px;
+    }
+
+    .categories{
+      display:flex;
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .cat{
+      flex:1;
+      background:var(--card);
+      padding:14px;
+      border-radius:14px;
+      text-align:center;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .section{
       margin-top:22px;
       font-weight:bold;
-      font-size:16px;
     }
 
-    .service {
+    .service{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:10px;
+      align-items:center;
     }
 
-    .price {
-      font-weight:bold;
-    }
-
-    .ad {
-      background:#FFF8E1;
-      border-left:4px solid #FFC107;
-    }
-
-    .cart-fab {
+    .cart-fab{
       position:fixed;
       right:16px;
       bottom:80px;
@@ -65,57 +105,61 @@
       padding:14px;
       border-radius:50%;
       font-weight:bold;
-      cursor:pointer;
     }
   </style>
 </head>
 <body>
 
-<div class="header">
-  QuickPress
-</div>
+<div class="header">QuickPress</div>
 
 <div style="padding:16px">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="city">📍 Kasganj</div>
+    <div class="toggle" onclick="toggleMode()">🌙 Dark</div>
+  </div>
 
   <!-- HERO -->
   <div class="hero">
     <h2>⚡ 10-Minute Ironing</h2>
     <p>Fast • Clean • Doorstep</p>
-
-    <div class="stats">
-      <div class="stat">⭐ 4.8 Rating</div>
-      <div class="stat">🧺 5k+ Orders</div>
-      <div class="stat">🤝 Trusted</div>
-    </div>
   </div>
 
-  <!-- ADS -->
-  <div class="card ad">
-    🎉 <b>Flat 20% OFF</b><br>
-    On first ironing order
+  <!-- SLIDER ADS -->
+  <div class="slider">
+    <div class="slide">🎉 Flat 20% OFF</div>
+    <div class="slide">🪙 Use Wallet & Save</div>
+    <div class="slide">⚡ Express Delivery</div>
+  </div>
+
+  <!-- WALLET -->
+  <div class="wallet">
+    💳 Wallet Balance: <b>₹120</b>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="section">Categories</div>
+  <div class="categories">
+    <div class="cat">🔥 Steam</div>
+    <div class="cat">🧼 Wash</div>
+    <div class="cat">👕 Iron</div>
   </div>
 
   <!-- SERVICES -->
-  <div class="section-title">Our Services</div>
+  <div class="section">Ironing Services</div>
 
   <div class="card service">
-    <div>👕 Shirt Ironing</div>
-    <div class="price">₹5 / pair</div>
+    <div>👕 Shirt</div>
+    <div>₹5</div>
     <button class="btn" onclick="addToCart('Shirt',5)">Add</button>
   </div>
 
   <div class="card service">
-    <div>👖 Pant Ironing</div>
-    <div class="price">₹6 / pair</div>
+    <div>👖 Pant</div>
+    <div>₹6</div>
     <button class="btn" onclick="addToCart('Pant',6)">Add</button>
   </div>
-
-  <!-- WHY US -->
-  <div class="section-title">Why QuickPress?</div>
-
-  <div class="card">🚀 Ultra-fast 10 min service</div>
-  <div class="card">🧼 Hygienic ironing</div>
-  <div class="card">📍 Local partners near you</div>
 
 </div>
 
@@ -133,25 +177,29 @@
 
 <script>
   function getCart(){
-    return JSON.parse(localStorage.getItem("cart") || "[]");
+    return JSON.parse(localStorage.getItem("cart")||"[]");
   }
 
-  function updateCartCount(){
+  function updateCart(){
     document.getElementById("cartCount").innerText = getCart().length;
   }
 
-  function addToCart(name, price){
-    const cart = getCart();
-    cart.push({name, price});
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
+  function addToCart(name,price){
+    const cart=getCart();
+    cart.push({name,price});
+    localStorage.setItem("cart",JSON.stringify(cart));
+    updateCart();
   }
 
   function goCart(){
-    window.location.href = "cart.html";
+    window.location.href="cart.html";
   }
 
-  updateCartCount();
+  function toggleMode(){
+    document.body.classList.toggle("dark");
+  }
+
+  updateCart();
 </script>
 
 </body>
