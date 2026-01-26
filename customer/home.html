@@ -4,6 +4,51 @@
   <title>QuickPress</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="../assets/css/blinkit-home.css">
+
+  <style>
+    /* EXTRA ENHANCEMENTS */
+    .trust{
+      display:flex;
+      justify-content:space-around;
+      margin:14px 12px;
+    }
+    .trust div{
+      background:#fff;
+      border-radius:14px;
+      padding:10px;
+      font-size:12px;
+      text-align:center;
+      flex:1;
+      margin:4px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+    }
+
+    .review-box{
+      background:#fff;
+      margin:12px;
+      padding:14px;
+      border-radius:18px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      font-size:13px;
+    }
+
+    .review-box small{opacity:.7}
+
+    /* FOOTER */
+    .footer{
+      background:#111;
+      color:#ccc;
+      padding:18px 12px 70px;
+      font-size:12px;
+    }
+    .footer a{
+      color:#ccc;
+      text-decoration:none;
+      display:block;
+      margin:4px 0;
+    }
+    .footer b{color:#fff}
+  </style>
 </head>
 <body>
 
@@ -27,21 +72,21 @@
     🎤
   </div>
 
-  <!-- CATEGORY ICONS -->
+  <!-- CATEGORY ICONS (CLICKABLE) -->
   <div class="cat-icons">
-    <div class="cat-icon">
+    <div class="cat-icon" onclick="goCategory()">
       <div class="icon">🧺</div>All
     </div>
-    <div class="cat-icon">
+    <div class="cat-icon" onclick="goCategory()">
       <div class="icon">👕</div>Iron
     </div>
-    <div class="cat-icon">
+    <div class="cat-icon" onclick="goCategory()">
       <div class="icon">🔥</div>Steam
     </div>
-    <div class="cat-icon">
+    <div class="cat-icon" onclick="goCategory()">
       <div class="icon">🧼</div>Wash
     </div>
-    <div class="cat-icon">
+    <div class="cat-icon" onclick="goCategory()">
       <div class="icon">🎁</div>Offers
     </div>
   </div>
@@ -51,49 +96,89 @@
 <div class="hero">
   <div class="slide active">
     <h2>Fast Ironing at Home</h2>
-    <p>Clean • Fresh • Express delivery</p>
-    <button>Order Now</button>
+    <p>Clean • Fresh • Express</p>
+    <button onclick="goCategory()">Order Now</button>
   </div>
   <div class="slide">
-    <h2>FLAT ₹50 OFF</h2>
-    <p>On your first order</p>
-    <button>Grab Offer</button>
+    <h2>Available in 5 Cities</h2>
+    <p>Kasganj • Etah • Aligarh</p>
+    <button onclick="goCategory()">Check Services</button>
   </div>
 </div>
 
-<!-- OFFERS -->
-<div class="offers">
-  <div class="offer-card">💸 Flat ₹50 OFF<br><small>New users</small></div>
-  <div class="offer-card">🚚 Free Pickup<br><small>Today</small></div>
+<!-- TRUST STATS -->
+<div class="trust">
+  <div>🧺<br><b>12K+</b><br>Deliveries</div>
+  <div>🏙️<br><b>5</b><br>Cities</div>
+  <div>⭐<br><b>4.8</b><br>Rating</div>
 </div>
 
 <!-- SERVICES -->
 <div class="section">Our Services</div>
 <div class="grid">
-  <div class="grid-card">
+  <div class="grid-card" onclick="goCategory()">
     <img src="https://cdn-icons-png.flaticon.com/512/892/892458.png">
     Ironing
   </div>
-  <div class="grid-card">
+  <div class="grid-card" onclick="goCategory()">
     <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png">
     Steam
   </div>
-  <div class="grid-card">
+  <div class="grid-card" onclick="goCategory()">
     <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png">
     Washing
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- REVIEWS -->
+<div class="section">Customer Reviews</div>
+
+<div class="review-box">
+  ⭐⭐⭐⭐⭐ <br>
+  “Kapde bilkul fresh mile, delivery fast thi.”<br>
+  <small>- Rohit</small>
+</div>
+
+<div class="review-box">
+  ⭐⭐⭐⭐☆ <br>
+  “Price sahi hai, service professional.”<br>
+  <small>- Neha</small>
+</div>
+
+<div class="review-box">
+  <button style="width:100%;padding:10px;border:none;border-radius:12px;background:#ffdc5e;font-weight:700">
+    + Add Review
+  </button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <b>QuickPress</b>
+  <a href="#">About Us</a>
+  <a href="#">Our Services</a>
+  <a href="#">Help & Support</a>
+  <a href="#">Partner with us</a>
+  <a href="#">Become a Rider</a>
+  <br>
+  © 2026 QuickPress
+</div>
+
+<!-- BOTTOM NAV (WORKING LINKS) -->
 <div class="bottom-nav">
-  <div><span>🏠</span>Home</div>
-  <div><span>📂</span>Categories</div>
-  <div><span>🧾</span>Orders</div>
-  <div><span>👤</span>Account</div>
+  <div onclick="goHome()"><span>🏠</span>Home</div>
+  <div onclick="goCategory()"><span>📂</span>Category</div>
+  <div onclick="goOrders()"><span>🧾</span>Orders</div>
+  <div onclick="goAccount()"><span>👤</span>Account</div>
 </div>
 
 <script>
-/* HERO SLIDER AUTO */
+/* NAVIGATION – AB SAB KAAM KAREGA */
+function goHome(){ location.href="home.html"; }
+function goCategory(){ location.href="category.html"; }
+function goOrders(){ location.href="orders.html"; }   // future
+function goAccount(){ location.href="profile.html"; } // future
+
+/* HERO SLIDER */
 let i=0;
 setInterval(()=>{
   const slides=document.querySelectorAll(".slide");
