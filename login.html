@@ -1,185 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>QuickPress Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>QuickPress Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFD93D; /* Soft Yellow */
+      font-family: Arial, sans-serif;
+    }
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
-body{
-  min-height:100vh;
-  background:#FFD400;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.card{
-  width:100%;
-  max-width:360px;
-  background:#fff;
-  border-radius:22px;
-  padding:26px;
-  box-shadow:0 20px 40px rgba(0,0,0,.2);
-}
-.logo{
-  text-align:center;
-  margin-bottom:16px;
-}
-.logo img{
-  width:150px;
-}
-h2{
-  text-align:center;
-  font-size:18px;
-}
-p{
-  text-align:center;
-  font-size:13px;
-  color:#666;
-  margin-bottom:16px;
-}
-input{
-  width:100%;
-  padding:14px;
-  border-radius:14px;
-  border:1px solid #ddd;
-  margin-bottom:12px;
-  font-size:14px;
-}
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:16px;
-  background:#FFD400;
-  font-weight:600;
-  font-size:15px;
-  cursor:pointer;
-}
-#otpStep{display:none}
-.footer{
-  text-align:center;
-  font-size:12px;
-  margin-top:12px;
-  color:#666;
-}
-</style>
+    .card {
+      background: #fff;
+      width: 340px;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #E53935;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      margin: 6px 0 20px;
+      font-size: 18px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #FFD93D;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ffcc00;
+    }
+
+    .switch {
+      margin-top: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #444;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="card">
+  <div class="logo">QuickPress</div>
+  <h2 id="title">Login with Email</h2>
 
-  <div class="logo">
-    <img src="assets/logo.png" alt="QuickPress">
+  <input type="email" id="email" placeholder="Email address" />
+  <input type="password" id="password" placeholder="Password" />
+
+  <button onclick="login()">Login</button>
+
+  <div class="switch" onclick="toggleMode()">
+    New user? Register here
   </div>
 
-  <h2>Login to QuickPress</h2>
-  <p>OTP will be sent to your phone</p>
-
-  <!-- PHONE STEP -->
-  <div id="phoneStep">
-    <input id="phone" type="tel" placeholder="Enter 10 digit phone number">
-    <button onclick="sendOTP()">Send OTP</button>
-  </div>
-
-  <!-- OTP STEP -->
-  <div id="otpStep">
-    <input id="otp" type="number" placeholder="Enter 6 digit OTP">
-    <button onclick="verifyOTP()">Verify OTP</button>
-  </div>
-
-  <div class="footer">
-    Powered by QuickPress
-  </div>
-
+  <div class="error" id="error"></div>
 </div>
 
-<div id="recaptcha"></div>
-
-<!-- 🔥 FIREBASE + OTP SCRIPT -->
+<!-- 🔥 FIREBASE -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { 
-  getAuth, 
-  signInWithPhoneNumber, 
-  RecaptchaVerifier 
-} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-/* 🔑 FIREBASE CONFIG */
-const firebaseConfig = {
-  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-  authDomain: "quickpress-e486d.firebaseapp.com",
-  projectId: "quickpress-e486d",
-  storageBucket: "quickpress-e486d.firebasestorage.app",
-  messagingSenderId: "572695394794",
-  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+    authDomain: "quickpress-e486d.firebaseapp.com",
+    projectId: "quickpress-e486d",
+    storageBucket: "quickpress-e486d.firebasestorage.app",
+    messagingSenderId: "572695394794",
+    appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
+  };
 
-/* INIT */
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-/* INVISIBLE CAPTCHA */
-window.recaptchaVerifier = new RecaptchaVerifier(
-  auth,
-  "recaptcha",
-  { size: "invisible" }
-);
+  let isRegister = false;
 
-/* SEND OTP */
-window.sendOTP = function(){
-  const phone = document.getElementById("phone").value;
+  window.toggleMode = () => {
+    isRegister = !isRegister;
+    document.getElementById("title").innerText =
+      isRegister ? "Register Account" : "Login with Email";
+    document.querySelector("button").innerText =
+      isRegister ? "Register" : "Login";
+    document.querySelector(".switch").innerText =
+      isRegister ? "Already have account? Login" : "New user? Register here";
+  };
 
-  if(phone.length !== 10){
-    alert("Enter valid 10 digit number");
-    return;
-  }
+  window.login = async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const errorBox = document.getElementById("error");
 
-  signInWithPhoneNumber(
-    auth,
-    "+91" + phone,
-    window.recaptchaVerifier
-  )
-  .then((confirmationResult)=>{
-    window.confirmationResult = confirmationResult;
-    alert("OTP Sent ✅");
-    document.getElementById("phoneStep").style.display="none";
-    document.getElementById("otpStep").style.display="block";
-  })
-  .catch((error)=>{
-    alert(error.message);
-  });
-};
+    errorBox.innerText = "";
 
-/* VERIFY OTP */
-window.verifyOTP = function(){
-  const otp = document.getElementById("otp").value;
+    try {
+      let userCred;
 
-  if(otp.length !== 6){
-    alert("Enter 6 digit OTP");
-    return;
-  }
+      if (isRegister) {
+        userCred = await createUserWithEmailAndPassword(auth, email, password);
 
-  window.confirmationResult.confirm(otp)
-    .then((result)=>{
-      alert("Login Successful 🎉");
+        // Default user data
+        await setDoc(doc(db, "users", userCred.user.uid), {
+          email,
+          role: "customer", // admin / partner / rider
+          status: "active",
+          createdAt: Date.now()
+        });
 
-      /* TEMP REDIRECT */
-      window.location.href = "index.html";
-    })
-    .catch(()=>{
-      alert("Wrong OTP ❌");
-    });
-};
+      } else {
+        userCred = await signInWithEmailAndPassword(auth, email, password);
+      }
+
+      // Fetch role
+      const snap = await getDoc(doc(db, "users", userCred.user.uid));
+      const role = snap.data().role;
+
+      // Redirect
+      if (role === "admin") {
+        location.href = "/quickpress/admin/dashboard.html";
+      } else if (role === "partner") {
+        location.href = "/quickpress/partner/dashboard.html";
+      } else if (role === "rider") {
+        location.href = "/quickpress/rider/dashboard.html";
+      } else {
+        location.href = "/quickpress/customer/home.html";
+      }
+
+    } catch (err) {
+      errorBox.innerText = err.message;
+    }
+  };
 </script>
 
 </body>
