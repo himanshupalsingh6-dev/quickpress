@@ -2,194 +2,77 @@
 <html>
 <head>
   <title>QuickPress</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
-
-  <style>
-    body{margin:0;font-family:Arial;background:#f5f5f5}
-
-    /* NAVBAR */
-    .navbar{
-      display:flex;align-items:center;gap:10px;
-      padding:12px;background:#fff;position:sticky;top:0;z-index:10
-    }
-    .logo{font-weight:bold;color:#FFC107;font-size:18px}
-    .search{flex:1;padding:8px;border-radius:8px;border:1px solid #ddd}
-    .icon-btn{background:#000;color:#fff;padding:8px 12px;border-radius:8px}
-
-    /* HERO */
-    .hero{
-      background:#FFC107;margin:12px;padding:20px;border-radius:18px
-    }
-
-    /* SECTIONS */
-    .section{padding:12px;font-weight:bold}
-    .card{
-      background:#fff;padding:14px;margin:12px;border-radius:14px
-    }
-
-    /* REVIEWS */
-    .review{border-bottom:1px solid #eee;padding:10px 0}
-    .review:last-child{border:none}
-
-    /* MODAL */
-    .modal{
-      display:none;position:fixed;inset:0;
-      background:rgba(0,0,0,.5);
-      justify-content:center;align-items:center;z-index:20
-    }
-    .modal-box{
-      background:#fff;padding:20px;border-radius:16px;
-      width:90%;max-width:360px
-    }
-    .modal-box button{margin-top:10px;width:100%}
-
-    .btn{
-      background:#FFC107;border:none;
-      padding:10px;border-radius:10px;font-weight:bold
-    }
-    .btn-dark{
-      background:#000;color:#fff;border:none;
-      padding:10px;border-radius:10px
-    }
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/blinkit-home.css">
 </head>
-
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="logo">QuickPress</div>
-  <input class="search" placeholder="Search services">
-  <div class="icon-btn" onclick="openCity()">📍</div>
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="header-left">
+      <div style="font-size:22px;font-weight:700">11 minutes</div>
+      <small>HOME · Kasganj ▼</small>
+    </div>
+    <div class="header-right">
+      <div class="wallet">₹0</div>
+      <div class="avatar">👤</div>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-box">
+    🔍
+    <input placeholder='Search "shirt ironing"'>
+    🎤
+  </div>
+
+  <!-- CATEGORY ICONS -->
+  <div class="cat-icons">
+    <div class="cat-icon"><div>🧺</div>All</div>
+    <div class="cat-icon"><div>👕</div>Iron</div>
+    <div class="cat-icon"><div>🔥</div>Steam</div>
+    <div class="cat-icon"><div>🧼</div>Wash</div>
+    <div class="cat-icon"><div>🎁</div>Offers</div>
+  </div>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-  <h2>Delivery in 10 Minutes</h2>
-  <p id="cityText">📍 Loading city...</p>
+<!-- WELCOME -->
+<div class="welcome">
+  <h2>WELCOME</h2>
+  <p>Order now and enjoy great offers</p>
 </div>
 
-<!-- STATS -->
-<div class="card">
-  ⭐ 4.8 Rating · 🧺 12,000+ Orders · ⚡ 3 Services
+<!-- OFFERS -->
+<div class="offers">
+  <div class="offer-card">💸 FLAT ₹50 OFF<br><small>First order</small></div>
+  <div class="offer-card">🚚 FREE Pickup<br><small>Today only</small></div>
 </div>
 
-<!-- OUR SERVICES -->
+<!-- CATEGORIES -->
 <div class="section">Our Services</div>
-<div class="card">👕 Iron</div>
-<div class="card">🔥 Steam</div>
-<div class="card">🧼 Wash</div>
-
-<!-- REVIEWS -->
-<div class="section">
-  Customer Reviews
-  <button class="btn" onclick="openReview()">+ Add Review</button>
-</div>
-
-<div id="reviewsBox" class="card">
-  Loading reviews...
-</div>
-
-<!-- CITY POPUP -->
-<div id="cityModal" class="modal">
-  <div class="modal-box">
-    <h3>Select City</h3>
-    <button class="btn" onclick="setCity('Kasganj')">Kasganj</button>
-    <button class="btn" onclick="setCity('Etah')">Etah</button>
-    <button class="btn" onclick="setCity('Aligarh')">Aligarh</button>
-    <button class="btn-dark" onclick="closeCity()">Cancel</button>
+<div class="grid">
+  <div class="grid-card">
+    <img src="https://i.imgur.com/8QfQY5m.png">
+    Ironing
+  </div>
+  <div class="grid-card">
+    <img src="https://i.imgur.com/9x6K5iY.png">
+    Steam
+  </div>
+  <div class="grid-card">
+    <img src="https://i.imgur.com/b0ZVQZ6.png">
+    Washing
   </div>
 </div>
 
-<!-- REVIEW POPUP -->
-<div id="reviewModal" class="modal">
-  <div class="modal-box">
-    <h3>Add Review</h3>
-
-    <select id="rating">
-      <option value="5">⭐⭐⭐⭐⭐</option>
-      <option value="4">⭐⭐⭐⭐</option>
-      <option value="3">⭐⭐⭐</option>
-    </select>
-
-    <textarea id="reviewText"
-      placeholder="Write your experience"
-      style="width:100%;margin-top:10px"></textarea>
-
-    <button class="btn" onclick="submitReview()">Submit</button>
-    <button class="btn-dark" onclick="closeReview()">Cancel</button>
-  </div>
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div><span>🏠</span>Home</div>
+  <div><span>📂</span>Categories</div>
+  <div><span>🧾</span>Orders</div>
+  <div><span>👤</span>Account</div>
 </div>
-
-<!-- FIREBASE LOGIC -->
-<script type="module">
-import { auth, db } from "../assets/js/firebase.js";
-import {
-  doc, getDoc, updateDoc,
-  addDoc, collection,
-  query, orderBy, getDocs
-} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-let uid;
-
-/* AUTH LOAD */
-auth.onAuthStateChanged(async user=>{
-  if(!user) return;
-  uid=user.uid;
-
-  // City load
-  const snap=await getDoc(doc(db,"users",uid));
-  document.getElementById("cityText").innerText =
-    "📍 " + (snap.data().city || "Select city");
-
-  loadReviews();
-});
-
-/* CITY */
-window.openCity=()=>cityModal.style.display="flex";
-window.closeCity=()=>cityModal.style.display="none";
-
-window.setCity = async function(city){
-  await updateDoc(doc(db,"users",uid),{city});
-  cityModal.style.display="none";
-  document.getElementById("cityText").innerText="📍 "+city;
-}
-
-/* REVIEWS */
-window.openReview=()=>reviewModal.style.display="flex";
-window.closeReview=()=>reviewModal.style.display="none";
-
-async function loadReviews(){
-  const q=query(
-    collection(db,"reviews"),
-    orderBy("createdAt","desc")
-  );
-  const snap=await getDocs(q);
-  const box=document.getElementById("reviewsBox");
-  box.innerHTML="";
-  snap.forEach(d=>{
-    const r=d.data();
-    box.innerHTML+=`
-      <div class="review">
-        ⭐ ${r.rating}/5<br>
-        ${r.text}
-      </div>
-    `;
-  });
-}
-
-window.submitReview = async function(){
-  await addDoc(collection(db,"reviews"),{
-    uid,
-    rating:rating.value,
-    text:reviewText.value,
-    createdAt:Date.now()
-  });
-  reviewText.value="";
-  reviewModal.style.display="none";
-  loadReviews();
-}
-</script>
 
 </body>
 </html>
