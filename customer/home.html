@@ -1,126 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>QuickPress – Home</title>
+  <title>QuickPress</title>
   <link rel="stylesheet" href="../assets/css/style.css">
-
-  <style>
-    :root{
-      --yellow:#FFC107;
-      --bg:#f4f4f4;
-      --card:#fff;
-      --text:#000;
-    }
-    body.dark{
-      --bg:#121212;
-      --card:#1e1e1e;
-      --text:#fff;
-    }
-    body{background:var(--bg);color:var(--text);transition:.3s}
-    .top{display:flex;justify-content:space-between}
-    .hero{background:linear-gradient(135deg,#FFC107,#FFD54F);padding:18px;border-radius:16px}
-    .slider{margin-top:12px;overflow:hidden}
-    .slide{display:none;background:#FFF8E1;padding:14px;border-radius:12px}
-    .wallet,.cat,.card{background:var(--card)}
-    .cats{display:flex;gap:10px;margin-top:12px}
-    .cat{flex:1;padding:14px;border-radius:12px;text-align:center}
-    .fab{position:fixed;right:16px;bottom:80px;background:#000;color:#fff;padding:14px;border-radius:50%}
-  </style>
 </head>
 <body>
 
-<div class="header">QuickPress</div>
-
-<div style="padding:16px">
-
-  <div class="top">
-    <div id="city">📍 Loading...</div>
-    <div onclick="toggleMode()">🌙</div>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <b>Delivery in 10 min</b><br>
+    <small>📍 Kasganj</small>
   </div>
-
-  <div class="hero">
-    <h2>⚡ 10-Minute Ironing</h2>
-    <p>Fast • Clean • Doorstep</p>
-  </div>
-
-  <!-- ADS -->
-  <div class="slider" id="adsBox"></div>
-
-  <!-- WALLET -->
-  <div class="card">
-    💳 Wallet Balance: ₹<span id="wallet">0</span>
-  </div>
-
-  <!-- CATEGORIES -->
-  <div class="cats">
-    <div class="cat">🔥 Steam</div>
-    <div class="cat">🧼 Wash</div>
-    <div class="cat">👕 Iron</div>
-  </div>
-
-  <!-- SERVICES -->
-  <div class="card service">
-    👕 Shirt ₹5 <button class="btn" onclick="addToCart('Shirt',5)">Add</button>
-  </div>
-  <div class="card service">
-    👖 Pant ₹6 <button class="btn" onclick="addToCart('Pant',6)">Add</button>
-  </div>
-
+  <button class="cart-btn" onclick="goCart()">🛒 Cart</button>
 </div>
 
-<div class="fab" onclick="goCart()">🛒 <span id="count">0</span></div>
-
-<div class="bottom-nav">
-  <a class="active">Home</a>
-  <a href="cart.html">Cart</a>
-  <a href="profile.html">Profile</a>
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <div>
+    <h2>Fast Ironing at Home</h2>
+    <p>Clean • Safe • Express</p>
+    <button class="btn-dark">Order Now</button>
+  </div>
 </div>
 
-<script type="module">
-import { auth, db } from "../assets/js/firebase.js";
-import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+<!-- CATEGORY GRID -->
+<h3 class="section">Categories</h3>
+<div class="category-grid">
+  <div class="cat-card" onclick="goProducts('iron')">👕 Iron</div>
+  <div class="cat-card" onclick="goProducts('wash')">🧼 Wash</div>
+  <div class="cat-card" onclick="goProducts('steam')">🔥 Steam</div>
+</div>
 
-let ads=[],i=0;
+<!-- ADS CARDS -->
+<h3 class="section">Offers</h3>
+<div class="ads-row">
+  <div class="ad-card yellow">20% OFF</div>
+  <div class="ad-card dark">Wallet Cashback</div>
+  <div class="ad-card yellow">Free Pickup</div>
+</div>
 
-auth.onAuthStateChanged(async u=>{
-  if(!u) return;
-
-  // city + wallet
-  const snap = await getDoc(doc(db,"users",u.uid));
-  document.getElementById("city").innerText = "📍 " + (snap.data().city || "Not set");
-  document.getElementById("wallet").innerText = snap.data().wallet || 0;
-
-  // ads
-  const adsSnap = await getDocs(collection(db,"ads"));
-  adsSnap.forEach(d=>{
-    if(d.data().status==="active"){
-      ads.push(d.data().title);
-    }
-  });
-  showAd();
-});
-
-function showAd(){
-  if(ads.length===0) return;
-  const box=document.getElementById("adsBox");
-  box.innerHTML=`<div class="slide">${ads[i]}</div>`;
-  box.firstChild.style.display="block";
-  i=(i+1)%ads.length;
-  setTimeout(showAd,3000);
+<script>
+function goProducts(cat){
+  location.href="products.html?cat="+cat;
 }
-
-function getCart(){return JSON.parse(localStorage.getItem("cart")||"[]")}
-function addToCart(n,p){const c=getCart();c.push({n,p});localStorage.setItem("cart",JSON.stringify(c));update()}
-function update(){document.getElementById("count").innerText=getCart().length}
-function goCart(){location.href="cart.html"}
-
-function toggleMode(){
-  document.body.classList.toggle("dark");
-  localStorage.setItem("mode",document.body.classList.contains("dark"));
+function goCart(){
+  location.href="cart.html";
 }
-if(localStorage.getItem("mode")==="true") document.body.classList.add("dark");
-
-update();
 </script>
+
 </body>
 </html>
