@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickPress – Wallet</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
 
+<div class="header">💳 Wallet</div>
+
+<div style="padding:16px">
+
+  <div class="card">
+    Wallet Balance: ₹<b id="balance">0</b>
+  </div>
+
+  <div class="card">
+    <h3>Add Money</h3>
+    <button class="btn" onclick="topup(100)">+ ₹100</button>
+    <button class="btn" onclick="topup(200)">+ ₹200</button>
+    <button class="btn" onclick="topup(500)">+ ₹500</button>
+  </div>
+
+  <div class="card">
+    <h3>Transactions</h3>
+    <div id="txns">Loading...</div>
+  </div>
+
+</div>
+
+<script type="module">
+import { auth, db } from "../assets/js/firebase.js";
+import {
+  doc, getDoc, updateDoc, addDoc, collection,
+  query, where, orderBy, getDocs, increment
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+let uid;
+
+auth.onAuthStateChanged(async user=>{
+  if(!user) return;
+  uid = user.uid;
+
+  const snap = await getDoc(doc(db,"users",uid));
+  document.getElementById("balance").innerText = snap.data().wallet || 0;
+
+  loadTxns();
+});
+
+async function loadTxns(){
+  const q = query(
+    collection(db,"wallet_txn"),
+    where("uid","==",uid),
+    orderBy("createdAt","desc")
+  );
+  const snap = await getDocs(q);
+  const box = document.getElementById("txns");
+  box.innerHTML="";
+  snap.forEach(d=>{
+    const t=d.data();
+    box.innerHTML += `
+      <div class="card">
+        ${t.type==="topup"?"➕":"➖"} ₹${t.amount}
+      </div>`;
+  });
+}
+
+window.topup = async function(amount){
+  await updateDoc(doc(db,"users",uid),{
+    wallet: increment(amount)
+  });
+  await addDoc(collection(db,"wallet_txn"),{
+    uid, amount, type:"topup", createdAt:Date.now()
+  });
+  location.reload();
+}
+</script>
+
+</body>
+</html>
