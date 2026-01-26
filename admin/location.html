@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Select City – QuickPress</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="header">Select Your City</div>
+
+<div style="padding:16px">
+  <div class="card">
+    <select id="citySelect"></select>
+    <button class="btn" onclick="saveCity()">Continue</button>
+  </div>
+</div>
+
+<script type="module">
+  import { db, auth } from "../assets/js/firebase.js";
+  import {
+    collection,
+    getDocs,
+    updateDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  async function loadCities() {
+    const snap = await getDocs(collection(db, "cities"));
+    snap.forEach(d=>{
+      if(d.data().status==="active"){
+        citySelect.innerHTML+=`<option value="${d.id}">${d.data().name}</option>`;
+      }
+    });
+  }
+
+  window.saveCity = async function () {
+    const user = auth.currentUser;
+    if(!user) return alert("Login required");
+
+    await updateDoc(doc(db,"users",user.uid),{
+      cityId: citySelect.value
+    });
+
+    window.location.href="home.html";
+  }
+
+  loadCities();
+</script>
+
+</body>
+</html>
