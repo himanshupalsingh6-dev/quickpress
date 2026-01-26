@@ -307,3 +307,68 @@ function goAccount(){location.href="profile.html"}
 
 </body>
 </html>
+<!-- QUICKPRESS GLOBAL BRAND (AUTO APPLY) -->
+<style>
+:root{
+  --qp-yellow:#FFD400;
+  --qp-white:#ffffff;
+  --qp-black:#111;
+  --qp-gray:#666;
+}
+
+/* FORCE WHITE BG */
+body{
+  background:var(--qp-white) !important;
+  color:var(--qp-black);
+}
+
+/* PRIMARY BUTTON */
+button,
+.btn,
+.btn-primary{
+  background:var(--qp-yellow) !important;
+  color:#000 !important;
+  border:none !important;
+  font-weight:700;
+  border-radius:16px;
+}
+
+/* HEADER / TOP BAR */
+header,.header,.app-header{
+  background:var(--qp-yellow) !important;
+}
+
+/* ACTIVE ICON / TAB */
+.active,
+.nav-active{
+  color:var(--qp-yellow) !important;
+}
+
+/* CARDS */
+.card,.box,.section{
+  background:#fff !important;
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+/* LOGO SIZE */
+.qp-logo{
+  height:28px;
+}
+</style>
+
+<script>
+/* AUTO LOGO INJECTION */
+document.querySelectorAll("[data-qp-logo]").forEach(el=>{
+  el.innerHTML = `
+    <img src="../assets/img/logo.png" class="qp-logo" alt="QuickPress">
+  `;
+});
+
+/* AUTO ACTIVE BOTTOM NAV */
+document.querySelectorAll(".bottom-nav div").forEach(nav=>{
+  if(window.location.href.includes(nav.dataset.page)){
+    nav.classList.add("active");
+  }
+});
+</script>
