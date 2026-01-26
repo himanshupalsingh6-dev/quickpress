@@ -1,52 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Products</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <title>Product</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/blinkit-product.css">
 </head>
 <body>
 
+<!-- TOP BAR -->
 <div class="topbar">
-  <b>Ironing Services</b>
+  <div class="left">
+    <div class="icon" onclick="history.back()">←</div>
+    <b>Product</b>
+  </div>
+  <div class="icon">♡</div>
 </div>
 
-<div class="product-grid">
-
-  <div class="product-card">
-    <div class="product-img">👕</div>
-    <div class="product-info">
-      <b>Shirt Iron</b>
-      <p>₹5 / piece</p>
-      <button onclick="add('Shirt',5)">ADD</button>
-    </div>
-  </div>
-
-  <div class="product-card">
-    <div class="product-img">👖</div>
-    <div class="product-info">
-      <b>Pant Iron</b>
-      <p>₹6 / piece</p>
-      <button onclick="add('Pant',6)">ADD</button>
-    </div>
-  </div>
-
+<!-- IMAGE -->
+<div class="image-box">
+  <img src="https://i.imgur.com/8QfQY5m.png">
 </div>
 
-<div class="checkout-bar" onclick="openCheckout()">
-  View Cart • <span id="count">0</span> items
+<!-- INFO -->
+<div class="info">
+  <span class="chip">⏱ 10 mins</span>
+  <h2>Shirt Iron</h2>
+
+  <div>
+    <span class="price">₹5</span>
+    <span class="mrp">₹7</span>
+    <span class="off">30% OFF</span>
+  </div>
+
+  <!-- QUANTITY -->
+  <div class="qty-box">
+    <b>Quantity</b>
+    <div class="qty">
+      <span onclick="dec()">−</span>
+      <b id="count">1</b>
+      <span onclick="inc()">+</span>
+    </div>
+  </div>
+</div>
+
+<!-- ALSO BOUGHT -->
+<div class="section">People also bought</div>
+<div class="grid">
+  <div class="card">
+    <img src="https://i.imgur.com/9x6K5iY.png">
+    <h4>Pant Iron</h4>
+    <button>ADD</button>
+  </div>
+  <div class="card">
+    <img src="https://i.imgur.com/b0ZVQZ6.png">
+    <h4>Steam Shirt</h4>
+    <button>ADD</button>
+  </div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <div><span id="total">₹5</span></div>
+  <div onclick="addCart()">Add to Cart</div>
 </div>
 
 <script>
-function getCart(){return JSON.parse(localStorage.getItem("cart")||"[]")}
-function add(n,p){
-  const c=getCart(); c.push({n,p});
-  localStorage.setItem("cart",JSON.stringify(c));
-  document.getElementById("count").innerText=c.length;
+let qty=1;
+const price=5;
+
+function inc(){
+  qty++;
+  update();
 }
-function openCheckout(){
-  location.href="cart.html";
+function dec(){
+  if(qty>1){qty--;update();}
 }
-document.getElementById("count").innerText=getCart().length;
+function update(){
+  document.getElementById("count").innerText=qty;
+  document.getElementById("total").innerText="₹"+(qty*price);
+}
+function addCart(){
+  alert("Added to cart");
+}
 </script>
 
 </body>
