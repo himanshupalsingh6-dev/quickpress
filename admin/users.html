@@ -1,1 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Users Management</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#FFD400;
+  --text:#222;
+  --muted:#777;
+  --bg:#f6f6f6;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* LAYOUT */
+.wrapper{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:240px;
+  background:#fff;
+  border-right:1px solid #eee;
+  padding:20px;
+}
+.logo{
+  text-align:center;
+  margin-bottom:24px;
+}
+.logo img{width:140px}
+.nav a{
+  display:block;
+  padding:12px 14px;
+  border-radius:12px;
+  color:#333;
+  text-decoration:none;
+  font-size:14px;
+  margin-bottom:6px;
+}
+.nav a.active,
+.nav a:hover{
+  background:var(--yellow);
+  font-weight:600;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  padding:20px;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+}
+.header b{font-size:18px}
+
+/* FILTER BAR */
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.filters select,
+.filters input{
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  font-size:13px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+/* TABLE */
+.table-wrap{
+  overflow-x:auto;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+th,td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+}
+th{
+  background:#f3f3f3;
+  text-align:left;
+}
+
+/* STATUS */
+.status{
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600;
+}
+.active{background:#bbf7d0}
+.blocked{background:#fecaca}
+
+/* ACTION */
+.action{
+  cursor:pointer;
+  font-weight:600;
+}
+.block-btn{color:#dc2626}
+.unblock-btn{color:#16a34a}
+.view{color:#2563eb}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.modal-box{
+  background:#fff;
+  width:100%;
+  max-width:420px;
+  border-radius:20px;
+  padding:20px;
+}
+.modal-box h3{margin-bottom:10px}
+.modal-box p{
+  font-size:13px;
+  margin:6px 0;
+}
+.close{
+  text-align:right;
+  cursor:pointer;
+  color:#555;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="../assets/logo.png">
+    </div>
+    <div class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="orders.html">Orders</a>
+      <a class="active" href="#">Users</a>
+      <a href="#">Partners</a>
+      <a href="#">Riders</a>
+      <a href="#">Payouts</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="header">
+      <b>Users Management</b>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <input type="text" placeholder="Search name / phone / email">
+      <select>
+        <option>All Roles</option>
+        <option>Customer</option>
+        <option>Partner</option>
+        <option>Rider</option>
+        <option>Admin</option>
+      </select>
+      <select>
+        <option>All Status</option>
+        <option>Active</option>
+        <option>Blocked</option>
+      </select>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card table-wrap">
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+
+        <tr>
+          <td>Himanshu Pal</td>
+          <td>Customer</td>
+          <td>9XXXXXXXXX</td>
+          <td><span class="status active">Active</span></td>
+          <td>
+            <span class="action block-btn" onclick="toggle(this)">Block</span> |
+            <span class="action view" onclick="openModal()">View</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Rahul</td>
+          <td>Rider</td>
+          <td>8XXXXXXXXX</td>
+          <td><span class="status blocked">Blocked</span></td>
+          <td>
+            <span class="action unblock-btn" onclick="toggle(this)">Unblock</span> |
+            <span class="action view" onclick="openModal()">View</span>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="close" onclick="closeModal()">✖ Close</div>
+    <h3>User Details</h3>
+    <p><b>Name:</b> Himanshu Pal</p>
+    <p><b>Role:</b> Customer</p>
+    <p><b>Phone:</b> 9XXXXXXXXX</p>
+    <p><b>Status:</b> Active</p>
+  </div>
+</div>
+
+<script>
+function toggle(el){
+  const row = el.closest("tr");
+  const status = row.querySelector(".status");
+
+  if(status.classList.contains("active")){
+    status.className="status blocked";
+    status.innerText="Blocked";
+    el.innerText="Unblock";
+    el.className="action unblock-btn";
+  }else{
+    status.className="status active";
+    status.innerText="Active";
+    el.innerText="Block";
+    el.className="action block-btn";
+  }
+}
+
+function openModal(){
+  document.getElementById("modal").style.display="flex";
+}
+function closeModal(){
+  document.getElementById("modal").style.display="none";
+}
+</script>
+
+</body>
+</html>
