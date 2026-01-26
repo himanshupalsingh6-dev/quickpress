@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Rider App</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#FFD400;
+  --text:#222;
+  --muted:#777;
+  --bg:#f6f6f6;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* HEADER */
+.header{
+  background:#fff;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.header img{height:26px}
+
+/* TOGGLE */
+.toggle{
+  width:46px;
+  height:24px;
+  background:#ccc;
+  border-radius:20px;
+  position:relative;
+  cursor:pointer;
+}
+.knob{
+  width:20px;
+  height:20px;
+  background:#fff;
+  border-radius:50%;
+  position:absolute;
+  top:2px;
+  left:2px;
+  transition:.2s;
+}
+.toggle.active{
+  background:var(--yellow);
+}
+.toggle.active .knob{
+  left:24px;
+}
+
+/* MAIN */
+.main{
+  padding:16px 14px 90px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  padding:16px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  margin-bottom:16px;
+}
+.card h3{
+  font-size:15px;
+  margin-bottom:10px;
+}
+
+/* ORDER */
+.order b{font-size:14px}
+.order small{color:var(--muted)}
+.row{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  margin-top:6px;
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+.actions button{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  font-weight:600;
+  cursor:pointer;
+}
+.accept{background:var(--yellow)}
+.reject{background:#eee}
+.update{background:#e5e7eb}
+
+/* STATUS */
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:600;
+  margin-top:6px;
+}
+.pending{background:#fde68a}
+.active-order{background:#bfdbfe}
+.done{background:#bbf7d0}
+
+/* EARNINGS */
+.earn{
+  display:flex;
+  justify-content:space-between;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  display:flex;
+}
+.bottom-nav div{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+}
+.bottom-nav span{
+  display:block;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img src="../assets/logo.png">
+  <div class="toggle" id="toggle" onclick="toggleStatus()">
+    <div class="knob"></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- NEW ORDER -->
+  <div class="card" id="newOrder">
+    <h3>New Delivery Request</h3>
+
+    <div class="order">
+      <b>Order #QP1051</b><br>
+      <small>Pickup: Partner Hub</small><br>
+      <small>Drop: Customer Home</small>
+
+      <div class="row">
+        <span>Distance: 2.5 km</span>
+        <span>₹30</span>
+      </div>
+
+      <div class="actions">
+        <button class="accept" onclick="acceptOrder()">Accept</button>
+        <button class="reject" onclick="rejectOrder()">Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVE ORDER -->
+  <div class="card" id="activeOrder" style="display:none">
+    <h3>Active Delivery</h3>
+
+    <div class="badge active-order">On the way</div>
+
+    <div class="order">
+      <b>Order #QP1051</b><br>
+      <small>Pickup → Drop</small>
+
+      <div class="actions">
+        <button class="update" onclick="updateStatus('Picked up')">Picked Up</button>
+        <button class="update" onclick="updateStatus('Delivered')">Delivered</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EARNINGS -->
+  <div class="card">
+    <h3>Today Earnings</h3>
+    <div class="earn">
+      <span>Total Orders</span>
+      <b>5</b>
+    </div>
+    <div class="earn">
+      <span>Earnings</span>
+      <b>₹150</b>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="card">
+    <h3>Recent Deliveries</h3>
+
+    <div class="order">
+      <b>#QP1045</b>
+      <div class="badge done">Completed</div>
+    </div>
+
+    <div class="order">
+      <b>#QP1042</b>
+      <div class="badge done">Completed</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div><span>🚚</span>Home</div>
+  <div><span>📦</span>Orders</div>
+  <div><span>💰</span>Earnings</div>
+  <div><span>👤</span>Profile</div>
+</div>
+
+<script>
+function toggleStatus(){
+  const t=document.getElementById("toggle");
+  t.classList.toggle("active");
+}
+
+function acceptOrder(){
+  document.getElementById("newOrder").style.display="none";
+  document.getElementById("activeOrder").style.display="block";
+}
+
+function rejectOrder(){
+  alert("Order rejected");
+}
+
+function updateStatus(msg){
+  alert("Status updated: "+msg);
+}
+</script>
+
+</body>
+</html>
