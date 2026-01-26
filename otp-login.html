@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | OTP Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#FFD400;
+  --yellow-dark:#F2C200;
+  --text:#222;
+  --muted:#777;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:var(--yellow);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.card{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:22px;
+  padding:26px 22px;
+  box-shadow:0 18px 40px rgba(0,0,0,.15);
+}
+
+/* Logo */
+.logo{
+  text-align:center;
+  margin-bottom:18px;
+}
+.logo img{
+  width:150px;
+}
+
+/* Text */
+h2{
+  text-align:center;
+  font-size:18px;
+  color:var(--text);
+}
+p{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin:6px 0 18px;
+}
+
+/* Input */
+.input-group{
+  margin-bottom:16px;
+}
+.input-group label{
+  font-size:13px;
+  color:var(--muted);
+}
+.input-group input{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  margin-top:6px;
+  font-size:15px;
+}
+.input-group input:focus{
+  outline:none;
+  border-color:var(--yellow);
+}
+
+/* Button */
+.btn{
+  width:100%;
+  padding:14px;
+  background:var(--yellow);
+  border:none;
+  border-radius:16px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+}
+.btn:hover{
+  background:var(--yellow-dark);
+}
+
+/* OTP boxes */
+.otp-box{
+  display:flex;
+  justify-content:space-between;
+  margin:20px 0;
+}
+.otp-box input{
+  width:46px;
+  height:50px;
+  text-align:center;
+  font-size:18px;
+  border-radius:12px;
+  border:1px solid #ddd;
+}
+.otp-box input:focus{
+  outline:none;
+  border-color:var(--yellow);
+}
+
+/* Resend */
+.resend{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+}
+.resend span{
+  color:#000;
+  font-weight:500;
+  cursor:pointer;
+}
+
+/* Terms */
+.terms{
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="../assets/logo.png" alt="QuickPress">
+  </div>
+
+  <!-- STEP 1 -->
+  <div id="phoneStep">
+    <h2>Login with OTP</h2>
+    <p>Enter your mobile number to continue</p>
+
+    <div class="input-group">
+      <label>Mobile Number</label>
+      <input type="tel" placeholder="Enter 10 digit number">
+    </div>
+
+    <button class="btn" onclick="sendOTP()">Send OTP</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="otpStep" style="display:none;">
+    <h2>Verify OTP</h2>
+    <p>Enter the 6 digit code sent to your phone</p>
+
+    <div class="otp-box">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+    </div>
+
+    <button class="btn" onclick="verifyOTP()">Verify & Continue</button>
+
+    <div class="resend">
+      Didn’t receive OTP? <span onclick="resendOTP()">Resend</span>
+    </div>
+  </div>
+
+  <div class="terms">
+    By continuing you agree to our <br>
+    <b>Terms</b> & <b>Privacy Policy</b>
+  </div>
+
+</div>
+
+<script>
+function sendOTP(){
+  document.getElementById("phoneStep").style.display="none";
+  document.getElementById("otpStep").style.display="block";
+}
+
+function verifyOTP(){
+  alert("OTP verified (Firebase baad me)");
+  // window.location.href="customer/home.html";
+}
+
+function resendOTP(){
+  alert("OTP resent");
+}
+</script>
+
+</body>
+</html>
