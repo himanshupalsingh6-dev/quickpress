@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
 
+<div class="header">
+  🚀 QuickPress
+</div>
+
+<div style="padding:16px">
+
+  <div class="card">
+    <h2>Welcome to QuickPress</h2>
+    <p>Select your panel</p>
+  </div>
+
+  <!-- CUSTOMER -->
+  <div class="card">
+    <h3>👤 Customer</h3>
+    <button class="btn" onclick="go('customer/home.html')">
+      Open Customer App
+    </button>
+  </div>
+
+  <!-- PARTNER -->
+  <div class="card">
+    <h3>🤝 Partner</h3>
+    <button class="btn" onclick="go('partner/dashboard.html')">
+      Open Partner Panel
+    </button>
+  </div>
+
+  <!-- RIDER -->
+  <div class="card">
+    <h3>🚴 Rider</h3>
+    <button class="btn" onclick="go('rider/dashboard.html')">
+      Open Rider Panel
+    </button>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="card">
+    <h3>🛠️ Admin</h3>
+    <button class="btn" onclick="go('admin/dashboard.html')">
+      Open Admin Panel
+    </button>
+  </div>
+
+  <!-- AUTH -->
+  <div class="card">
+    <button class="btn" onclick="go('login.html')">Login</button>
+    <button class="btn" style="margin-top:8px" onclick="go('register.html')">
+      Register
+    </button>
+  </div>
+
+</div>
+
+<script>
+  function go(path) {
+    window.location.href = path;
+  }
+</script>
+
+</body>
+</html>
