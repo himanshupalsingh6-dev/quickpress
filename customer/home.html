@@ -6,23 +6,74 @@
   <link rel="stylesheet" href="../assets/css/style.css">
 
   <style>
-    body { background:#f5f5f5; }
+    body { background:#f4f4f4; }
+
     .hero {
-      background:#FFC107;
-      padding:20px;
-      border-radius:12px;
+      background:linear-gradient(135deg,#FFC107,#FFD54F);
+      padding:22px;
+      border-radius:16px;
       color:#000;
     }
-    .service {
+
+    .hero h2 { margin:0; }
+    .hero p { margin:6px 0 0; }
+
+    .stats {
       display:flex;
       justify-content:space-between;
+      margin-top:12px;
+    }
+
+    .stat {
+      background:#fff;
+      flex:1;
+      margin:4px;
+      padding:10px;
+      border-radius:12px;
+      text-align:center;
+      font-size:13px;
+    }
+
+    .section-title {
+      margin-top:22px;
+      font-weight:bold;
+      font-size:16px;
+    }
+
+    .service {
+      display:flex;
       align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .price {
+      font-weight:bold;
+    }
+
+    .ad {
+      background:#FFF8E1;
+      border-left:4px solid #FFC107;
+    }
+
+    .cart-fab {
+      position:fixed;
+      right:16px;
+      bottom:80px;
+      background:#000;
+      color:#fff;
+      padding:14px;
+      border-radius:50%;
+      font-weight:bold;
+      cursor:pointer;
     }
   </style>
 </head>
 <body>
 
-<div class="header">QuickPress</div>
+<div class="header">
+  QuickPress
+</div>
 
 <div style="padding:16px">
 
@@ -30,21 +81,47 @@
   <div class="hero">
     <h2>⚡ 10-Minute Ironing</h2>
     <p>Fast • Clean • Doorstep</p>
+
+    <div class="stats">
+      <div class="stat">⭐ 4.8 Rating</div>
+      <div class="stat">🧺 5k+ Orders</div>
+      <div class="stat">🤝 Trusted</div>
+    </div>
+  </div>
+
+  <!-- ADS -->
+  <div class="card ad">
+    🎉 <b>Flat 20% OFF</b><br>
+    On first ironing order
   </div>
 
   <!-- SERVICES -->
+  <div class="section-title">Our Services</div>
+
   <div class="card service">
     <div>👕 Shirt Ironing</div>
-    <div>₹5 / pair</div>
+    <div class="price">₹5 / pair</div>
     <button class="btn" onclick="addToCart('Shirt',5)">Add</button>
   </div>
 
   <div class="card service">
     <div>👖 Pant Ironing</div>
-    <div>₹6 / pair</div>
+    <div class="price">₹6 / pair</div>
     <button class="btn" onclick="addToCart('Pant',6)">Add</button>
   </div>
 
+  <!-- WHY US -->
+  <div class="section-title">Why QuickPress?</div>
+
+  <div class="card">🚀 Ultra-fast 10 min service</div>
+  <div class="card">🧼 Hygienic ironing</div>
+  <div class="card">📍 Local partners near you</div>
+
+</div>
+
+<!-- FLOATING CART -->
+<div class="cart-fab" onclick="goCart()">
+  🛒 <span id="cartCount">0</span>
 </div>
 
 <!-- BOTTOM NAV -->
@@ -55,12 +132,26 @@
 </div>
 
 <script>
+  function getCart(){
+    return JSON.parse(localStorage.getItem("cart") || "[]");
+  }
+
+  function updateCartCount(){
+    document.getElementById("cartCount").innerText = getCart().length;
+  }
+
   function addToCart(name, price){
-    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart = getCart();
     cart.push({name, price});
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Added to cart");
+    updateCartCount();
   }
+
+  function goCart(){
+    window.location.href = "cart.html";
+  }
+
+  updateCartCount();
 </script>
 
 </body>
