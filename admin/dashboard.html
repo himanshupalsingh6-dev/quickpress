@@ -1,4 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress – Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  Admin Dashboard
+</div>
+
+<div style="padding:16px">
+
+  <!-- Stats -->
+  <div class="card">
+    <h3>📊 Quick Stats</h3>
+    <p id="stats">Loading...</p>
+  </div>
+
+  <!-- Orders -->
+  <div class="card">
+    <h3>📦 Orders</h3>
+    <div id="ordersBox">Loading orders...</div>
+  </div>
+
+  <!-- Users -->
+  <div class="card">
+    <h3>👥 Users</h3>
+    <div id="usersBox">Loading users...</div>
+  </div>
+
+</div>
+
+<div style="height:60px"></div>
+
+<!-- Auth Guard -->
 <script type="module">
   import { protectPage } from "../assets/js/guard.js";
   protectPage(["admin"]);
 </script>
+
+<!-- Admin Logic -->
+<script type="module">
+  import { auth, db } from "../assets/js/firebase.js";
+  import {
+    collection,
+    getDocs,
+    updateDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const ordersBox = document.getElementById("ordersBox");
+  const usersBox = document.getElementById("usersBox");
+  const statsBox = document.getElementById("stats");
+
+  // LOAD STATS
+  async function loadStats() {
+    const ordersSnap = await getDocs(collection(db, "orders"));
+    const usersSnap = await getDocs(collection(db, "users"));
+
+    statsBox.innerHTML = `
+      Total Orders: <b>${ordersSnap.size}</b><br>
+      Total Users: <b>${usersSnap.size}</b>
+    `;
+  }
+
+  // LOAD ORDERS
+  async function loadOrders() {
+    const snap = await getDocs(collection(db, "orders"));
+    ordersBox.innerHTML = "";
+
+    if (snap.empty) {
+      ordersBox.innerHTML = "No orders found";
+      return;
+    }
+
+    snap.forEach(d => {
+      const o = d.data();
+      ordersBox.innerHTML += `
+        <div style="border-bottom:1px solid #ddd;padding:8px 0">
+          <b>Status:</b> ${o.status}<br>
+          <b>Total:</b> ₹${o.total}
+        </div>
+      `;
+    });
+  }
+
+  // LOAD USERS
+  async function loadUsers() {
+    const snap = await getDocs(collection(db, "users"));
+    usersBox.innerHTML = "";
+
+    snap.forEach(d => {
+      const u = d.data();
+      usersBox.innerHTML += `
+        <div style="border-bottom:1px solid #ddd;padding:8px 0">
+          <b>${u.email}</b> (${u.role})<br>
+          Status: ${u.status}
+          <br>
+          <button class="btn" style="margin-top:6px"
+            onclick="toggleUser('${d.id}','${u.status}')">
+            ${u.status === "active" ? "Block" : "Unblock"}
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  // BLOCK / UNBLOCK USER
+  window.toggleUser = async function(uid, status) {
+    await updateDoc(doc(db, "users", uid), {
+      status: status === "active" ? "blocked" : "active"
+    });
+    alert("User status updated");
+    loadUsers();
+  };
+
+  // INIT
+  loadStats();
+  loadOrders();
+  loadUsers();
+</script>
+
+</body>
+</html>
