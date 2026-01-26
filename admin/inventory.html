@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickPress – Inventory & Hub</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="header">Admin – Inventory & Hub</div>
+
+<div style="padding:16px">
+
+  <!-- ADD HUB -->
+  <div class="card">
+    <h3>🏭 Add Hub</h3>
+    <input id="hubName" placeholder="Hub name">
+    <button class="btn" onclick="addHub()">Add Hub</button>
+  </div>
+
+  <!-- HUB LIST -->
+  <div class="card">
+    <h3>Hubs</h3>
+    <div id="hubBox"></div>
+  </div>
+
+  <!-- INVENTORY -->
+  <div class="card">
+    <h3>📦 Inventory Item</h3>
+    <input id="itemName" placeholder="Item name">
+    <input id="itemQty" type="number" placeholder="Quantity">
+    <button class="btn" onclick="addItem()">Add Item</button>
+  </div>
+
+  <div class="card">
+    <h3>Inventory List</h3>
+    <div id="inventoryBox"></div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { protectPage } from "../assets/js/guard.js";
+  protectPage(["admin"]);
+</script>
+
+<script type="module">
+  import { db } from "../assets/js/firebase.js";
+  import {
+    collection,
+    addDoc,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  async function addHub() {
+    await addDoc(collection(db, "hubs"), {
+      name: hubName.value,
+      status: "active"
+    });
+    hubName.value="";
+    loadHubs();
+  }
+
+  async function loadHubs() {
+    const snap = await getDocs(collection(db, "hubs"));
+    hubBox.innerHTML="";
+    snap.forEach(d=>{
+      hubBox.innerHTML+=`<p>🏭 ${d.data().name}</p>`;
+    });
+  }
+
+  async function addItem() {
+    await addDoc(collection(db, "inventory"), {
+      name: itemName.value,
+      qty: Number(itemQty.value)
+    });
+    itemName.value="";
+    itemQty.value="";
+    loadInventory();
+  }
+
+  async function loadInventory() {
+    const snap = await getDocs(collection(db, "inventory"));
+    inventoryBox.innerHTML="";
+    snap.forEach(d=>{
+      inventoryBox.innerHTML+=`<p>${d.data().name} – Qty: ${d.data().qty}</p>`;
+    });
+  }
+
+  loadHubs();
+  loadInventory();
+</script>
+
+</body>
+</html>
