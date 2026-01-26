@@ -1,24 +1,187 @@
-<h2>Register</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Register</title>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-<select id="role">
-  <option value="customer">Customer</option>
-  <option value="partner">Partner</option>
-  <option value="delivery">Delivery</option>
-</select>
+<style>
+:root{
+  --yellow:#FFD400;
+  --yellow-dark:#F2C200;
+  --text:#222;
+  --muted:#777;
+}
 
-<button id="registerBtn">Register</button>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
 
-<script type="module">
-  import { registerUser } from "./assets/js/auth.js";
+body{
+  min-height:100vh;
+  background:var(--yellow);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-  document.getElementById("registerBtn").onclick = () => {
-    registerUser(
-      email.value,
-      password.value,
-      role.value
-    );
-  };
+.card{
+  width:100%;
+  max-width:440px;
+  background:#fff;
+  border-radius:22px;
+  padding:28px 22px;
+  box-shadow:0 18px 40px rgba(0,0,0,.15);
+}
+
+/* Logo */
+.logo{
+  text-align:center;
+  margin-bottom:16px;
+}
+.logo img{
+  width:150px;
+}
+
+/* Text */
+h2{
+  text-align:center;
+  font-size:18px;
+  color:var(--text);
+}
+p{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin:6px 0 18px;
+}
+
+/* Input */
+.input-group{
+  margin-bottom:14px;
+}
+.input-group label{
+  font-size:13px;
+  color:var(--muted);
+}
+.input-group input{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  margin-top:6px;
+  font-size:14px;
+}
+.input-group input:focus{
+  outline:none;
+  border-color:var(--yellow);
+}
+
+/* Button */
+.btn{
+  width:100%;
+  padding:14px;
+  background:var(--yellow);
+  border:none;
+  border-radius:16px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:8px;
+}
+.btn:hover{
+  background:var(--yellow-dark);
+}
+
+/* Footer text */
+.bottom-text{
+  text-align:center;
+  font-size:13px;
+  margin-top:14px;
+}
+.bottom-text a{
+  color:#000;
+  font-weight:600;
+  text-decoration:none;
+}
+
+/* Terms */
+.terms{
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="../assets/logo.png" alt="QuickPress">
+  </div>
+
+  <h2>Create your account</h2>
+  <p>Join QuickPress for fast ironing & laundry</p>
+
+  <!-- Name -->
+  <div class="input-group">
+    <label>Full Name</label>
+    <input type="text" placeholder="Enter your name">
+  </div>
+
+  <!-- Phone -->
+  <div class="input-group">
+    <label>Mobile Number</label>
+    <input type="tel" placeholder="Enter 10 digit number">
+  </div>
+
+  <!-- Email -->
+  <div class="input-group">
+    <label>Email</label>
+    <input type="email" placeholder="Enter email (optional)">
+  </div>
+
+  <!-- Password -->
+  <div class="input-group">
+    <label>Password</label>
+    <input type="password" placeholder="Create password">
+  </div>
+
+  <!-- Confirm Password -->
+  <div class="input-group">
+    <label>Confirm Password</label>
+    <input type="password" placeholder="Confirm password">
+  </div>
+
+  <button class="btn" onclick="register()">Register</button>
+
+  <div class="bottom-text">
+    Already have an account?
+    <a href="login.html">Login</a>
+  </div>
+
+  <div class="terms">
+    By registering, you agree to our <br>
+    <b>Terms</b> & <b>Privacy Policy</b>
+  </div>
+
+</div>
+
+<script>
+function register(){
+  alert("Register UI complete. Firebase connect baad me.");
+  // window.location.href="otp-login.html";
+}
 </script>
+
+</body>
+</html>
