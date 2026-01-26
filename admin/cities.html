@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress – City & Area Control</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  Admin – City & Area System
+</div>
+
+<div style="padding:16px">
+
+  <!-- ADD CITY -->
+  <div class="card">
+    <h3>🏙️ Add City</h3>
+
+    <input id="cityName" placeholder="City name (e.g. Kasganj)">
+    <button class="btn" onclick="addCity()">Add City</button>
+  </div>
+
+  <!-- CITY LIST -->
+  <div class="card">
+    <h3>📍 Cities</h3>
+    <div id="cityBox">Loading cities...</div>
+  </div>
+
+  <!-- ADD AREA -->
+  <div class="card">
+    <h3>📌 Add Area</h3>
+
+    <input id="areaCity" placeholder="City ID">
+    <input id="areaName" placeholder="Area name (e.g. Soron Road)">
+    <button class="btn" onclick="addArea()">Add Area</button>
+  </div>
+
+  <!-- AREA LIST -->
+  <div class="card">
+    <h3>🗺️ Areas</h3>
+    <div id="areaBox">Loading areas...</div>
+  </div>
+
+</div>
+
+<div style="height:60px"></div>
+
+<!-- Auth Guard -->
+<script type="module">
+  import { protectPage } from "../assets/js/guard.js";
+  protectPage(["admin"]);
+</script>
+
+<!-- City Logic -->
+<script type="module">
+  import { db } from "../assets/js/firebase.js";
+  import {
+    collection,
+    addDoc,
+    getDocs,
+    updateDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const cityBox = document.getElementById("cityBox");
+  const areaBox = document.getElementById("areaBox");
+
+  // ADD CITY
+  window.addCity = async function () {
+    if (!cityName.value) {
+      alert("Enter city name");
+      return;
+    }
+
+    await addDoc(collection(db, "cities"), {
+      name: cityName.value,
+      status: "active",
+      createdAt: Date.now()
+    });
+
+    cityName.value = "";
+    loadCities();
+  };
+
+  // LOAD CITIES
+  async function loadCities() {
+    const snap = await getDocs(collection(db, "cities"));
+    cityBox.innerHTML = "";
+
+    if (snap.empty) {
+      cityBox.innerHTML = "No cities added";
+      return;
+    }
+
+    snap.forEach(d => {
+      const c = d.data();
+      cityBox.innerHTML += `
+        <div style="border-bottom:1px solid #ddd;padding:8px 0">
+          <b>${c.name}</b><br>
+          Status: ${c.status}<br>
+          <button class="btn" style="margin-top:6px"
+            onclick="toggleCity('${d.id}','${c.status}')">
+            ${c.status === "active" ? "Disable" : "Enable"}
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  // ENABLE / DISABLE CITY
+  window.toggleCity = async function (id, status) {
+    await updateDoc(doc(db, "cities", id), {
+      status: status === "active" ? "inactive" : "active"
+    });
+    loadCities();
+  };
+
+  // ADD AREA
+  window.addArea = async function () {
+    if (!areaCity.value || !areaName.value) {
+      alert("Enter city ID and area name");
+      return;
+    }
+
+    await addDoc(collection(db, "areas"), {
+      cityId: areaCity.value,
+      name: areaName.value,
+      status: "active",
+      createdAt: Date.now()
+    });
+
+    areaCity.value = "";
+    areaName.value = "";
+    loadAreas();
+  };
+
+  // LOAD AREAS
+  async function loadAreas() {
+    const snap = await getDocs(collection(db, "areas"));
+    areaBox.innerHTML = "";
+
+    if (snap.empty) {
+      areaBox.innerHTML = "No areas added";
+      return;
+    }
+
+    snap.forEach(d => {
+      const a = d.data();
+      areaBox.innerHTML += `
+        <div style="border-bottom:1px solid #ddd;padding:8px 0">
+          <b>${a.name}</b><br>
+          City ID: ${a.cityId}<br>
+          Status: ${a.status}<br>
+          <button class="btn" style="margin-top:6px"
+            onclick="toggleArea('${d.id}','${a.status}')">
+            ${a.status === "active" ? "Disable" : "Enable"}
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  // ENABLE / DISABLE AREA
+  window.toggleArea = async function (id, status) {
+    await updateDoc(doc(db, "areas", id), {
+      status: status === "active" ? "inactive" : "active"
+    });
+    loadAreas();
+  };
+
+  loadCities();
+  loadAreas();
+</script>
+
+</body>
+</html>
