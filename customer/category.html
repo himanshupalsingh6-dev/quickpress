@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Categories</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/blinkit-category.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="back" onclick="history.back()">←</div>
+  <div class="title">Services</div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- LEFT CATEGORY -->
+  <div class="left">
+    <div class="cat active" onclick="loadCat('iron',this)">Iron</div>
+    <div class="cat" onclick="loadCat('steam',this)">Steam</div>
+    <div class="cat" onclick="loadCat('wash',this)">Wash</div>
+  </div>
+
+  <!-- RIGHT PRODUCTS -->
+  <div class="right">
+    <div id="products" class="grid"></div>
+  </div>
+
+</div>
+
+<!-- CART BAR -->
+<div id="cartBar" class="cart-bar" style="display:none">
+  <div id="cartCount">1 item</div>
+  <div onclick="goCart()">View Cart →</div>
+</div>
+
+<script>
+/* DEMO DATA (later Firebase se aayega) */
+const data={
+  iron:[
+    {id:1,name:"Shirt Iron",price:5,off:10,img:"https://i.imgur.com/8QfQY5m.png"},
+    {id:2,name:"Pant Iron",price:6,off:15,img:"https://i.imgur.com/9x6K5iY.png"}
+  ],
+  steam:[
+    {id:3,name:"Steam Shirt",price:8,off:12,img:"https://i.imgur.com/b0ZVQZ6.png"}
+  ],
+  wash:[
+    {id:4,name:"Wash & Iron",price:15,off:20,img:"https://i.imgur.com/8QfQY5m.png"}
+  ]
+};
+
+let cart={};
+
+function loadCat(cat,el){
+  document.querySelectorAll(".cat").forEach(c=>c.classList.remove("active"));
+  el.classList.add("active");
+
+  const box=document.getElementById("products");
+  box.innerHTML="";
+  data[cat].forEach(p=>{
+    box.innerHTML+=`
+      <div class="card">
+        <img src="${p.img}">
+        <h4>${p.name}</h4>
+        <div class="price">₹${p.price}
+          <span class="off">${p.off}% OFF</span>
+        </div>
+        <button class="add-btn" onclick="add(${p.id},'${cat}')">ADD</button>
+      </div>
+    `;
+  });
+}
+
+function add(id,cat){
+  cart[id]=(cart[id]||0)+1;
+  document.getElementById("cartBar").style.display="flex";
+  document.getElementById("cartCount").innerText=
+    Object.values(cart).reduce((a,b)=>a+b,0)+" items";
+}
+
+function goCart(){
+  alert("Cart page – MODULE 4");
+}
+
+/* initial load */
+loadCat("iron",document.querySelector(".cat"));
+</script>
+
+</body>
+</html>
