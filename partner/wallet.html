@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Partner Wallet</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#FFD400;
+  --text:#222;
+  --muted:#777;
+  --bg:#f6f6f6;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* HEADER */
+.header{
+  background:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.header img{height:26px}
+.header b{font-size:16px}
+
+/* MAIN */
+.main{
+  padding:16px 14px 90px;
+}
+
+/* BALANCE CARD */
+.balance{
+  background:var(--yellow);
+  border-radius:22px;
+  padding:20px;
+  color:#000;
+  margin-bottom:16px;
+}
+.balance small{
+  font-size:13px;
+}
+.balance b{
+  display:block;
+  font-size:28px;
+  margin-top:6px;
+}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:16px;
+}
+.stat{
+  background:#fff;
+  padding:14px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.stat small{color:var(--muted)}
+.stat b{
+  display:block;
+  margin-top:4px;
+  font-size:18px;
+}
+
+/* BUTTON */
+.btn{
+  width:100%;
+  padding:14px;
+  background:var(--yellow);
+  border:none;
+  border-radius:18px;
+  font-weight:600;
+  cursor:pointer;
+  margin-bottom:16px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  padding:16px;
+  border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  margin-bottom:16px;
+}
+.card h3{
+  font-size:15px;
+  margin-bottom:10px;
+}
+
+/* PAYOUT ITEM */
+.payout{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+  font-size:13px;
+}
+.payout:last-child{border:none}
+
+.badge{
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:600;
+}
+.paid{background:#bbf7d0}
+.pending{background:#fde68a}
+
+/* BANK */
+.bank small{color:var(--muted)}
+.bank b{display:block;margin-top:4px}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  display:flex;
+}
+.bottom-nav div{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+}
+.bottom-nav span{
+  display:block;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img src="../assets/logo.png" alt="QuickPress">
+  <b>Wallet & Payouts</b>
+</div>
+
+<div class="main">
+
+  <!-- BALANCE -->
+  <div class="balance">
+    <small>Available Balance</small>
+    <b>₹1,250</b>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <small>Today Earnings</small>
+      <b>₹180</b>
+    </div>
+    <div class="stat">
+      <small>This Week</small>
+      <b>₹920</b>
+    </div>
+  </div>
+
+  <!-- REQUEST PAYOUT -->
+  <button class="btn" onclick="requestPayout()">Request Payout</button>
+
+  <!-- PAYOUT HISTORY -->
+  <div class="card">
+    <h3>Payout History</h3>
+
+    <div class="payout">
+      <span>₹500<br><small>20 Jan</small></span>
+      <span class="badge paid">Paid</span>
+    </div>
+
+    <div class="payout">
+      <span>₹300<br><small>18 Jan</small></span>
+      <span class="badge pending">Pending</span>
+    </div>
+  </div>
+
+  <!-- BANK DETAILS -->
+  <div class="card bank">
+    <h3>Bank Account</h3>
+    <small>Account Holder</small>
+    <b>Partner Name</b>
+
+    <small>Account Number</small>
+    <b>XXXXXX4321</b>
+
+    <small>IFSC</small>
+    <b>SBIN0001234</b>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div onclick="location.href='dashboard.html'"><span>🏠</span>Home</div>
+  <div onclick="location.href='orders.html'"><span>📦</span>Orders</div>
+  <div><span>💰</span>Wallet</div>
+  <div onclick="location.href='profile.html'"><span>👤</span>Profile</div>
+</div>
+
+<script>
+function requestPayout(){
+  alert("Payout request sent (Admin approval pending)");
+}
+</script>
+
+</body>
+</html>
