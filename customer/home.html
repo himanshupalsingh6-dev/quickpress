@@ -3,47 +3,172 @@
 <head>
   <title>QuickPress</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    body{background:#f5f5f5}
+
+    /* NAVBAR */
+    .navbar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px;
+      background:#fff;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .logo{
+      font-weight:bold;
+      font-size:18px;
+      color:#FFC107;
+    }
+    .search{
+      flex:1;
+      padding:8px;
+      border-radius:8px;
+      border:1px solid #ddd;
+    }
+    .cart-btn{
+      background:#000;
+      color:#fff;
+      padding:8px 12px;
+      border-radius:8px;
+    }
+
+    /* HERO */
+    .hero{
+      background:#FFC107;
+      margin:12px;
+      padding:20px;
+      border-radius:18px;
+    }
+
+    /* STATS */
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      padding:12px;
+    }
+    .stat{
+      background:#fff;
+      padding:12px;
+      border-radius:14px;
+      text-align:center;
+      font-size:13px;
+    }
+
+    /* SERVICES */
+    .services{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      padding:12px;
+    }
+    .service-card{
+      background:#fff;
+      padding:16px;
+      border-radius:16px;
+      text-align:center;
+      font-weight:bold;
+    }
+
+    /* REVIEWS */
+    .reviews{
+      padding:12px;
+    }
+    .review{
+      background:#fff;
+      padding:14px;
+      border-radius:14px;
+      margin-bottom:10px;
+      font-size:14px;
+    }
+
+    /* FOOTER */
+    .footer{
+      background:#111;
+      color:#fff;
+      padding:20px;
+      margin-top:20px;
+    }
+    .footer small{
+      color:#ccc;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <div>
-    <b>Delivery in 10 min</b><br>
-    <small>📍 Kasganj</small>
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">QuickPress</div>
+  <input class="search" placeholder="Search services">
+  <div class="cart-btn" onclick="goCart()">🛒</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h2>Delivery in 10 Minutes</h2>
+  <p>Fast • Hygienic • Doorstep Ironing</p>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">⭐ 4.8 Rating</div>
+  <div class="stat">🧺 12,000+ Orders</div>
+  <div class="stat">😊 5,000+ Customers</div>
+  <div class="stat">⚡ 11 Services</div>
+</div>
+
+<!-- OUR SERVICES -->
+<h3 style="padding:12px">Our Services</h3>
+<div class="services">
+  <div class="service-card">👕 Iron</div>
+  <div class="service-card">🔥 Steam</div>
+  <div class="service-card">🧼 Wash</div>
+</div>
+
+<!-- REVIEWS -->
+<h3 style="padding:12px">Customer Reviews</h3>
+<div class="reviews">
+  <div class="review">
+    ⭐⭐⭐⭐⭐ <br>
+    “Bahut fast service hai, kapde bilkul fresh mile.”
+    <br><small>- Rohit</small>
   </div>
-  <button class="cart-btn" onclick="goCart()">🛒 Cart</button>
-</div>
 
-<!-- HERO BANNER -->
-<div class="hero-banner">
-  <div>
-    <h2>Fast Ironing at Home</h2>
-    <p>Clean • Safe • Express</p>
-    <button class="btn-dark">Order Now</button>
+  <div class="review">
+    ⭐⭐⭐⭐☆ <br>
+    “Price bhi sahi hai aur pickup time perfect.”
+    <br><small>- Neha</small>
+  </div>
+
+  <div class="review">
+    ⭐⭐⭐⭐⭐ <br>
+    “Blinkit jaisa experience ironing ke liye.”
+    <br><small>- Aman</small>
   </div>
 </div>
 
-<!-- CATEGORY GRID -->
-<h3 class="section">Categories</h3>
-<div class="category-grid">
-  <div class="cat-card" onclick="goProducts('iron')">👕 Iron</div>
-  <div class="cat-card" onclick="goProducts('wash')">🧼 Wash</div>
-  <div class="cat-card" onclick="goProducts('steam')">🔥 Steam</div>
-</div>
+<!-- FOOTER -->
+<div class="footer">
+  <b>QuickPress</b><br><br>
 
-<!-- ADS CARDS -->
-<h3 class="section">Offers</h3>
-<div class="ads-row">
-  <div class="ad-card yellow">20% OFF</div>
-  <div class="ad-card dark">Wallet Cashback</div>
-  <div class="ad-card yellow">Free Pickup</div>
+  <small>
+    About Us <br>
+    Our Services <br>
+    Help & Support <br>
+    Partner with us <br>
+    Become a Rider
+  </small>
+
+  <br><br>
+  <small>© 2026 QuickPress. All rights reserved.</small>
 </div>
 
 <script>
-function goProducts(cat){
-  location.href="products.html?cat="+cat;
-}
 function goCart(){
   location.href="cart.html";
 }
