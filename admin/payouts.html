@@ -1,1 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress – Admin Payout Control</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
 
+<!-- Header -->
+<div class="header">
+  Admin – Payout System
+</div>
+
+<div style="padding:16px">
+
+  <!-- DELIVERY PAYOUT SETTINGS -->
+  <div class="card">
+    <h3>🚴 Delivery Boy Payout (₹ / KM)</h3>
+
+    <label>Base Pay (₹)</label>
+    <input id="deliveryBase" type="number" placeholder="e.g. 20">
+
+    <label>Rate per KM (₹)</label>
+    <input id="deliveryKm" type="number" placeholder="e.g. 8">
+
+    <button class="btn" onclick="saveDeliveryRate()">
+      Save Delivery Rate
+    </button>
+  </div>
+
+  <!-- PARTNER PAYOUT SETTINGS -->
+  <div class="card">
+    <h3>🤝 Partner Payout (₹ / Pair)</h3>
+
+    <label>Shirt (₹)</label>
+    <input id="shirtRate" type="number" placeholder="e.g. 5">
+
+    <label>Pant (₹)</label>
+    <input id="pantRate" type="number" placeholder="e.g. 6">
+
+    <button class="btn" onclick="savePartnerRate()">
+      Save Partner Rate
+    </button>
+  </div>
+
+  <!-- PAYOUT HISTORY -->
+  <div class="card">
+    <h3>💰 Payout Records</h3>
+    <div id="payoutBox">Loading payouts...</div>
+  </div>
+
+</div>
+
+<div style="height:60px"></div>
+
+<!-- Auth Guard -->
+<script type="module">
+  import { protectPage } from "../assets/js/guard.js";
+  protectPage(["admin"]);
+</script>
+
+<!-- Admin Payout Logic -->
+<script type="module">
+  import { db } from "../assets/js/firebase.js";
+  import {
+    doc,
+    setDoc,
+    getDoc,
+    collection,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const payoutBox = document.getElementById("payoutBox");
+
+  // SAVE DELIVERY RATE
+  window.saveDeliveryRate = async function () {
+    await setDoc(doc(db, "payoutRates", "delivery"), {
+      basePay: Number(deliveryBase.value),
+      ratePerKm: Number(deliveryKm.value),
+      updatedAt: Date.now()
+    });
+    alert("✅ Delivery payout rate saved");
+  };
+
+  // SAVE PARTNER RATE
+  window.savePartnerRate = async function () {
+    await setDoc(doc(db, "payoutRates", "partner"), {
+      shirt: Number(shirtRate.value),
+      pant: Number(pantRate.value),
+      updatedAt: Date.now()
+    });
+    alert("✅ Partner payout rate saved");
+  };
+
+  // LOAD PAYOUT HISTORY (READ-ONLY)
+  async function loadPayouts() {
+    const snap = await getDocs(collection(db, "payouts"));
+    payoutBox.innerHTML = "";
+
+    if (snap.empty) {
+      payoutBox.innerHTML = "No payouts yet";
+      return;
+    }
+
+    snap.forEach(d => {
+      const p = d.data();
+      payoutBox.innerHTML += `
+        <div style="border-bottom:1px solid #ddd;padding:8px 0">
+          <b>User:</b> ${p.userId}<br>
+          <b>Role:</b> ${p.role}<br>
+          <b>Amount:</b> ₹${p.amount}<br>
+          <b>Status:</b> ${p.status}
+        </div>
+      `;
+    });
+  }
+
+  loadPayouts();
+</script>
+
+</body>
+</html>
