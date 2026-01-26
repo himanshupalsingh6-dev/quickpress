@@ -1,14 +1,56 @@
-<h2>Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickPress – Login</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+<div class="header">Login</div>
 
-<button id="loginBtn">Login</button>
-<button id="googleBtn">Login with Google</button>
+<div style="padding:16px">
 
+  <div class="card">
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button class="btn" id="loginBtn">Login</button>
+    <button class="btn" id="googleBtn" style="margin-top:8px;background:#333">
+      Login with Google
+    </button>
+
+    <p style="margin-top:12px">
+      New user?
+      <a href="register.html">Register</a>
+    </p>
+  </div>
+
+</div>
+
+<!-- 🔐 LOGIN LOGIC -->
 <script type="module">
   import { loginUser, googleLogin } from "./assets/js/auth.js";
 
-  loginBtn.onclick = () => loginUser(email.value, password.value);
-  googleBtn.onclick = () => googleLogin();
+  const loginBtn = document.getElementById("loginBtn");
+  const googleBtn = document.getElementById("googleBtn");
+
+  loginBtn.addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      alert("Please enter email and password");
+      return;
+    }
+
+    loginUser(email, password);
+  });
+
+  googleBtn.addEventListener("click", () => {
+    googleLogin();
+  });
 </script>
+
+</body>
+</html>
