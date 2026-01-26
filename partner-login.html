@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Partner Login | QuickPress</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#FFE066; /* soft yellow */
+  font-family:Arial, Helvetica, sans-serif;
+}
+.login-card{
+  width:360px;
+  background:#fff;
+  padding:28px;
+  border-radius:18px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.2);
+  text-align:center;
+}
+.logo{
+  font-size:28px;
+  font-weight:800;
+  color:#E53935;
+  margin-bottom:6px;
+}
+.sub{
+  font-size:14px;
+  color:#666;
+  margin-bottom:22px;
+}
+input{
+  width:100%;
+  padding:13px;
+  margin-bottom:14px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:15px;
+}
+input:focus{
+  outline:none;
+  border-color:#FFD93D;
+}
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#FFD93D;
+  font-weight:bold;
+  font-size:16px;
+  cursor:pointer;
+}
+button:hover{
+  background:#FFCF33;
+}
+.footer{
+  margin-top:18px;
+  font-size:12px;
+  color:#777;
+}
+.error{
+  margin-top:12px;
+  color:red;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+  <div class="logo">QuickPress</div>
+  <div class="sub">Partner Login</div>
+
+  <input type="email" id="email" placeholder="Partner Email">
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="partnerLogin()">Login</button>
+
+  <div class="error" id="error"></div>
+
+  <div class="footer">Powered by QuickPress</div>
+</div>
+
+<script type="module">
+/* 🔥 Firebase Imports */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+/* 🔥 Firebase Config */
+const firebaseConfig = {
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d",
+  storageBucket: "quickpress-e486d.firebasestorage.app",
+  messagingSenderId: "572695394794",
+  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
+};
+
+/* 🔥 Init */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ✅ Partner Login */
+window.partnerLogin = async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const error = document.getElementById("error");
+  error.innerText = "";
+
+  try{
+    const res = await signInWithEmailAndPassword(auth, email, password);
+
+    const userRef = doc(db, "users", res.user.uid);
+    const snap = await getDoc(userRef);
+
+    if(!snap.exists()){
+      throw "User data not found";
+    }
+
+    if(snap.data().role !== "partner"){
+      throw "Unauthorized Partner";
+    }
+
+    // ✅ SUCCESS
+    window.location.href = "/quickpress/partner/dashboard.html";
+
+  }catch(err){
+    error.innerText = "Invalid partner credentials or access denied";
+  }
+}
+</script>
+
+</body>
+</html>
