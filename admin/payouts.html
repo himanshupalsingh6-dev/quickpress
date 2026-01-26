@@ -1,122 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>QuickPress – Admin Payout Control</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPress | Payout Approval</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#FFD400;
+  --text:#222;
+  --muted:#777;
+  --bg:#f6f6f6;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:var(--bg);color:var(--text)}
+
+/* LAYOUT */
+.wrapper{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+  width:240px;background:#fff;border-right:1px solid #eee;padding:20px
+}
+.logo{text-align:center;margin-bottom:24px}
+.logo img{width:140px}
+.nav a{
+  display:block;padding:12px 14px;border-radius:12px;color:#333;
+  text-decoration:none;font-size:14px;margin-bottom:6px
+}
+.nav a.active,.nav a:hover{background:var(--yellow);font-weight:600}
+
+/* MAIN */
+.main{flex:1;padding:20px}
+
+/* HEADER */
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.header b{font-size:18px}
+
+/* TABS */
+.tabs{
+  display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap
+}
+.tab{
+  background:#fff;border:1px solid #ddd;border-radius:20px;
+  padding:8px 14px;font-size:13px;cursor:pointer
+}
+.tab.active{background:var(--yellow);border-color:var(--yellow);font-weight:600}
+
+/* CARD */
+.card{
+  background:#fff;padding:18px;border-radius:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,.08)
+}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:10px;border-bottom:1px solid #eee;text-align:left}
+th{background:#f3f3f3}
+
+/* BADGES */
+.badge{
+  padding:4px 8px;border-radius:8px;font-size:11px;font-weight:600
+}
+.pending{background:#fde68a}
+.paid{background:#bbf7d0}
+.rejected{background:#fecaca}
+
+/* ACTIONS */
+.actions button{
+  padding:6px 10px;border:none;border-radius:10px;
+  font-size:12px;font-weight:600;cursor:pointer;margin-right:6px
+}
+.approve{background:var(--yellow)}
+.reject{background:#eee}
+.mark{background:#e5e7eb}
+
+/* MODAL */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);
+  display:none;align-items:center;justify-content:center;z-index:99
+}
+.modal-box{
+  background:#fff;width:100%;max-width:420px;
+  border-radius:20px;padding:20px
+}
+.modal-box h3{margin-bottom:10px}
+.modal-box p{font-size:13px;margin:6px 0}
+.modal-box button{
+  width:100%;padding:12px;border-radius:14px;
+  background:var(--yellow);border:none;font-weight:600;margin-top:10px
+}
+.close{text-align:right;font-size:14px;color:#555;cursor:pointer}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+}
+</style>
 </head>
+
 <body>
 
-<!-- Header -->
-<div class="header">
-  Admin – Payout System
+<div class="wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="../assets/logo.png" alt="QuickPress">
+    </div>
+    <div class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="orders.html">Orders</a>
+      <a href="users.html">Users</a>
+      <a class="active" href="#">Payouts</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="header">
+      <b>Payout Approval</b>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('pending',this)">Pending</div>
+      <div class="tab" onclick="showTab('paid',this)">Paid</div>
+      <div class="tab" onclick="showTab('rejected',this)">Rejected</div>
+    </div>
+
+    <!-- PENDING -->
+    <div id="pending" class="card table-wrap">
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        <tr>
+          <td>Amit</td>
+          <td>Partner</td>
+          <td>₹500</td>
+          <td>Bank</td>
+          <td><span class="badge pending">Pending</span></td>
+          <td class="actions">
+            <button class="approve" onclick="openModal()">Approve</button>
+            <button class="reject">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Rahul</td>
+          <td>Rider</td>
+          <td>₹300</td>
+          <td>UPI</td>
+          <td><span class="badge pending">Pending</span></td>
+          <td class="actions">
+            <button class="approve" onclick="openModal()">Approve</button>
+            <button class="reject">Reject</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- PAID -->
+    <div id="paid" class="card table-wrap" style="display:none">
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Suresh</td>
+          <td>Rider</td>
+          <td>₹400</td>
+          <td>22 Jan</td>
+          <td><span class="badge paid">Paid</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- REJECTED -->
+    <div id="rejected" class="card table-wrap" style="display:none">
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Amount</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Vikas</td>
+          <td>Partner</td>
+          <td>₹350</td>
+          <td><span class="badge rejected">Rejected</span></td>
+        </tr>
+      </table>
+    </div>
+
+  </main>
 </div>
 
-<div style="padding:16px">
-
-  <!-- DELIVERY PAYOUT SETTINGS -->
-  <div class="card">
-    <h3>🚴 Delivery Boy Payout (₹ / KM)</h3>
-
-    <label>Base Pay (₹)</label>
-    <input id="deliveryBase" type="number" placeholder="e.g. 20">
-
-    <label>Rate per KM (₹)</label>
-    <input id="deliveryKm" type="number" placeholder="e.g. 8">
-
-    <button class="btn" onclick="saveDeliveryRate()">
-      Save Delivery Rate
-    </button>
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="close" onclick="closeModal()">✖ Close</div>
+    <h3>Payout Details</h3>
+    <p><b>Name:</b> Amit</p>
+    <p><b>Role:</b> Partner</p>
+    <p><b>Amount:</b> ₹500</p>
+    <p><b>Method:</b> Bank / UPI</p>
+    <button onclick="markPaid()">Mark as Paid</button>
   </div>
-
-  <!-- PARTNER PAYOUT SETTINGS -->
-  <div class="card">
-    <h3>🤝 Partner Payout (₹ / Pair)</h3>
-
-    <label>Shirt (₹)</label>
-    <input id="shirtRate" type="number" placeholder="e.g. 5">
-
-    <label>Pant (₹)</label>
-    <input id="pantRate" type="number" placeholder="e.g. 6">
-
-    <button class="btn" onclick="savePartnerRate()">
-      Save Partner Rate
-    </button>
-  </div>
-
-  <!-- PAYOUT HISTORY -->
-  <div class="card">
-    <h3>💰 Payout Records</h3>
-    <div id="payoutBox">Loading payouts...</div>
-  </div>
-
 </div>
 
-<div style="height:60px"></div>
-
-<!-- Auth Guard -->
-<script type="module">
-  import { protectPage } from "../assets/js/guard.js";
-  protectPage(["admin"]);
-</script>
-
-<!-- Admin Payout Logic -->
-<script type="module">
-  import { db } from "../assets/js/firebase.js";
-  import {
-    doc,
-    setDoc,
-    getDoc,
-    collection,
-    getDocs
-  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-  const payoutBox = document.getElementById("payoutBox");
-
-  // SAVE DELIVERY RATE
-  window.saveDeliveryRate = async function () {
-    await setDoc(doc(db, "payoutRates", "delivery"), {
-      basePay: Number(deliveryBase.value),
-      ratePerKm: Number(deliveryKm.value),
-      updatedAt: Date.now()
-    });
-    alert("✅ Delivery payout rate saved");
-  };
-
-  // SAVE PARTNER RATE
-  window.savePartnerRate = async function () {
-    await setDoc(doc(db, "payoutRates", "partner"), {
-      shirt: Number(shirtRate.value),
-      pant: Number(pantRate.value),
-      updatedAt: Date.now()
-    });
-    alert("✅ Partner payout rate saved");
-  };
-
-  // LOAD PAYOUT HISTORY (READ-ONLY)
-  async function loadPayouts() {
-    const snap = await getDocs(collection(db, "payouts"));
-    payoutBox.innerHTML = "";
-
-    if (snap.empty) {
-      payoutBox.innerHTML = "No payouts yet";
-      return;
-    }
-
-    snap.forEach(d => {
-      const p = d.data();
-      payoutBox.innerHTML += `
-        <div style="border-bottom:1px solid #ddd;padding:8px 0">
-          <b>User:</b> ${p.userId}<br>
-          <b>Role:</b> ${p.role}<br>
-          <b>Amount:</b> ₹${p.amount}<br>
-          <b>Status:</b> ${p.status}
-        </div>
-      `;
-    });
-  }
-
-  loadPayouts();
+<script>
+function showTab(id,el){
+  ["pending","paid","rejected"].forEach(t=>{
+    document.getElementById(t).style.display="none";
+  });
+  document.getElementById(id).style.display="block";
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
+}
+function openModal(){document.getElementById("modal").style.display="flex"}
+function closeModal(){document.getElementById("modal").style.display="none"}
+function markPaid(){
+  alert("Marked as Paid (Admin action)");
+  closeModal();
+}
 </script>
 
 </body>
