@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QuickPress | Partner Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --yellow:#FFD84D;
+  --bg:#f6f6f6;
+  --card:#fff;
+  --text:#222;
+  --muted:#777;
+  --danger:#ff7675;
+  --success:#55efc4;
+}
+
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text)}
+
+/* HEADER */
+.header{
+  background:var(--yellow);
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.header h2{margin:0;font-size:18px}
+.back{
+  background:#fff;border:none;padding:8px 14px;border-radius:8px;
+  cursor:pointer;font-weight:600;
+}
+
+/* CONTAINER */
+.container{max-width:1200px;margin:auto;padding:16px}
+
+/* FILTERS */
+.filters{
+  display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px
+}
+.filters select,.filters input{
+  padding:10px;border-radius:8px;border:1px solid #ddd
+}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{
+  width:100%;border-collapse:collapse;background:#fff;
+  border-radius:12px;overflow:hidden
+}
+th,td{
+  padding:12px;border-bottom:1px solid #eee;text-align:left
+}
+th{background:#fafafa;font-size:13px}
+
+.badge{
+  padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700
+}
+.active{background:var(--success)}
+.blocked{background:var(--danger);color:#fff}
+
+/* ACTIONS */
+.actions button{
+  padding:6px 10px;border:none;border-radius:6px;
+  cursor:pointer;font-size:12px;margin-right:4px
+}
+.block{background:var(--danger);color:#fff}
+.unblock{background:var(--success)}
+.view{background:var(--yellow)}
+.small{font-size:12px;color:var(--muted)}
+
+/* MOBILE */
+@media(max-width:600px){
+  th,td{font-size:12px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h2>🏪 Partner Management</h2>
+  <button class="back" onclick="goBack()">Dashboard</button>
+</div>
+
+<div class="container">
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <select id="statusFilter" onchange="loadPartners()">
+      <option value="">All Status</option>
+      <option value="active">Active</option>
+      <option value="blocked">Blocked</option>
+    </select>
+
+    <input type="text" id="searchInput"
+      placeholder="Search by email / shop name"
+      onkeyup="loadPartners()">
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Partner</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Total Orders</th>
+          <th>Wallet ₹</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="partnersBody">
+        <tr><td colspan="6">Loading partners...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import {
+  getFirestore, collection, getDocs, doc, getDoc, updateDoc,
+  query, where
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d",
+  storageBucket: "quickpress-e486d.firebasestorage.app",
+  messagingSenderId: "572695394794",
+  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* AUTH CHECK */
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){
+    location.href="../login.html";
+    return;
+  }
+  const snap = await getDoc(doc(db,"users",user.uid));
+  if(!snap.exists() || snap.data().role!=="admin"){
+    alert("Unauthorized Admin");
+    location.href="../login.html";
+    return;
+  }
+  loadPartners();
+});
+
+window.goBack = ()=> location.href="dashboard.html";
+
+/* LOAD PARTNERS */
+window.loadPartners = async ()=>{
+  const body = document.getElementById("partnersBody");
+  body.innerHTML = "<tr><td colspan='6'>Loading...</td></tr>";
+
+  const status = document.getElementById("statusFilter").value;
+  const search = document.getElementById("searchInput").value.toLowerCase();
+
+  let q = query(collection(db,"users"), where("role","==","partner"));
+  if(status) q = query(q, where("status","==",status));
+
+  const snap = await getDocs(q);
+  body.innerHTML="";
+
+  snap.forEach(s=>{
+    const d = s.data();
+    const name = d.shopName || d.name || "—";
+    const email = d.email || "—";
+    if(search && !email.toLowerCase().includes(search) &&
+       !name.toLowerCase().includes(search)) return;
+
+    body.innerHTML += `
+      <tr>
+        <td>${name}<div class="small">${s.id}</div></td>
+        <td>${email}</td>
+        <td>
+          <span class="badge ${d.status==='active'?'active':'blocked'}">
+            ${d.status}
+          </span>
+        </td>
+        <td>${d.totalOrders || 0}</td>
+        <td>₹${d.wallet || 0}</td>
+        <td class="actions">
+          ${
+            d.status==="active"
+            ? `<button class="block" onclick="setStatus('${s.id}','blocked')">Block</button>`
+            : `<button class="unblock" onclick="setStatus('${s.id}','active')">Unblock</button>`
+          }
+          <button class="view" onclick="alert('Partner details page next')">
+            View
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  if(!body.innerHTML){
+    body.innerHTML="<tr><td colspan='6'>No partners found</td></tr>";
+  }
+};
+
+/* BLOCK / UNBLOCK PARTNER */
+window.setStatus = async (uid, status)=>{
+  if(!confirm("Are you sure?")) return;
+  await updateDoc(doc(db,"users",uid),{ status });
+  loadPartners();
+};
+</script>
+
+</body>
+</html>
