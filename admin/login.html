@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QuickPress Admin | Secure Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- GLOBAL UI -->
+<link rel="stylesheet" href="../assets/ui.css">
+
+<style>
+.auth-wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#111,#FFD84D);
+}
+.auth-card{
+  width:100%;
+  max-width:380px;
+  background:#fff;
+  border-radius:22px;
+  padding:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+  animation:pop .4s ease;
+}
+@keyframes pop{
+  from{transform:scale(.9);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.logo{
+  text-align:center;
+  margin-bottom:18px;
+}
+.logo img{
+  height:60px;
+}
+.logo h2{
+  margin:10px 0 4px;
+}
+.sub{
+  font-size:13px;
+  color:#777;
+}
+.btn{
+  width:100%;
+  margin-top:14px;
+}
+.warning{
+  margin-top:16px;
+  font-size:12px;
+  color:#444;
+  text-align:center;
+  background:#fff3c4;
+  padding:8px;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <div class="logo">
+      <img src="../assets/logo.png" alt="QuickPress">
+      <h2>Admin Login</h2>
+      <div class="sub">Restricted access only</div>
+    </div>
+
+    <input id="email" type="email" placeholder="Admin email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button class="btn" onclick="login()">Secure Login</button>
+
+    <div class="warning">
+      ⚠️ Unauthorized access is prohibited
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/ui.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+const app = initializeApp({
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* LOGIN */
+window.login = async ()=>{
+  showLoader();
+  try{
+    const res = await signInWithEmailAndPassword(
+      auth, email.value, password.value
+    );
+
+    const snap = await getDoc(doc(db,"users",res.user.uid));
+    hideLoader();
+
+    if(!snap.exists()){
+      toast("Admin profile not found");
+      auth.signOut();
+      return;
+    }
+
+    const data = snap.data();
+
+    if(data.role !== "admin"){
+      toast("Unauthorized: Admin access only");
+      auth.signOut();
+      return;
+    }
+
+    if(data.status !== "active"){
+      toast("Admin account disabled");
+      auth.signOut();
+      return;
+    }
+
+    location.href = "dashboard.html";
+
+  }catch(e){
+    hideLoader();
+    toast("Invalid admin credentials");
+  }
+};
+</script>
+
+</body>
+</html>
