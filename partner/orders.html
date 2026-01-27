@@ -284,6 +284,41 @@ function closeModal(){
 <link rel="stylesheet" href="../assets/ui.css">
 <script src="../assets/ui.js"></script>
 <!-- =============================== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { autoAssignRider } from "../assets/rider-mapping.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
+const db = getFirestore(app);
+
+/* PARTNER ACCEPT ORDER */
+window.acceptOrder = async (orderId, hubId)=>{
+  try{
+    showLoader();
+
+    // Partner accepts
+    await updateDoc(doc(db,"orders",orderId),{
+      status:"ACCEPTED"
+    });
+
+    // Auto assign rider
+    const riderId = await autoAssignRider(orderId, hubId);
+
+    hideLoader();
+    toast("Rider assigned automatically","success");
+    console.log("Assigned rider:", riderId);
+
+  }catch(e){
+    hideLoader();
+    alert(e);
+  }
+};
+</script>
 
 </body>
 </html>
