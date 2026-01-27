@@ -2,189 +2,216 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>QuickPress – 10 Min Ironing</title>
+<title>QuickPress</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="../assets/ui.css">
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-/* BRAND COLORS */
 :root{
   --yellow:#FFD84D;
+  --yellow-soft:#FFF6D6;
   --dark:#222;
+  --gray:#777;
 }
 
-/* HEADER */
-header{
-  background:var(--yellow);
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-header img{height:40px}
-.city{
-  font-size:14px;
-  cursor:pointer;
-}
-
-/* HERO */
-.hero{
-  padding:25px;
-  background:#fffbea;
-}
-.hero h1{
-  font-size:26px;
-  margin-bottom:10px;
-}
-.hero p{color:#444}
-.hero button{
-  margin-top:15px;
-  background:var(--yellow);
-  border:none;
-  padding:12px 20px;
-  border-radius:8px;
-  font-size:16px;
-}
-
-/* SERVICES */
-.services{
-  padding:20px;
-}
-.service-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-}
-.service{
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
   background:#fff;
-  padding:15px;
-  border-radius:12px;
-  text-align:center;
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
 }
-.service img{height:40px}
 
-/* STATS */
-.stats{
-  background:#fffbea;
-  padding:20px;
+/* ===== TOP BAR ===== */
+.top{
+  background:linear-gradient(#FFE58A, #FFF);
+  padding:14px;
+}
+
+.top h1{
+  font-size:26px;
+  margin:0;
+}
+
+.top small{
+  color:#d22;
+  font-weight:600;
+}
+
+/* ===== SEARCH ===== */
+.search{
+  margin-top:12px;
+  background:#fff;
+  border-radius:12px;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+
+.search input{
+  border:none;
+  outline:none;
+  width:100%;
+  font-size:15px;
+}
+
+/* ===== CATEGORY ICON STRIP ===== */
+.icon-strip{
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  padding:14px 10px;
+}
+
+.icon-strip div{
+  text-align:center;
+  font-size:12px;
+  color:#333;
+}
+
+.icon-strip i{
+  font-size:22px;
+  margin-bottom:6px;
+}
+
+/* ===== SECTION TITLE ===== */
+.section{
+  padding:12px;
+}
+.section h3{
+  margin:0 0 10px;
+}
+
+/* ===== CATEGORY CARDS ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.card{
+  background:#F2FAF8;
+  border-radius:16px;
+  padding:16px 10px;
+  text-align:center;
+}
+
+.card i{
+  font-size:30px;
+  margin-bottom:8px;
+  color:#1a7;
+}
+
+.card p{
+  font-size:13px;
+  margin:0;
+}
+
+/* ===== CART FLOAT ===== */
+.cart-bar{
+  position:fixed;
+  bottom:70px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#2E7D32;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:30px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  font-weight:600;
+}
+
+/* ===== BOTTOM NAV ===== */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:1px solid #eee;
   display:flex;
   justify-content:space-around;
+  padding:8px 0;
+}
+
+.nav div{
   text-align:center;
+  font-size:11px;
+  color:#444;
 }
 
-/* REVIEWS */
-.reviews{
-  padding:20px;
+.nav i{
+  font-size:20px;
+  display:block;
+  margin-bottom:3px;
 }
-.review{
-  background:#fff;
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:10px;
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
-}
-
-/* FOOTER */
-footer{
-  background:#111;
-  color:#fff;
-  padding:20px;
-}
-footer a{color:#FFD84D;display:block;margin:5px 0}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header>
-  <img src="../assets/logo.png" alt="QuickPress">
-  <div class="city" onclick="changeCity()">📍 <span id="cityName">Select City</span></div>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <h1>10 Minute Ironing at Your Doorstep</h1>
-  <p>Fast • Affordable • Reliable</p>
-  <button onclick="goCategory()">Start Order</button>
-</section>
-
-<!-- SERVICES -->
-<section class="services">
-  <h3>Our Services</h3>
-  <div class="service-grid">
-    <div class="service">
-      <img src="../assets/icons/iron.png">
-      <p>Iron</p>
-    </div>
-    <div class="service">
-      <img src="../assets/icons/wash.png">
-      <p>Wash</p>
-    </div>
-    <div class="service">
-      <img src="../assets/icons/steam.png">
-      <p>Steam</p>
-    </div>
-    <div class="service">
-      <img src="../assets/icons/dry.png">
-      <p>Dry Clean</p>
-    </div>
+<!-- ===== HEADER ===== -->
+<div class="top">
+  <h1>QuickPress in <b>12 minutes</b> <small>High demand</small></h1>
+  <div class="search">
+    <i class="fa fa-search"></i>
+    <input placeholder='Search "ironing"'/>
+    <i class="fa fa-microphone"></i>
   </div>
-</section>
+</div>
 
-<!-- STATS -->
-<section class="stats">
-  <div>
-    <b>⭐ 4.8</b><br>Rating
+<!-- ===== ICON STRIP ===== -->
+<div class="icon-strip">
+  <div><i class="fa fa-layer-group"></i>All</div>
+  <div><i class="fa fa-shirt"></i>Iron</div>
+  <div><i class="fa fa-soap"></i>Wash</div>
+  <div><i class="fa fa-cloud"></i>Steam</div>
+  <div><i class="fa fa-droplet"></i>Dry</div>
+</div>
+
+<!-- ===== BESTSELLERS ===== -->
+<div class="section">
+  <h3>Bestsellers</h3>
+  <div class="grid">
+    <div class="card"><i class="fa fa-shirt"></i><p>Ironing</p></div>
+    <div class="card"><i class="fa fa-soap"></i><p>Washing</p></div>
+    <div class="card"><i class="fa fa-cloud"></i><p>Steam</p></div>
+    <div class="card"><i class="fa fa-droplet"></i><p>Dry Clean</p></div>
+    <div class="card"><i class="fa fa-truck-fast"></i><p>Express</p></div>
+    <div class="card"><i class="fa fa-clock"></i><p>Scheduled</p></div>
   </div>
-  <div>
-    <b>12k+</b><br>Orders
+</div>
+
+<!-- ===== GROCERY STYLE SERVICES ===== -->
+<div class="section">
+  <h3>Laundry & Care</h3>
+  <div class="grid">
+    <div class="card"><i class="fa fa-bed"></i><p>Bedsheet</p></div>
+    <div class="card"><i class="fa fa-suitcase"></i><p>Office Wear</p></div>
+    <div class="card"><i class="fa fa-child"></i><p>Kids Wear</p></div>
+    <div class="card"><i class="fa fa-vest"></i><p>Winter</p></div>
+    <div class="card"><i class="fa fa-shirt"></i><p>Daily Wear</p></div>
+    <div class="card"><i class="fa fa-hotel"></i><p>Hotel</p></div>
   </div>
-  <div>
-    <b>8</b><br>Cities
-  </div>
-</section>
+</div>
 
-<!-- REVIEWS -->
-<section class="reviews">
-  <h3>Customer Reviews</h3>
+<!-- ===== CART BAR ===== -->
+<div class="cart-bar">
+  <i class="fa fa-basket-shopping"></i>
+  View Cart • 3 items
+</div>
 
-  <div class="review">
-    ⭐⭐⭐⭐⭐<br>
-    Very fast service. Clothes perfectly ironed.
-  </div>
-
-  <div class="review">
-    ⭐⭐⭐⭐☆<br>
-    Affordable and reliable.
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <b>QuickPress</b>
-  <a href="#">About Us</a>
-  <a href="#">Support</a>
-  <a href="#">Terms & Privacy</a>
-  <a href="#">Contact</a>
-</footer>
-
-<script>
-const city = localStorage.getItem("selectedCity");
-if(city){
-  document.getElementById("cityName").innerText = city;
-}
-
-function changeCity(){
-  location.href = "city-select.html";
-}
-
-function goCategory(){
-  location.href = "category.html";
-}
-</script>
+<!-- ===== BOTTOM NAV ===== -->
+<div class="nav">
+  <div><i class="fa fa-house"></i>Home</div>
+  <div><i class="fa fa-grid"></i>Categories</div>
+  <div><i class="fa fa-receipt"></i>Orders</div>
+  <div><i class="fa fa-user"></i>Account</div>
+</div>
 
 </body>
 </html>
