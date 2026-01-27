@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QuickPress | Rider Orders</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="stylesheet" href="../assets/ui.css">
+</head>
+
+<body>
+
+<div class="container">
+  <h2>🚴 Rider Delivery</h2>
+
+  <p>Current Order ID:</p>
+  <code id="oid"></code>
+
+  <br><br>
+  <button onclick="picked()">Picked Up</button>
+  <br><br>
+  <button onclick="delivered()">Delivered</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { updateOrderStatus } from "../assets/order-status.js";
+import { completeOrder } from "../assets/orderEngine.js";
+
+/* FIREBASE */
+const app = initializeApp({
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const orderId = localStorage.getItem("currentOrderId");
+document.getElementById("oid").innerText = orderId;
+
+/* PICKED */
+window.picked = async ()=>{
+  try{
+    const snap = await getDoc(doc(db,"orders",orderId));
+    if(auth.currentUser.uid !== snap.data().riderId){
+      alert("Unauthorized");
+      return;
+    }
+    await updateOrderStatus(orderId,"PICKED_UP");
+    alert("📦 Picked up");
+  }catch(e){
+    alert(e);
+  }
+};
+
+/* DELIVERED */
+window.delivered = async ()=>{
+  try{
+    const snap = await getDoc(doc(db,"orders",orderId));
+    if(auth.currentUser.uid !== snap.data().riderId){
+      alert("Unauthorized");
+      return;
+    }
+
+    await updateOrderStatus(orderId,"DELIVERED");
+    await completeOrder(orderId);
+
+    alert("✅ Delivered & earnings credited");
+  }catch(e){
+    alert(e);
+  }
+};
+</script>
+
+</body>
+</html>
