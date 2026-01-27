@@ -1,20 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>QuickPress | Checkout</title>
+<title>Checkout</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="../assets/ui.css">
 </head>
 
 <body>
-
 <div class="container">
-  <h2>🧺 Checkout</h2>
+  <h2>🧾 Checkout</h2>
 
-  <p><b>City:</b> <span id="cityName"></span></p>
-  <p><b>Total Amount:</b> ₹299</p>
+  <p><b>City:</b> <span id="city"></span></p>
+  <p><b>Total:</b> ₹<span id="total">0</span></p>
 
   <button onclick="placeOrder()">Place Order</button>
 </div>
@@ -23,36 +21,41 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getTotal } from "../assets/cart.js";
 import { createOrderWithAutoMapping } from "../assets/order-mapping.js";
 
-/* FIREBASE CONFIG */
 const app = initializeApp({
-  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-  authDomain: "quickpress-e486d.firebaseapp.com",
-  projectId: "quickpress-e486d"
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
 });
 
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* SHOW CITY */
-document.getElementById("cityName").innerText =
-  localStorage.getItem("selectedCity") || "Not selected";
+const city = localStorage.getItem("selectedCity");
+document.getElementById("city").innerText = city || "Not selected";
 
-/* PLACE ORDER */
+const total = getTotal();
+document.getElementById("total").innerText = total;
+
 window.placeOrder = async ()=>{
-  try{
-    await createOrderWithAutoMapping({
-      cityId: localStorage.getItem("selectedCity"),
-      totalAmount: 299
-    });
-    alert("✅ Order placed successfully");
-    location.href = "order-tracking.html";
-  }catch(e){
-    alert(e);
+  if(!city){
+    alert("Select city first");
+    return;
   }
+  if(total <= 0){
+    alert("Cart empty");
+    return;
+  }
+
+  await createOrderWithAutoMapping({
+    cityId: city,
+    totalAmount: total
+  });
+
+  alert("✅ Order placed");
 };
 </script>
-
 </body>
 </html>
