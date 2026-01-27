@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
 <title>QuickPress</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
   --yellow:#FFD84D;
   --dark:#111;
-  --gray:#777;
-  --card:#f8f8f8;
+  --gray:#666;
 }
 
 *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto}
-body{margin:0;background:#fff;color:#111}
+body{margin:0;background:#fff;color:#111;padding-bottom:100px}
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
 header{
   background:linear-gradient(180deg,#fff7cc,#ffffff);
   padding:16px;
@@ -27,168 +26,182 @@ header{
 .logo{font-size:26px;font-weight:800}
 .profile{
   width:36px;height:36px;border-radius:50%;
-  background:var(--yellow);display:flex;align-items:center;justify-content:center;
-  font-weight:700;
+  background:var(--yellow);display:flex;
+  align-items:center;justify-content:center;font-weight:700;
 }
-.sub{
-  margin-top:6px;font-weight:700;
+.loc{
+  margin-top:6px;font-weight:700;font-size:14px;
 }
 .search{
-  margin-top:14px;
-  background:#fff;border-radius:14px;
+  margin-top:14px;background:#fff;border-radius:14px;
   padding:12px 14px;display:flex;gap:8px;
   box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
 .search input{border:none;outline:none;width:100%;font-size:15px}
 
-/* ===== HERO ===== */
+/* ================= HERO ================= */
 .hero{padding:20px}
 .hero h1{font-size:30px;line-height:1.2}
 .hero span{color:#ff9f00;font-weight:900}
+.hero p{margin-top:6px;color:#444}
 
-/* ===== SLIDER ===== */
-.slider{
-  margin:10px 16px;
-  height:110px;border-radius:16px;
-  background:linear-gradient(135deg,#ffe58a,#ffd84d);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:20px;
-}
-
-/* ===== CATEGORIES ===== */
-.cats{
+/* ================= DELIVERY MODE SLIDER ================= */
+.mode-slider{
   display:flex;gap:14px;padding:10px 16px;overflow-x:auto;
 }
-.cat{
-  min-width:70px;text-align:center;
-}
-.cat div{
-  width:56px;height:56px;border-radius:16px;
-  background:#fff;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 10px rgba(0,0,0,.08);
-  margin:auto;font-size:26px;
+.mode{
+  min-width:140px;border-radius:18px;padding:16px;
+  background:linear-gradient(135deg,#ffe082,#ffd84d);
+  font-weight:800;text-align:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
 }
 
-/* ===== BESTSELLERS ===== */
+/* ================= BESTSELLERS ================= */
 .section{padding:20px}
-.section h2{margin-bottom:12px}
-.best{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
-}
-.best .card{
-  background:#f2fbf7;border-radius:16px;padding:12px;text-align:center;
-}
-.card div{font-size:34px}
+.section h2{margin-bottom:14px}
 
-/* ===== WE ARE LIVE ===== */
-.live{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+.best{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.card{
+  background:#f8f8f8;border-radius:16px;
+  padding:14px;text-align:center;
+}
+.card div{font-size:32px;margin-bottom:6px}
+
+/* ================= CITY GRAPH ================= */
+.city-graph{
+  display:flex;align-items:flex-end;gap:12px;
+  height:140px;margin-top:16px;
+}
+.city-graph div{
+  flex:1;background:var(--yellow);
+  border-radius:12px;text-align:center;
+  font-size:12px;padding-top:6px;
+}
+
+/* ================= STATS SLIDER ================= */
+.stats-slider{
+  display:flex;gap:14px;overflow-x:auto;
+  padding:10px 16px;
 }
 .stat{
-  background:var(--card);
-  padding:16px;border-radius:16px;text-align:center;
+  min-width:160px;background:#111;color:#fff;
+  border-radius:18px;padding:16px;
 }
 .stat h3{margin:6px 0;font-size:22px}
 
-/* ===== CART POPUP ===== */
-#cart{
-  position:fixed;bottom:80px;left:50%;
-  transform:translateX(-50%);
-  background:#2e7d32;color:#fff;
-  padding:14px 18px;border-radius:30px;
-  display:none;font-weight:700;
+/* ================= FOOTER ================= */
+.footer-links{
+  background:#111;color:#fff;padding:30px 16px;
+}
+.footer-links h3{margin-bottom:10px}
+.footer-links a{
+  display:block;color:#ccc;text-decoration:none;margin:6px 0;
 }
 
-/* ===== FOOTER NAV ===== */
-footer{
+.footer-nav{
   position:fixed;bottom:0;left:0;right:0;
   background:#fff;border-top:1px solid #eee;
   display:flex;justify-content:space-around;padding:10px 0;
 }
-footer div{text-align:center;font-size:12px}
-
-/* ===== FOOTER LINKS ===== */
-.links{
-  padding:30px 16px 100px;
-  background:#111;color:#fff;
-}
-.links a{color:#ccc;text-decoration:none;display:block;margin:6px 0}
+.footer-nav div{text-align:center;font-size:12px}
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="top">
     <div class="logo">QuickPress</div>
     <div class="profile">H</div>
   </div>
-  <div class="sub">📍 <span id="loc">Detecting location…</span></div>
+
+  <div class="loc">📍 <span id="location">Detecting location…</span></div>
 
   <div class="search">
-    🔍 <input placeholder="Search ironing, wash…" />
+    🔍 <input placeholder="Search ironing, wash, steam…" />
   </div>
 </header>
 
+<!-- HERO -->
 <div class="hero">
   <h1>Fresh Clothes.<br><span>Faster Than Ever.</span></h1>
-  Iron • Wash • Steam • Dry Clean
+  <p>Iron • Wash • Steam • Dry Clean</p>
 </div>
 
-<div class="slider">Fast Delivery in Your City</div>
-
-<div class="cats">
-  <div class="cat"><div>👕</div>Iron</div>
-  <div class="cat"><div>🧼</div>Wash</div>
-  <div class="cat"><div>☁️</div>Steam</div>
-  <div class="cat"><div>💧</div>Dry</div>
+<!-- EXPRESS / SCHEDULED -->
+<div class="mode-slider">
+  <div class="mode">⚡ Express Delivery</div>
+  <div class="mode">📅 Scheduled Delivery</div>
 </div>
 
+<!-- BESTSELLERS -->
 <div class="section">
   <h2>Bestsellers</h2>
   <div class="best">
     <div class="card"><div>👕</div>Ironing</div>
     <div class="card"><div>🧼</div>Washing</div>
+    <div class="card"><div>☁️</div>Steam</div>
+    <div class="card"><div>💧</div>Dry Clean</div>
     <div class="card"><div>⚡</div>Express</div>
+    <div class="card"><div>📅</div>Scheduled</div>
   </div>
 </div>
 
+<!-- CITY GRAPH -->
 <div class="section">
-  <h2>We Are Live</h2>
-  <div class="live">
-    <div class="stat"><h3>⭐ 4.8</h3>Rating</div>
-    <div class="stat"><h3>12k+</h3>Customers</div>
-    <div class="stat"><h3>40+</h3>Partners</div>
-    <div class="stat"><h3>Kasganj<br>Noida<br>Agra</h3>Cities</div>
+  <h2>We are live</h2>
+  <div class="city-graph">
+    <div style="height:60%">Kasganj</div>
+    <div style="height:85%">Noida</div>
+    <div style="height:90%">Delhi</div>
+    <div style="height:70%">Aligarh</div>
+    <div style="height:80%">Gurugram</div>
   </div>
 </div>
 
-<div class="links">
+<!-- STATS SLIDER -->
+<div class="section">
+  <h2>Our Growth</h2>
+</div>
+<div class="stats-slider">
+  <div class="stat"><h3>12k+</h3>Active Users</div>
+  <div class="stat"><h3>4.8⭐</h3>Rating</div>
+  <div class="stat"><h3>40+</h3>Partners</div>
+  <div class="stat"><h3>60+</h3>Delivery Boys</div>
+</div>
+
+<!-- FOOTER LINKS -->
+<div class="footer-links">
   <h3>QuickPress</h3>
-  <a href="#">About us</a>
+  <a href="#">About Us</a>
   <a href="#">Join as Partner</a>
   <a href="#">Join as Rider</a>
   <a href="#">Help & Support</a>
   <a href="#">Privacy Policy</a>
 </div>
 
-<div id="cart">🧺 1 item added • View Cart</div>
-
-<footer>
+<!-- FOOTER NAV -->
+<div class="footer-nav">
   <div>🏠<br>Home</div>
   <div>📦<br>Orders</div>
   <div>👤<br>Account</div>
-</footer>
+</div>
 
 <script>
-/* Auto location */
-navigator.geolocation?.getCurrentPosition(p=>{
-  document.getElementById("loc").innerText=
-    "Near you ("+p.coords.latitude.toFixed(2)+")";
-},()=>{document.getElementById("loc").innerText="Kasganj"});
-
-/* Demo cart */
-setTimeout(()=>{document.getElementById("cart").style.display="block"},4000);
+/* AUTO LOCATION */
+navigator.geolocation?.getCurrentPosition(
+  p=>{
+    document.getElementById("location").innerText="Near you";
+  },
+  ()=>{
+    document.getElementById("location").innerText="Kasganj";
+  }
+);
 </script>
 
 </body>
