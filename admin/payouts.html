@@ -2,242 +2,225 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QuickPress | Payout Approval</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
-  --yellow:#FFD400;
+  --yellow:#FFD84D;
+  --bg:#f6f6f6;
+  --card:#fff;
   --text:#222;
   --muted:#777;
-  --bg:#f6f6f6;
+  --success:#55efc4;
+  --danger:#ff7675;
+  --pending:#ffeaa7;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{background:var(--bg);color:var(--text)}
-
-/* LAYOUT */
-.wrapper{display:flex;min-height:100vh}
-
-/* SIDEBAR */
-.sidebar{
-  width:240px;background:#fff;border-right:1px solid #eee;padding:20px
-}
-.logo{text-align:center;margin-bottom:24px}
-.logo img{width:140px}
-.nav a{
-  display:block;padding:12px 14px;border-radius:12px;color:#333;
-  text-decoration:none;font-size:14px;margin-bottom:6px
-}
-.nav a.active,.nav a:hover{background:var(--yellow);font-weight:600}
-
-/* MAIN */
-.main{flex:1;padding:20px}
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text)}
 
 /* HEADER */
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.header b{font-size:18px}
-
-/* TABS */
-.tabs{
-  display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap
+.header{
+  background:var(--yellow);
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
-.tab{
-  background:#fff;border:1px solid #ddd;border-radius:20px;
-  padding:8px 14px;font-size:13px;cursor:pointer
+.header h2{margin:0;font-size:18px}
+.back{
+  background:#fff;border:none;padding:8px 14px;border-radius:8px;
+  cursor:pointer;font-weight:600;
 }
-.tab.active{background:var(--yellow);border-color:var(--yellow);font-weight:600}
 
-/* CARD */
-.card{
-  background:#fff;padding:18px;border-radius:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08)
+/* CONTAINER */
+.container{max-width:1200px;margin:auto;padding:16px}
+
+/* FILTER */
+.filters{
+  display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px
+}
+.filters select{
+  padding:10px;border-radius:8px;border:1px solid #ddd
 }
 
 /* TABLE */
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:10px;border-bottom:1px solid #eee;text-align:left}
-th{background:#f3f3f3}
-
-/* BADGES */
-.badge{
-  padding:4px 8px;border-radius:8px;font-size:11px;font-weight:600
+table{
+  width:100%;border-collapse:collapse;background:#fff;
+  border-radius:12px;overflow:hidden
 }
-.pending{background:#fde68a}
-.paid{background:#bbf7d0}
-.rejected{background:#fecaca}
+th,td{
+  padding:12px;border-bottom:1px solid #eee;text-align:left
+}
+th{background:#fafafa;font-size:13px}
+
+.badge{
+  padding:4px 10px;border-radius:20px;
+  font-size:12px;font-weight:700
+}
+.pending{background:var(--pending)}
+.approved{background:var(--success)}
+.rejected{background:var(--danger);color:#fff}
 
 /* ACTIONS */
 .actions button{
-  padding:6px 10px;border:none;border-radius:10px;
-  font-size:12px;font-weight:600;cursor:pointer;margin-right:6px
+  padding:6px 10px;border:none;border-radius:6px;
+  cursor:pointer;font-size:12px;margin-right:4px
 }
-.approve{background:var(--yellow)}
-.reject{background:#eee}
-.mark{background:#e5e7eb}
+.approve{background:var(--success)}
+.reject{background:var(--danger);color:#fff}
 
-/* MODAL */
-.modal{
-  position:fixed;inset:0;background:rgba(0,0,0,.4);
-  display:none;align-items:center;justify-content:center;z-index:99
-}
-.modal-box{
-  background:#fff;width:100%;max-width:420px;
-  border-radius:20px;padding:20px
-}
-.modal-box h3{margin-bottom:10px}
-.modal-box p{font-size:13px;margin:6px 0}
-.modal-box button{
-  width:100%;padding:12px;border-radius:14px;
-  background:var(--yellow);border:none;font-weight:600;margin-top:10px
-}
-.close{text-align:right;font-size:14px;color:#555;cursor:pointer}
+.small{font-size:12px;color:var(--muted)}
 
-@media(max-width:768px){
-  .sidebar{display:none}
+@media(max-width:600px){
+  th,td{font-size:12px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <img src="../assets/logo.png" alt="QuickPress">
-    </div>
-    <div class="nav">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="orders.html">Orders</a>
-      <a href="users.html">Users</a>
-      <a class="active" href="#">Payouts</a>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <div class="header">
-      <b>Payout Approval</b>
-    </div>
-
-    <!-- TABS -->
-    <div class="tabs">
-      <div class="tab active" onclick="showTab('pending',this)">Pending</div>
-      <div class="tab" onclick="showTab('paid',this)">Paid</div>
-      <div class="tab" onclick="showTab('rejected',this)">Rejected</div>
-    </div>
-
-    <!-- PENDING -->
-    <div id="pending" class="card table-wrap">
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Role</th>
-          <th>Amount</th>
-          <th>Method</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-        <tr>
-          <td>Amit</td>
-          <td>Partner</td>
-          <td>₹500</td>
-          <td>Bank</td>
-          <td><span class="badge pending">Pending</span></td>
-          <td class="actions">
-            <button class="approve" onclick="openModal()">Approve</button>
-            <button class="reject">Reject</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Rahul</td>
-          <td>Rider</td>
-          <td>₹300</td>
-          <td>UPI</td>
-          <td><span class="badge pending">Pending</span></td>
-          <td class="actions">
-            <button class="approve" onclick="openModal()">Approve</button>
-            <button class="reject">Reject</button>
-          </td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- PAID -->
-    <div id="paid" class="card table-wrap" style="display:none">
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Role</th>
-          <th>Amount</th>
-          <th>Date</th>
-          <th>Status</th>
-        </tr>
-        <tr>
-          <td>Suresh</td>
-          <td>Rider</td>
-          <td>₹400</td>
-          <td>22 Jan</td>
-          <td><span class="badge paid">Paid</span></td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- REJECTED -->
-    <div id="rejected" class="card table-wrap" style="display:none">
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Role</th>
-          <th>Amount</th>
-          <th>Status</th>
-        </tr>
-        <tr>
-          <td>Vikas</td>
-          <td>Partner</td>
-          <td>₹350</td>
-          <td><span class="badge rejected">Rejected</span></td>
-        </tr>
-      </table>
-    </div>
-
-  </main>
+<!-- HEADER -->
+<div class="header">
+  <h2>💰 Payout Approval</h2>
+  <button class="back" onclick="goBack()">Dashboard</button>
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <div class="close" onclick="closeModal()">✖ Close</div>
-    <h3>Payout Details</h3>
-    <p><b>Name:</b> Amit</p>
-    <p><b>Role:</b> Partner</p>
-    <p><b>Amount:</b> ₹500</p>
-    <p><b>Method:</b> Bank / UPI</p>
-    <button onclick="markPaid()">Mark as Paid</button>
+<div class="container">
+
+  <!-- FILTER -->
+  <div class="filters">
+    <select id="typeFilter" onchange="loadPayouts()">
+      <option value="">All</option>
+      <option value="partner">Partner</option>
+      <option value="rider">Rider</option>
+    </select>
+
+    <select id="statusFilter" onchange="loadPayouts()">
+      <option value="">All Status</option>
+      <option value="pending">Pending</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+    </select>
   </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Role</th>
+          <th>Amount ₹</th>
+          <th>Status</th>
+          <th>Requested At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="payoutBody">
+        <tr><td colspan="6">Loading payouts...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
-<script>
-function showTab(id,el){
-  ["pending","paid","rejected"].forEach(t=>{
-    document.getElementById(t).style.display="none";
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import {
+  getFirestore, collection, getDocs, doc, getDoc, updateDoc,
+  query, where
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+/* CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d",
+  storageBucket: "quickpress-e486d.firebasestorage.app",
+  messagingSenderId: "572695394794",
+  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* AUTH CHECK */
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){ location.href="../login.html"; return; }
+  const snap = await getDoc(doc(db,"users",user.uid));
+  if(!snap.exists() || snap.data().role!=="admin"){
+    alert("Unauthorized Admin");
+    location.href="../login.html";
+    return;
+  }
+  loadPayouts();
+});
+
+window.goBack = ()=> location.href="dashboard.html";
+
+/* LOAD PAYOUTS */
+window.loadPayouts = async ()=>{
+  const body = document.getElementById("payoutBody");
+  body.innerHTML="<tr><td colspan='6'>Loading...</td></tr>";
+
+  const type = document.getElementById("typeFilter").value;
+  const status = document.getElementById("statusFilter").value;
+
+  let q = collection(db,"payouts");
+  if(type) q = query(q, where("role","==",type));
+  if(status) q = query(q, where("status","==",status));
+
+  const snap = await getDocs(q);
+  body.innerHTML="";
+
+  snap.forEach(s=>{
+    const d = s.data();
+    body.innerHTML += `
+      <tr>
+        <td>${d.name || "—"}<div class="small">${d.userId}</div></td>
+        <td>${d.role}</td>
+        <td>₹${d.amount}</td>
+        <td>
+          <span class="badge ${d.status}">
+            ${d.status}
+          </span>
+        </td>
+        <td>${new Date(d.createdAt).toLocaleString()}</td>
+        <td class="actions">
+          ${
+            d.status==="pending"
+            ? `
+              <button class="approve" onclick="updateStatus('${s.id}','approved')">Approve</button>
+              <button class="reject" onclick="updateStatus('${s.id}','rejected')">Reject</button>
+            `
+            : `—`
+          }
+        </td>
+      </tr>
+    `;
   });
-  document.getElementById(id).style.display="block";
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-  el.classList.add("active");
-}
-function openModal(){document.getElementById("modal").style.display="flex"}
-function closeModal(){document.getElementById("modal").style.display="none"}
-function markPaid(){
-  alert("Marked as Paid (Admin action)");
-  closeModal();
-}
+
+  if(!body.innerHTML){
+    body.innerHTML="<tr><td colspan='6'>No payout requests</td></tr>";
+  }
+};
+
+/* APPROVE / REJECT */
+window.updateStatus = async (id,status)=>{
+  if(!confirm("Confirm action?")) return;
+  await updateDoc(doc(db,"payouts",id),{
+    status,
+    processedAt:Date.now()
+  });
+  loadPayouts();
+};
 </script>
 
 </body>
