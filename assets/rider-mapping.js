@@ -11,11 +11,9 @@ import {
 
 const db = getFirestore();
 
-/* 🔹 AUTO ASSIGN RIDER */
 export async function autoAssignRider(orderId, hubId) {
 
-  // 1️⃣ Find online riders in same hub
-  const riderSnap = await getDocs(
+  const snap = await getDocs(
     query(
       collection(db, "users"),
       where("role", "==", "rider"),
@@ -25,33 +23,18 @@ export async function autoAssignRider(orderId, hubId) {
     )
   );
 
-  if (riderSnap.empty) {
-    throw "No rider available right now";
-  }
+  if (snap.empty) throw "No rider online";
 
-  // 2️⃣ Pick least busy rider
-  let selected = null;
-  let minOrders = Infinity;
+  let rider = snap.docs[0];
 
-  riderSnap.forEach(d => {
-    const r = d.data();
-    const load = r.currentOrders || 0;
-    if (load < minOrders) {
-      minOrders = load;
-      selected = d;
-    }
-  });
-
-  // 3️⃣ Update order
   await updateDoc(doc(db, "orders", orderId), {
-    riderId: selected.id,
+    riderId: rider.id,
     status: "RIDER_ASSIGNED"
   });
 
-  // 4️⃣ Increase rider load
-  await updateDoc(doc(db, "users", selected.id), {
+  await updateDoc(doc(db, "users", rider.id), {
     currentOrders: increment(1)
   });
 
-  return selected.id;
+  return rider.id;
 }
