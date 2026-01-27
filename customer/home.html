@@ -14,12 +14,19 @@
 
 <!-- HEADER -->
 <header class="header">
-  <div class="top">
-    <div>
-      <h1>QuickPress</h1>
-      <p><b>12 minutes</b> • High demand</p>
+  <div class="top-row">
+    <div class="location" onclick="detectLocation()">
+      <i class="fa fa-location-dot"></i>
+      <div>
+        <strong id="city">Detecting…</strong>
+        <span>Tap to refresh</span>
+      </div>
     </div>
-    <i class="fa fa-user-circle profile" onclick="openProfile()"></i>
+
+    <div class="icons">
+      <div class="wallet" onclick="openWallet()">₹<span id="wallet">120</span></div>
+      <i class="fa fa-user-circle profile" onclick="openProfile()"></i>
+    </div>
   </div>
 
   <div class="search">
@@ -28,29 +35,28 @@
   </div>
 </header>
 
+<!-- DELIVERY MODE -->
+<section class="mode">
+  <button class="active" onclick="setMode('express')">
+    🚀 Express (Fast delivery)
+  </button>
+  <button onclick="setMode('scheduled')">
+    📅 Scheduled
+  </button>
+</section>
+
 <!-- HERO -->
 <section class="hero">
   <h2>Fresh Clothes.<br><span>Faster Than Ever.</span></h2>
   <p>Iron • Wash • Steam • Dry Clean</p>
 </section>
 
-<!-- CATEGORY SLIDER -->
-<section class="category-slider">
-  <div class="cat active" onclick="openCategory('all')">
-    <i class="fa fa-layer-group"></i><span>All</span>
-  </div>
-  <div class="cat" onclick="openCategory('iron')">
-    <i class="fa fa-shirt"></i><span>Iron</span>
-  </div>
-  <div class="cat" onclick="openCategory('steam')">
-    <i class="fa fa-cloud"></i><span>Steam</span>
-  </div>
-  <div class="cat" onclick="openCategory('wash')">
-    <i class="fa fa-soap"></i><span>Wash</span>
-  </div>
-  <div class="cat" onclick="openCategory('dry')">
-    <i class="fa fa-droplet"></i><span>Dry</span>
-  </div>
+<!-- CATEGORY -->
+<section class="category">
+  <div onclick="openCategory('iron')"><i class="fa fa-shirt"></i>Iron</div>
+  <div onclick="openCategory('wash')"><i class="fa fa-soap"></i>Wash</div>
+  <div onclick="openCategory('steam')"><i class="fa fa-cloud"></i>Steam</div>
+  <div onclick="openCategory('dry')"><i class="fa fa-droplet"></i>Dry</div>
 </section>
 
 <!-- BESTSELLERS -->
@@ -58,77 +64,47 @@
 <h3>Bestsellers</h3>
 
 <div class="best-grid">
-  <div class="best-card" onclick="openCategory('iron')">
-    <div class="icon-box green"><i class="fa fa-shirt"></i></div>
-    <p>Ironing</p>
+  <div class="best green" onclick="openCategory('iron')">
+    <i class="fa fa-shirt"></i><p>Ironing</p>
   </div>
-  <div class="best-card" onclick="openCategory('steam')">
-    <div class="icon-box purple"><i class="fa fa-cloud"></i></div>
-    <p>Steam</p>
+  <div class="best blue" onclick="openCategory('wash')">
+    <i class="fa fa-soap"></i><p>Washing</p>
   </div>
-  <div class="best-card" onclick="openCategory('wash')">
-    <div class="icon-box blue"><i class="fa fa-soap"></i></div>
-    <p>Wash</p>
+  <div class="best purple" onclick="openCategory('steam')">
+    <i class="fa fa-cloud"></i><p>Steam</p>
   </div>
-  <div class="best-card" onclick="openCategory('dry')">
-    <div class="icon-box pink"><i class="fa fa-droplet"></i></div>
-    <p>Dry Clean</p>
+  <div class="best pink" onclick="openCategory('dry')">
+    <i class="fa fa-droplet"></i><p>Dry Clean</p>
   </div>
 </div>
 </section>
 
 <!-- WE ARE LIVE -->
 <section class="section live">
-<h3>We are live in</h3>
+<h3>We are live</h3>
 
 <div class="stats">
-  <div>
-    <strong>⭐ 4.8</strong>
-    <span>Rating</span>
-  </div>
-  <div>
-    <strong>25k+</strong>
-    <span>Deliveries</span>
-  </div>
-  <div>
-    <strong>180+</strong>
-    <span>Partners</span>
-  </div>
-  <div>
-    <strong>9k+</strong>
-    <span>Active Users</span>
-  </div>
+  <div><strong>4.8⭐</strong><span>Rating</span></div>
+  <div><strong>28k+</strong><span>Orders</span></div>
+  <div><strong>200+</strong><span>Partners</span></div>
+  <div><strong>12k+</strong><span>Users</span></div>
 </div>
 
-<div class="bar-graph">
-  <div style="height:70%">Kasganj</div>
-  <div style="height:90%">Noida</div>
-  <div style="height:65%">Agra</div>
-  <div style="height:50%">Badaun</div>
-  <div style="height:80%">Delhi</div>
+<div class="city-graph">
+  <div><i class="fa fa-city"></i>Kasganj</div>
+  <div><i class="fa fa-city"></i>Noida</div>
+  <div><i class="fa fa-city"></i>Agra</div>
+  <div><i class="fa fa-city"></i>Delhi</div>
 </div>
 </section>
 
-<!-- CART POPUP -->
-<div class="cart-popup" id="cartPopup">
-  <span id="cartText"></span>
-  <button onclick="goCart()">View Cart</button>
-</div>
-
-<!-- NAVBAR -->
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <div onclick="goHome()" class="active">
-    <i class="fa fa-home"></i><span>Home</span>
-  </div>
-  <div onclick="openCategory('all')">
-    <i class="fa fa-grid"></i><span>Categories</span>
-  </div>
-  <div onclick="goOrders()">
-    <i class="fa fa-receipt"></i><span>Orders</span>
-  </div>
-  <div onclick="openProfile()">
-    <i class="fa fa-user"></i><span>Account</span>
-  </div>
+  <div class="active" onclick="goHome()"><i class="fa fa-home"></i>Home</div>
+  <div onclick="openCategory('all')"><i class="fa fa-layer-group"></i>Categories</div>
+  <div onclick="goOrders()"><i class="fa fa-receipt"></i>Orders</div>
+  <div onclick="openWallet()"><i class="fa fa-wallet"></i>Wallet</div>
+  <div onclick="openProfile()"><i class="fa fa-user"></i>Account</div>
 </nav>
 
 <script src="home.js"></script>
