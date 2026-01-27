@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Select City</title>
+<link rel="stylesheet" href="../assets/ui.css">
+</head>
+
+<body>
+<div class="container">
+  <h2>Select City</h2>
+
+  <button onclick="selectCity('Kasganj')">Kasganj</button>
+  <button onclick="selectCity('Delhi')">Delhi</button>
+</div>
+
+<script>
+function selectCity(city){
+  localStorage.setItem("selectedCity",city);
+  alert("City selected: " + city);
+  location.href = "checkout.html";
+}
+</script>
+</body>
+</html>
