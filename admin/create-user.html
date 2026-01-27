@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Create Partner / Rider</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="../assets/ui.css">
 </head>
-<body>
 
+<body>
 <div class="container">
   <h2>Create Partner / Rider</h2>
 
   <input id="email" placeholder="Email">
   <input id="password" placeholder="Password">
+
   <select id="role">
     <option value="partner">Partner</option>
     <option value="rider">Rider</option>
@@ -52,9 +55,8 @@ window.createUser = async ()=>{
     createdAt: new Date()
   });
 
-  alert("User created");
+  alert("Account created successfully");
 };
 </script>
-
 </body>
 </html>
