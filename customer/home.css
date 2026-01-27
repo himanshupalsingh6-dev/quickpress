@@ -1,185 +1,193 @@
-:root{
-  --yellow:#FFD84D;
-  --yellow-deep:#FFC400;
-  --white:#ffffff;
-  --dark:#1e1e1e;
-  --gray:#777;
+/* =========================
+   QUICKPRESS – HOME UI
+   Blinkit Inspired
+   Brand: Yellow + White
+========================= */
+
+:root {
+  --yellow: #FFD400;
+  --yellow-soft: #FFF6CC;
+  --black: #111;
+  --gray: #666;
+  --card: #ffffff;
+  --bg: #fffdf5;
+  --radius: 18px;
 }
 
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
-  background:#fff;
-  color:var(--dark);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* HEADER */
-.qp-header{
-  background:linear-gradient(180deg,#FFE58A,#FFF);
-  padding:16px;
-}
-.qp-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.qp-top h1{margin:0;font-size:26px}
-.qp-top p{margin:2px 0;color:#b11;font-weight:600}
-.user-icon{font-size:26px}
-
-.qp-search{
-  margin-top:12px;
-  background:#fff;
-  padding:12px;
-  border-radius:14px;
-  display:flex;
-  gap:10px;
-  box-shadow:0 8px 20px rgba(0,0,0,.12);
-}
-.qp-search input{
-  border:none;
-  outline:none;
-  width:100%;
-  font-size:15px;
+body {
+  background: var(--bg);
+  color: var(--black);
 }
 
-/* HERO */
-.hero{
-  padding:20px;
-}
-.hero h2{
-  font-size:28px;
-  margin:0;
-}
-.hero h2 span{
-  color:#ff9800;
-}
-.hero p{
-  color:#555;
-  font-weight:500;
+/* ================= HEADER ================= */
+
+.header {
+  padding: 18px;
+  background: linear-gradient(180deg, var(--yellow), var(--yellow-soft));
 }
 
-/* ICON STRIP */
-.quick-icons{
-  display:flex;
-  gap:18px;
-  padding:10px;
-  overflow-x:auto;
-}
-.qi{
-  min-width:70px;
-  text-align:center;
-  padding:10px;
-  border-radius:14px;
-  transition:.3s;
-}
-.qi i{font-size:22px}
-.qi span{display:block;font-size:12px;margin-top:6px}
-.qi.active{
-  background:var(--yellow);
-  transform:scale(1.05);
+.brand {
+  font-size: 28px;
+  font-weight: 800;
 }
 
-/* SECTIONS */
-.section{padding:16px}
-.section h3{margin-bottom:12px}
-
-.card-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-.service-card{
-  background:#f4fbf9;
-  padding:18px 10px;
-  border-radius:18px;
-  text-align:center;
-  box-shadow:0 6px 14px rgba(0,0,0,.08);
-  transition:.3s;
-}
-.service-card:hover{
-  transform:translateY(-4px);
-}
-.service-card i{
-  font-size:30px;
-  color:#0a7;
-}
-.service-card p{
-  margin:8px 0 0;
-  font-weight:600;
+.delivery-time {
+  font-size: 15px;
+  margin-top: 4px;
 }
 
-/* CATEGORY */
-.soft-bg{background:#fafafa}
-.category-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-.cat{
-  background:#fff;
-  border-radius:18px;
-  padding:16px 8px;
-  text-align:center;
-  box-shadow:0 5px 14px rgba(0,0,0,.08);
-}
-.cat i{
-  font-size:28px;
-  color:#ff9800;
-}
-.cat span{
-  display:block;
-  margin-top:6px;
-  font-size:13px;
+.high-demand {
+  background: #ffef9f;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-left: 6px;
 }
 
-/* CART FLOAT */
-.cart-float{
-  position:fixed;
-  bottom:80px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#2e7d32;
-  color:#fff;
-  padding:12px 18px;
-  border-radius:30px;
-  display:flex;
-  gap:12px;
-  align-items:center;
-  box-shadow:0 10px 24px rgba(0,0,0,.25);
-}
-.cart-float button{
-  background:#fff;
-  color:#2e7d32;
-  border:none;
-  border-radius:20px;
-  padding:6px 14px;
-  font-weight:600;
+/* ================= SEARCH ================= */
+
+.search-box {
+  margin-top: 14px;
+  background: white;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-/* BOTTOM NAV */
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#fff;
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-  border-top:1px solid #eee;
+.search-box i {
+  font-size: 18px;
+  color: #555;
 }
-.nav-item{
-  text-align:center;
-  font-size:11px;
-  color:#666;
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  margin-left: 10px;
+  font-size: 15px;
 }
-.nav-item i{
-  font-size:20px;
-  display:block;
+
+/* ================= CATEGORY BAR ================= */
+
+.categories {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  overflow-x: auto;
 }
-.nav-item.active{
-  color:#ff9800;
+
+.category {
+  min-width: 70px;
+  background: white;
+  border-radius: 14px;
+  padding: 12px 8px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.category i {
+  font-size: 22px;
+  color: var(--black);
+}
+
+.category span {
+  display: block;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* ================= SECTION TITLE ================= */
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  padding: 8px 16px;
+}
+
+/* ================= SERVICE GRID ================= */
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  padding: 16px;
+}
+
+.service-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.07);
+}
+
+.service-card i {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: var(--black);
+}
+
+.service-card h4 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.service-card p {
+  font-size: 13px;
+  color: var(--gray);
+}
+
+/* ================= CART FLOAT ================= */
+
+.cart-float {
+  position: fixed;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2e7d32;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  box-shadow: 0 -6px 18px rgba(0,0,0,0.1);
+}
+
+.bottom-nav i {
+  font-size: 22px;
+}
+
+.bottom-nav span {
+  font-size: 11px;
+}
+
+/* ================= SMOOTH ================= */
+
+::-webkit-scrollbar {
+  display: none;
 }
