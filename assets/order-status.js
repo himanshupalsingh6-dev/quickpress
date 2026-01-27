@@ -8,9 +8,7 @@ import {
 
 const db = getFirestore();
 
-/* 🔹 UPDATE ORDER STATUS + TIMELINE */
 export async function updateOrderStatus(orderId, status) {
-
   await updateDoc(doc(db, "orders", orderId), {
     status,
     timeline: arrayUnion({
