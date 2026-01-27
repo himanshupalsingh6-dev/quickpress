@@ -13,70 +13,45 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth
 const db = getFirestore();
 const auth = getAuth();
 
-/* 🔹 MAIN FUNCTION */
-window.createOrderWithAutoMapping = async function (orderData) {
-  try {
-    const user = auth.currentUser;
-    if (!user) throw "User not logged in";
+export async function createOrderWithAutoMapping(orderData) {
+  const user = auth.currentUser;
+  if (!user) throw "Not logged in";
 
-    const cityId = orderData.cityId;
+  // 1️⃣ City → Hub
+  const hubSnap = await getDocs(
+    query(
+      collection(db, "hubs"),
+      where("cityId", "==", orderData.cityId),
+      where("active", "==", true)
+    )
+  );
+  if (hubSnap.empty) throw "No hub found";
+  const hubId = hubSnap.docs[0].id;
 
-    // 1️⃣ FIND ACTIVE HUB
-    const hubSnap = await getDocs(
-      query(
-        collection(db, "hubs"),
-        where("cityId", "==", cityId),
-        where("active", "==", true)
-      )
-    );
+  // 2️⃣ Hub → Partner
+  const partnerSnap = await getDocs(
+    query(
+      collection(db, "users"),
+      where("role", "==", "partner"),
+      where("hubId", "==", hubId),
+      where("status", "==", "active")
+    )
+  );
+  if (partnerSnap.empty) throw "No partner available";
+  const partnerId = partnerSnap.docs[0].id;
 
-    if (hubSnap.empty) throw "No hub found for city";
+  // 3️⃣ Create Order
+  const orderRef = await addDoc(collection(db, "orders"), {
+    userId: user.uid,
+    cityId: orderData.cityId,
+    hubId,
+    partnerId,
+    status: "PLACED",
+    timeline: [{ step: "PLACED", time: serverTimestamp() }],
+    createdAt: serverTimestamp(),
+    ...orderData
+  });
 
-    const hubDoc = hubSnap.docs[0];
-    const hubId = hubDoc.id;
-
-    // 2️⃣ FIND ACTIVE PARTNERS IN HUB
-    const partnerSnap = await getDocs(
-      query(
-        collection(db, "users"),
-        where("role", "==", "partner"),
-        where("hubId", "==", hubId),
-        where("status", "==", "active")
-      )
-    );
-
-    if (partnerSnap.empty) throw "No partner available";
-
-    // 3️⃣ PICK LEAST BUSY PARTNER
-    let selectedPartner = null;
-    let minOrders = Infinity;
-
-    partnerSnap.forEach(doc => {
-      const data = doc.data();
-      const orders = data.currentOrders || 0;
-
-      if (orders < minOrders) {
-        minOrders = orders;
-        selectedPartner = doc;
-      }
-    });
-
-    // 4️⃣ CREATE ORDER
-    const orderRef = await addDoc(collection(db, "orders"), {
-      userId: user.uid,
-      cityId,
-      hubId,
-      partnerId: selectedPartner.id,
-      status: "PLACED",
-      createdAt: serverTimestamp(),
-      ...orderData
-    });
-
-    console.log("Order Created:", orderRef.id);
-    alert("Order placed successfully 🚀");
-
-  } catch (err) {
-    console.error(err);
-    alert(err);
-  }
-};
+  localStorage.setItem("currentOrderId", orderRef.id);
+  return orderRef.id;
+}
