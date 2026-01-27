@@ -2,118 +2,64 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QuickPress | Orders Management</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
-  --yellow:#FFD400;
-  --text:#222;
-  --muted:#777;
+  --yellow:#FFD84D;
+  --yellow-dark:#F4C400;
   --bg:#f6f6f6;
+  --card:#fff;
+  --text:#222;
+  --gray:#777;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 
 body{
+  margin:0;
   background:var(--bg);
   color:var(--text);
 }
 
-/* LAYOUT */
-.wrapper{
-  display:flex;
-  min-height:100vh;
-}
-
-/* SIDEBAR */
-.sidebar{
-  width:240px;
-  background:#fff;
-  border-right:1px solid #eee;
-  padding:20px;
-}
-.logo{
-  text-align:center;
-  margin-bottom:24px;
-}
-.logo img{width:140px}
-.nav a{
-  display:block;
-  padding:12px 14px;
-  border-radius:12px;
-  color:#333;
-  text-decoration:none;
-  font-size:14px;
-  margin-bottom:6px;
-}
-.nav a.active,
-.nav a:hover{
+/* HEADER */
+.header{
   background:var(--yellow);
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.header h2{margin:0;font-size:18px}
+.back{
+  background:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:8px;
+  cursor:pointer;
   font-weight:600;
 }
 
-/* MAIN */
-.main{
-  flex:1;
-  padding:20px;
+/* CONTAINER */
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:16px;
 }
 
-/* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:16px;
-}
-.header b{font-size:18px}
-
-/* FILTER BAR */
+/* FILTERS */
 .filters{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  margin-bottom:14px;
+  margin-bottom:16px;
 }
-.filters button{
-  background:#fff;
+.filters select, .filters input{
+  padding:10px;
+  border-radius:8px;
   border:1px solid #ddd;
-  padding:8px 14px;
-  border-radius:20px;
-  cursor:pointer;
-  font-size:13px;
-}
-.filters button.active{
-  background:var(--yellow);
-  border-color:var(--yellow);
-  font-weight:600;
-}
-
-/* SEARCH */
-.search{
-  margin-bottom:14px;
-}
-.search input{
-  width:100%;
-  max-width:320px;
-  padding:10px 14px;
-  border-radius:14px;
-  border:1px solid #ddd;
-}
-
-/* CARD */
-.card{
-  background:#fff;
-  padding:18px;
-  border-radius:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
 }
 
 /* TABLE */
@@ -123,193 +69,176 @@ body{
 table{
   width:100%;
   border-collapse:collapse;
-  font-size:13px;
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
 }
 th,td{
-  padding:10px;
+  padding:12px;
+  text-align:left;
   border-bottom:1px solid #eee;
 }
 th{
-  background:#f3f3f3;
-  text-align:left;
+  background:#fafafa;
+  font-size:13px;
 }
-.action{
-  color:#2563eb;
-  font-weight:600;
-  cursor:pointer;
-}
-
-/* STATUS */
 .status{
-  padding:4px 8px;
-  border-radius:8px;
+  padding:4px 10px;
+  border-radius:20px;
   font-size:12px;
   font-weight:600;
 }
-.pending{background:#fde68a}
-.process{background:#bfdbfe}
-.delivered{background:#bbf7d0}
-.cancelled{background:#fecaca}
+.pending{background:#ffeaa7}
+.processing{background:#74b9ff;color:#fff}
+.completed{background:#55efc4}
+.cancelled{background:#fab1a0}
 
-/* MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.4);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:99;
-}
-.modal-box{
-  background:#fff;
-  width:100%;
-  max-width:420px;
-  border-radius:20px;
-  padding:20px;
-}
-.modal-box h3{margin-bottom:10px}
-.modal-box select,
-.modal-box button{
-  width:100%;
-  padding:12px;
-  border-radius:14px;
-  margin-top:10px;
-}
-.modal-box select{
-  border:1px solid #ddd;
-}
-.modal-box button{
-  background:var(--yellow);
+/* ACTIONS */
+.actions button{
+  padding:6px 10px;
   border:none;
-  font-weight:600;
+  border-radius:6px;
   cursor:pointer;
+  margin-right:4px;
+  font-size:12px;
 }
-.close{
-  text-align:right;
-  font-size:14px;
-  cursor:pointer;
-  color:#555;
-}
-@media(max-width:768px){
-  .sidebar{display:none}
+.view{background:var(--yellow)}
+.update{background:#2ecc71;color:#fff}
+
+/* MOBILE */
+@media(max-width:600px){
+  th,td{font-size:12px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
+<!-- HEADER -->
+<div class="header">
+  <h2>📦 Orders Management</h2>
+  <button class="back" onclick="goBack()">Dashboard</button>
+</div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <img src="../assets/logo.png">
-    </div>
-    <div class="nav">
-      <a href="dashboard.html">Dashboard</a>
-      <a class="active" href="#">Orders</a>
-      <a href="#">Users</a>
-      <a href="#">Partners</a>
-      <a href="#">Riders</a>
-      <a href="#">Payouts</a>
-      <a href="#">Ads</a>
-    </div>
-  </aside>
+<div class="container">
 
-  <!-- MAIN -->
-  <main class="main">
+  <!-- FILTERS -->
+  <div class="filters">
+    <select id="statusFilter" onchange="loadOrders()">
+      <option value="">All Status</option>
+      <option value="pending">Pending</option>
+      <option value="processing">Processing</option>
+      <option value="completed">Completed</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
 
-    <div class="header">
-      <b>Orders Management</b>
-    </div>
+    <input type="text" id="searchInput" placeholder="Search by Order ID" onkeyup="loadOrders()">
+  </div>
 
-    <!-- FILTERS -->
-    <div class="filters">
-      <button class="active">All</button>
-      <button>Pending</button>
-      <button>In Process</button>
-      <button>Delivered</button>
-      <button>Cancelled</button>
-    </div>
-
-    <!-- SEARCH -->
-    <div class="search">
-      <input type="text" placeholder="Search order, user, city">
-    </div>
-
-    <!-- TABLE -->
-    <div class="card table-wrap">
-      <table>
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
         <tr>
           <th>Order ID</th>
           <th>User</th>
           <th>City</th>
-          <th>Amount</th>
+          <th>Total ₹</th>
           <th>Status</th>
-          <th>Action</th>
+          <th>Actions</th>
         </tr>
-        <tr>
-          <td>#QP1025</td>
-          <td>Himanshu</td>
-          <td>Kasganj</td>
-          <td>₹26</td>
-          <td><span class="status process">In Process</span></td>
-          <td><span class="action" onclick="openModal()">View</span></td>
-        </tr>
-        <tr>
-          <td>#QP1024</td>
-          <td>Rohit</td>
-          <td>Etah</td>
-          <td>₹40</td>
-          <td><span class="status delivered">Delivered</span></td>
-          <td><span class="action" onclick="openModal()">View</span></td>
-        </tr>
-      </table>
-    </div>
-
-  </main>
-</div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <div class="close" onclick="closeModal()">✖ Close</div>
-    <h3>Order #QP1025</h3>
-
-    <label>Status</label>
-    <select>
-      <option>Pending</option>
-      <option selected>In Process</option>
-      <option>Delivered</option>
-      <option>Cancelled</option>
-    </select>
-
-    <label>Assign Partner</label>
-    <select>
-      <option>Select Partner</option>
-      <option>Partner – Amit</option>
-      <option>Partner – Rahul</option>
-    </select>
-
-    <label>Assign Rider</label>
-    <select>
-      <option>Select Rider</option>
-      <option>Rider – Mohit</option>
-      <option>Rider – Sanjay</option>
-    </select>
-
-    <button>Update Order</button>
+      </thead>
+      <tbody id="ordersBody">
+        <tr><td colspan="6">Loading orders...</td></tr>
+      </tbody>
+    </table>
   </div>
+
 </div>
 
-<script>
-function openModal(){
-  document.getElementById("modal").style.display="flex";
-}
-function closeModal(){
-  document.getElementById("modal").style.display="none";
-}
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d",
+  storageBucket: "quickpress-e486d.firebasestorage.app",
+  messagingSenderId: "572695394794",
+  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){
+    window.location.href="../login.html";
+    return;
+  }
+  const snap = await getDoc(doc(db,"users",user.uid));
+  if(!snap.exists() || snap.data().role!=="admin"){
+    alert("Unauthorized Admin");
+    window.location.href="../login.html";
+    return;
+  }
+  loadOrders();
+});
+
+window.goBack = ()=> window.location.href="dashboard.html";
+
+window.loadOrders = async ()=>{
+  const body = document.getElementById("ordersBody");
+  body.innerHTML = "<tr><td colspan='6'>Loading...</td></tr>";
+
+  const status = document.getElementById("statusFilter").value;
+  const search = document.getElementById("searchInput").value.toLowerCase();
+
+  let q = collection(db,"orders");
+  if(status) q = query(q, where("status","==",status));
+
+  const snap = await getDocs(q);
+  body.innerHTML="";
+
+  snap.forEach(docSnap=>{
+    const d = docSnap.data();
+    if(search && !docSnap.id.toLowerCase().includes(search)) return;
+
+    body.innerHTML += `
+      <tr>
+        <td>${docSnap.id}</td>
+        <td>${d.userName || "-"}</td>
+        <td>${d.city || "-"}</td>
+        <td>₹${d.total || 0}</td>
+        <td><span class="status ${d.status}">${d.status}</span></td>
+        <td class="actions">
+          <button class="view" onclick="alert('Order details page next')">View</button>
+          <button class="update" onclick="changeStatus('${docSnap.id}')">Next Status</button>
+        </td>
+      </tr>
+    `;
+  });
+
+  if(!body.innerHTML) body.innerHTML="<tr><td colspan='6'>No orders found</td></tr>";
+};
+
+window.changeStatus = async (id)=>{
+  const ref = doc(db,"orders",id);
+  const snap = await getDoc(ref);
+  if(!snap.exists()) return;
+
+  const cur = snap.data().status;
+  let next = "pending";
+  if(cur==="pending") next="processing";
+  else if(cur==="processing") next="completed";
+
+  await updateDoc(ref,{status:next});
+  loadOrders();
+};
 </script>
 
 </body>
