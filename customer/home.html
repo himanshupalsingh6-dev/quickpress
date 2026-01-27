@@ -2,373 +2,189 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>QuickPress – Fast Laundry Service</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuickPress – 10 Min Ironing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../assets/ui.css">
 
 <style>
-*{box-sizing:border-box;font-family:system-ui,-apple-system,Arial}
-body{margin:0;background:#f5f6f7;color:#222}
+/* BRAND COLORS */
+:root{
+  --yellow:#FFD84D;
+  --dark:#222;
+}
 
 /* HEADER */
-.header{
-  background:linear-gradient(135deg,#ffec9f,#ffe16b);
-  padding:14px;
-}
-.header-top{
+header{
+  background:var(--yellow);
+  padding:15px;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-.header-top b{font-size:18px}
-.header-top small{font-size:12px}
-.wallet{background:#fff;padding:6px 10px;border-radius:20px;font-weight:700}
-.search-box{
-  margin-top:12px;
-  background:#fff;
-  border-radius:14px;
-  padding:10px;
-  display:flex;
-  gap:6px;
-  align-items:center;
-}
-.search-box input{
-  border:none;
-  outline:none;
-  width:100%;
-}
-
-/* CATEGORY ICONS */
-.cat-icons{
-  display:flex;
-  justify-content:space-between;
-  margin-top:14px;
-}
-.cat-icon{
-  text-align:center;
-  font-size:12px;
+header img{height:40px}
+.city{
+  font-size:14px;
   cursor:pointer;
-}
-.cat-icon .icon{
-  width:44px;height:44px;
-  background:#fff;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:auto;
-  margin-bottom:4px;
 }
 
 /* HERO */
 .hero{
-  margin:14px;
-  background:#fff;
-  border-radius:18px;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  padding:25px;
+  background:#fffbea;
 }
-.hero h2{margin:0}
+.hero h1{
+  font-size:26px;
+  margin-bottom:10px;
+}
+.hero p{color:#444}
 .hero button{
-  margin-top:10px;
-  padding:10px 18px;
+  margin-top:15px;
+  background:var(--yellow);
   border:none;
-  border-radius:20px;
-  background:#ffdc5e;
-  font-weight:700;
-}
-
-/* BRAND STRIP */
-.brand-strip{
-  display:flex;
-  justify-content:space-around;
-  margin:16px;
-  background:linear-gradient(135deg,#ffec9f,#ffe16b);
-  border-radius:18px;
-  padding:16px 6px;
-}
-.brand-strip div{text-align:center;font-size:13px}
-.brand-strip b{display:block;font-size:18px}
-
-/* SECTIONS */
-.section{
-  font-weight:700;
-  margin:18px 14px 8px;
+  padding:12px 20px;
+  border-radius:8px;
+  font-size:16px;
 }
 
 /* SERVICES */
-.grid{
+.services{
+  padding:20px;
+}
+.service-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:14px;
-  padding:0 14px;
+  gap:15px;
 }
-.grid-card{
+.service{
   background:#fff;
-  border-radius:16px;
-  padding:14px;
+  padding:15px;
+  border-radius:12px;
   text-align:center;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
 }
-.grid-card img{width:44px;height:44px;margin-bottom:6px}
+.service img{height:40px}
+
+/* STATS */
+.stats{
+  background:#fffbea;
+  padding:20px;
+  display:flex;
+  justify-content:space-around;
+  text-align:center;
+}
 
 /* REVIEWS */
-.review-wrap{
-  display:flex;
-  gap:14px;
-  overflow-x:auto;
-  padding:12px;
+.reviews{
+  padding:20px;
 }
-.review-card{
-  min-width:260px;
+.review{
   background:#fff;
-  border-radius:16px;
-  padding:14px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-}
-.review-head{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-.review-head img{border-radius:50%}
-.review-card p{font-size:13px;opacity:.85}
-.add-review{
-  background:#ffe27a;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  font-weight:700;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
 }
 
 /* FOOTER */
-.big-footer{
+footer{
   background:#111;
-  color:#ccc;
-  padding:24px 16px 80px;
+  color:#fff;
+  padding:20px;
 }
-.footer-cols{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:20px;
-}
-.big-footer a,.big-footer span{
-  display:block;
-  font-size:12px;
-  margin:6px 0;
-  color:#ccc;
-  text-decoration:none;
-}
-.big-footer b{color:#fff}
-.footer-bottom{
-  text-align:center;
-  margin-top:20px;
-  font-size:11px;
-  opacity:.6;
-}
-
-/* BOTTOM NAV */
-.bottom-nav{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:#fff;
-  border-top:1px solid #ddd;
-  display:flex;
-}
-.bottom-nav div{
-  flex:1;
-  text-align:center;
-  padding:10px 0;
-  font-size:12px;
-  cursor:pointer;
-}
-.bottom-nav span{display:block;font-size:18px}
+footer a{color:#FFD84D;display:block;margin:5px 0}
 </style>
 </head>
 
 <body>
 
 <!-- HEADER -->
-<div class="header">
-  <div class="header-top">
-    <div>
-      <b>10 minutes</b><br>
-      <small>HOME · Kasganj ▼</small>
-    </div>
-    <div class="wallet">₹0</div>
-  </div>
-
-  <div class="search-box">
-    🔍 <input placeholder='Search "ironing"' /> 🎤
-  </div>
-
-  <div class="cat-icons">
-    <div class="cat-icon" onclick="goCategory()"><div class="icon">🧺</div>All</div>
-    <div class="cat-icon" onclick="goCategory()"><div class="icon">👕</div>Iron</div>
-    <div class="cat-icon" onclick="goCategory()"><div class="icon">♨️</div>Steam</div>
-    <div class="cat-icon" onclick="goCategory()"><div class="icon">🧼</div>Wash</div>
-    <div class="cat-icon" onclick="goCategory()"><div class="icon">🎁</div>Offers</div>
-  </div>
-</div>
+<header>
+  <img src="../assets/logo.png" alt="QuickPress">
+  <div class="city" onclick="changeCity()">📍 <span id="cityName">Select City</span></div>
+</header>
 
 <!-- HERO -->
-<div class="hero">
-  <h2>Fast Laundry at Home</h2>
-  <p>Iron • Steam • Wash • Dry Clean</p>
-  <button onclick="goCategory()">Order Now</button>
-</div>
-
-<!-- BRAND STRIP -->
-<div class="brand-strip">
-  <div>🚚<b>12K+</b>Deliveries</div>
-  <div>🏙️<b>50</b>Cities</div>
-  <div>⭐<b>4.8</b>Rating</div>
-</div>
+<section class="hero">
+  <h1>10 Minute Ironing at Your Doorstep</h1>
+  <p>Fast • Affordable • Reliable</p>
+  <button onclick="goCategory()">Start Order</button>
+</section>
 
 <!-- SERVICES -->
-<div class="section">Our Services</div>
-<div class="grid">
-  <div class="grid-card"><img src="https://cdn-icons-png.flaticon.com/512/892/892458.png">Ironing</div>
-  <div class="grid-card"><img src="https://cdn-icons-png.flaticon.com/512/2942/2942909.png">Steam Press</div>
-  <div class="grid-card"><img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png">Washing</div>
-  <div class="grid-card"><img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png">Dry Cleaning</div>
-</div>
+<section class="services">
+  <h3>Our Services</h3>
+  <div class="service-grid">
+    <div class="service">
+      <img src="../assets/icons/iron.png">
+      <p>Iron</p>
+    </div>
+    <div class="service">
+      <img src="../assets/icons/wash.png">
+      <p>Wash</p>
+    </div>
+    <div class="service">
+      <img src="../assets/icons/steam.png">
+      <p>Steam</p>
+    </div>
+    <div class="service">
+      <img src="../assets/icons/dry.png">
+      <p>Dry Clean</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div>
+    <b>⭐ 4.8</b><br>Rating
+  </div>
+  <div>
+    <b>12k+</b><br>Orders
+  </div>
+  <div>
+    <b>8</b><br>Cities
+  </div>
+</section>
 
 <!-- REVIEWS -->
-<div class="section">Customer Reviews</div>
-<div class="review-wrap">
-  <div class="review-card">
-    <div class="review-head">
-      <img src="https://i.pravatar.cc/40?img=12">
-      <div><b>Rohit</b><br>⭐⭐⭐⭐⭐</div>
-    </div>
-    <p>Kapde bilkul fresh mile, delivery fast thi.</p>
+<section class="reviews">
+  <h3>Customer Reviews</h3>
+
+  <div class="review">
+    ⭐⭐⭐⭐⭐<br>
+    Very fast service. Clothes perfectly ironed.
   </div>
 
-  <div class="review-card">
-    <div class="review-head">
-      <img src="https://i.pravatar.cc/40?img=32">
-      <div><b>Neha</b><br>⭐⭐⭐⭐☆</div>
-    </div>
-    <p>Service professional hai, price sahi hai.</p>
+  <div class="review">
+    ⭐⭐⭐⭐☆<br>
+    Affordable and reliable.
   </div>
-
-  <div class="review-card add-review">
-    ⭐ Add Review
-    <small>Help others choose</small>
-  </div>
-</div>
+</section>
 
 <!-- FOOTER -->
-<footer class="big-footer">
-  <div class="footer-cols">
-    <div>
-      <b>QuickPress</b>
-      <a href="#">About Us</a>
-      <a href="#">Help & Support</a>
-      <a href="#">Partner with us</a>
-    </div>
-    <div>
-      <b>Services</b>
-      <a href="#">Ironing</a>
-      <a href="#">Steam</a>
-      <a href="#">Dry Cleaning</a>
-    </div>
-    <div>
-      <b>Cities</b>
-      <a href="#">Kasganj</a>
-      <a href="#">Etah</a>
-      <a href="#">Aligarh</a>
-    </div>
-    <div>
-      <b>Contact</b>
-      <span>📞 +91 9258730561</span>
-      <span>📧 support@quickpress.in</span>
-    </div>
-  </div>
-  <div class="footer-bottom">© 2026 QuickPress</div>
+<footer>
+  <b>QuickPress</b>
+  <a href="#">About Us</a>
+  <a href="#">Support</a>
+  <a href="#">Terms & Privacy</a>
+  <a href="#">Contact</a>
 </footer>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div onclick="goHome()"><span>🏠</span>Home</div>
-  <div onclick="goCategory()"><span>📂</span>Category</div>
-  <div onclick="goOrders()"><span>🧾</span>Orders</div>
-  <div onclick="goAccount()"><span>👤</span>Account</div>
-</div>
-
 <script>
-function goHome(){location.href="home.html"}
-function goCategory(){location.href="category.html"}
-function goOrders(){location.href="orders.html"}
-function goAccount(){location.href="profile.html"}
+const city = localStorage.getItem("selectedCity");
+if(city){
+  document.getElementById("cityName").innerText = city;
+}
+
+function changeCity(){
+  location.href = "city-select.html";
+}
+
+function goCategory(){
+  location.href = "category.html";
+}
 </script>
 
 </body>
 </html>
-<!-- QUICKPRESS GLOBAL BRAND (AUTO APPLY) -->
-<style>
-:root{
-  --qp-yellow:#FFD400;
-  --qp-white:#ffffff;
-  --qp-black:#111;
-  --qp-gray:#666;
-}
-
-/* FORCE WHITE BG */
-body{
-  background:var(--qp-white) !important;
-  color:var(--qp-black);
-}
-
-/* PRIMARY BUTTON */
-button,
-.btn,
-.btn-primary{
-  background:var(--qp-yellow) !important;
-  color:#000 !important;
-  border:none !important;
-  font-weight:700;
-  border-radius:16px;
-}
-
-/* HEADER / TOP BAR */
-header,.header,.app-header{
-  background:var(--qp-yellow) !important;
-}
-
-/* ACTIVE ICON / TAB */
-.active,
-.nav-active{
-  color:var(--qp-yellow) !important;
-}
-
-/* CARDS */
-.card,.box,.section{
-  background:#fff !important;
-  border-radius:16px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-}
-
-/* LOGO SIZE */
-.qp-logo{
-  height:28px;
-}
-</style>
-
-<script>
-/* AUTO LOGO INJECTION */
-document.querySelectorAll("[data-qp-logo]").forEach(el=>{
-  el.innerHTML = `
-    <img src="../assets/img/logo.png" class="qp-logo" alt="QuickPress">
-  `;
-});
-
-/* AUTO ACTIVE BOTTOM NAV */
-document.querySelectorAll(".bottom-nav div").forEach(nav=>{
-  if(window.location.href.includes(nav.dataset.page)){
-    nav.classList.add("active");
-  }
-});
-<script src="../assets/ui.js"></script>
