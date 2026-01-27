@@ -1,0 +1,13 @@
+<button onclick="setStatus('ACCEPTED')">Accept</button>
+<button onclick="setStatus('IN_SERVICE')">In Service</button>
+
+<script type="module">
+import { updateOrderStatus } from "../assets/order-status.js";
+
+const orderId = "ORDER_ID";
+
+window.setStatus = async (status)=>{
+  await updateOrderStatus(orderId, status);
+  toast("Status updated","success");
+};
+</script>
