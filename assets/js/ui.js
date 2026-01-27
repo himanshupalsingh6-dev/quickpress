@@ -1,91 +1,113 @@
-/* ===============================
-   QUICKPRESS UI HELPERS
-   Loader • Toast • Smooth Feel
+/* ================================
+   QuickPress UI GLOBAL HELPERS
+   File: assets/ui.js
 ================================ */
 
-/* SHOW FULLSCREEN LOADER */
-function showLoader(){
-  if(document.getElementById("qp-loader")) return;
+/* ---------- Loader ---------- */
+window.showLoader = function () {
+  let loader = document.getElementById("qp-loader");
 
-  const loader = document.createElement("div");
-  loader.id = "qp-loader";
-  loader.innerHTML = `
-    <div style="
-      position:fixed;
-      inset:0;
-      background:rgba(255,255,255,0.85);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:99999;
-    ">
-      <div style="
-        width:48px;
-        height:48px;
-        border:5px solid #eee;
-        border-top:5px solid #FFD84D;
-        border-radius:50%;
-        animation:spin 1s linear infinite;
-      "></div>
-    </div>
-  `;
-  document.body.appendChild(loader);
-}
-
-/* HIDE LOADER */
-function hideLoader(){
-  const l = document.getElementById("qp-loader");
-  if(l) l.remove();
-}
-
-/* TOAST MESSAGE */
-function toast(message){
-  const t = document.createElement("div");
-  t.innerText = message;
-
-  t.style.cssText = `
-    position:fixed;
-    bottom:90px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#111;
-    color:#fff;
-    padding:10px 16px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
-    z-index:99999;
-    opacity:0;
-    transition:.3s;
-  `;
-
-  document.body.appendChild(t);
-  requestAnimationFrame(()=> t.style.opacity = "1");
-
-  setTimeout(()=>{
-    t.style.opacity="0";
-    setTimeout(()=>t.remove(),300);
-  },2500);
-}
-
-/* PAGE LOAD SMOOTH */
-window.addEventListener("load",()=>{
-  hideLoader();
-});
-
-/* AUTO SHOW LOADER ON LINK CLICK */
-document.addEventListener("click",(e)=>{
-  const a = e.target.closest("a");
-  if(a && a.href){
-    showLoader();
+  if (!loader) {
+    loader = document.createElement("div");
+    loader.id = "qp-loader";
+    loader.innerHTML = `
+      <div class="qp-loader-backdrop">
+        <div class="qp-spinner"></div>
+      </div>
+    `;
+    document.body.appendChild(loader);
   }
-});
 
-/* SPIN ANIMATION */
-const style = document.createElement("style");
-style.innerHTML = `
-@keyframes spin{
-  to{ transform:rotate(360deg); }
-}
-`;
-document.head.appendChild(style);
+  loader.style.display = "flex";
+};
+
+window.hideLoader = function () {
+  const loader = document.getElementById("qp-loader");
+  if (loader) loader.style.display = "none";
+};
+
+/* ---------- Toast / Alert ---------- */
+window.toast = function (message, type = "info") {
+  let toast = document.createElement("div");
+  toast.className = `qp-toast ${type}`;
+  toast.innerText = message;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.classList.add("show"), 50);
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+};
+
+/* ---------- Simple Session Guard ---------- */
+window.requireLogin = function () {
+  const uid = localStorage.getItem("qp_uid");
+  if (!uid) {
+    location.href = "/quickpress/login.html";
+  }
+};
+
+/* ---------- Logout ---------- */
+window.logout = function () {
+  localStorage.clear();
+  location.href = "/quickpress/login.html";
+};
+
+/* ---------- Inject Basic Styles (AUTO) ---------- */
+(function injectStyles() {
+  if (document.getElementById("qp-ui-style")) return;
+
+  const style = document.createElement("style");
+  style.id = "qp-ui-style";
+  style.innerHTML = `
+    #qp-loader {
+      position: fixed;
+      inset: 0;
+      display: none;
+      z-index: 9999;
+    }
+    .qp-loader-backdrop {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qp-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #ffd84d;
+      border-top: 4px solid #e60023;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .qp-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #333;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all .3s ease;
+      z-index: 10000;
+    }
+    .qp-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .qp-toast.error { background: #e60023; }
+    .qp-toast.success { background: #2e7d32; }
+  `;
+  document.head.appendChild(style);
+})();
