@@ -5,89 +5,85 @@
 <title>QuickPress | Orders Management</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="stylesheet" href="../assets/ui.css">
+
 <style>
-:root{
-  --yellow:#FFD84D;
-  --bg:#f6f6f6;
-  --card:#fff;
-  --text:#222;
+.container{max-width:1200px;margin:auto;padding:16px}
+.topbar{
+  background:#FFD84D;padding:14px 16px;border-radius:14px;
+  display:flex;justify-content:space-between;align-items:center
 }
-*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{margin:0;background:var(--bg);color:var(--text)}
-.header{
-  background:var(--yellow);
-  padding:14px 18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+table{width:100%;border-collapse:collapse;margin-top:16px}
+th,td{padding:10px;font-size:14px;border-bottom:1px solid #eee}
+th{color:#777;text-align:left}
+select{padding:6px;border-radius:8px}
+.badge{
+  padding:4px 10px;border-radius:20px;font-size:12px;
+  background:#eee
 }
-button{
-  padding:6px 10px;border:none;border-radius:6px;
-  background:var(--yellow);cursor:pointer;font-weight:600;
-}
-.container{padding:16px;max-width:1200px;margin:auto}
-table{width:100%;border-collapse:collapse;background:#fff}
-th,td{padding:10px;border-bottom:1px solid #eee}
-th{background:#fafafa}
-.status{font-size:12px;padding:4px 8px;border-radius:12px}
-.pending{background:#ffeaa7}
-.processing{background:#74b9ff;color:#fff}
-.completed{background:#55efc4}
+.pending{background:#ffe082}
+.processing{background:#81d4fa}
+.completed{background:#c8e6c9}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h3>📦 Orders Management</h3>
-  <button onclick="location.href='dashboard.html'">Dashboard</button>
-</div>
-
 <div class="container">
-  <table>
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>User</th>
-        <th>Total ₹</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="ordersBody">
-      <tr><td colspan="5">Loading...</td></tr>
-    </tbody>
-  </table>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <b>📦 Orders Management</b>
+    <a href="dashboard.html">⬅ Dashboard</a>
+  </div>
+
+  <!-- ORDERS TABLE -->
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Status</th>
+          <th>Total</th>
+          <th>Change Status</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTable">
+        <tr><td colspan="5">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
+<!-- GLOBAL UI -->
+<script src="../assets/ui.js"></script>
+
+<!-- FIREBASE -->
 <script type="module">
-/* 🔥 FIREBASE */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 import {
-  getFirestore, collection, getDocs, doc, getDoc,
-  updateDoc, increment, setDoc
+  getFirestore, collection, getDocs, updateDoc, doc, getDoc
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 /* CONFIG */
-const firebaseConfig = {
-  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-  authDomain: "quickpress-e486d.firebaseapp.com",
-  projectId: "quickpress-e486d",
-  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
-};
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* AUTH */
-onAuthStateChanged(auth, async user=>{
-  if(!user){ location.href="../login.html"; return; }
-  const u = await getDoc(doc(db,"users",user.uid));
-  if(!u.exists() || u.data().role!=="admin"){
-    alert("Unauthorized");
-    location.href="../login.html";
+/* SESSION GUARD */
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){ location.replace("login.html"); return; }
+  const snap = await getDoc(doc(db,"users",user.uid));
+  if(!snap.exists() || snap.data().role!=="admin"){
+    await signOut(auth);
+    location.replace("login.html");
     return;
   }
   loadOrders();
@@ -95,160 +91,42 @@ onAuthStateChanged(auth, async user=>{
 
 /* LOAD ORDERS */
 async function loadOrders(){
-  const body=document.getElementById("ordersBody");
-  body.innerHTML="";
-  const snap=await getDocs(collection(db,"orders"));
-  snap.forEach(s=>{
-    const o=s.data();
-    body.innerHTML+=`
+  showLoader();
+  const snap = await getDocs(collection(db,"orders"));
+  const tbody = document.getElementById("ordersTable");
+  tbody.innerHTML="";
+  snap.forEach(d=>{
+    const o=d.data();
+    tbody.innerHTML+=`
       <tr>
-        <td>${s.id}</td>
-        <td>${o.userName||"-"}</td>
-        <td>₹${o.totalAmount||0}</td>
-        <td><span class="status ${o.status}">${o.status}</span></td>
+        <td>${d.id.slice(0,6)}...</td>
+        <td>${o.customerId || "-"}</td>
         <td>
-          <button onclick="nextStatus('${s.id}')">Next</button>
+          <span class="badge ${o.status}">
+            ${o.status}
+          </span>
+        </td>
+        <td>₹${o.totalAmount||0}</td>
+        <td>
+          <select onchange="updateStatus('${d.id}',this.value)">
+            <option ${o.status==="pending"?"selected":""}>pending</option>
+            <option ${o.status==="processing"?"selected":""}>processing</option>
+            <option ${o.status==="completed"?"selected":""}>completed</option>
+          </select>
         </td>
       </tr>
     `;
   });
+  hideLoader();
 }
 
-/* NEXT STATUS */
-window.nextStatus = async function(orderId){
-  const ref=doc(db,"orders",orderId);
-  const snap=await getDoc(ref);
-  const o=snap.data();
-
-  if(o.status==="pending"){
-    await updateDoc(ref,{status:"processing"});
-  }
-  else if(o.status==="processing"){
-    await completeOrder(orderId); // 🔥 AUTO LOGIC
-  }
-  loadOrders();
-}
-
-/* DISTANCE */
-function calculateDistance(lat1, lon1, lat2, lon2) {
-  const R=6371;
-  const dLat=(lat2-lat1)*Math.PI/180;
-  const dLon=(lon2-lon1)*Math.PI/180;
-  const a=Math.sin(dLat/2)**2+
-    Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
-    Math.sin(dLon/2)**2;
-  return +(2*R*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))).toFixed(2);
-}
-
-/* COMPLETE ORDER */
-async function completeOrder(orderId){
-  const orderRef=doc(db,"orders",orderId);
-  const order=(await getDoc(orderRef)).data();
-
-  const settings=(await getDoc(doc(db,"settings","app"))).data();
-
-  const km=calculateDistance(
-    order.pickupLat,order.pickupLng,
-    order.dropLat,order.dropLng
-  );
-
-  const delivery= settings.baseDeliveryCharge + km*settings.deliveryPerKm;
-  const gst= delivery*settings.gstPercent/100;
-  const partnerEarn= delivery*settings.partnerPercent/100;
-  const riderEarn= km*settings.riderPerKm;
-
-  await updateDoc(orderRef,{
-    status:"completed",
-    distanceKm:km,
-    deliveryCharge:+delivery.toFixed(2),
-    gst:+gst.toFixed(2),
-    totalAmount:+(delivery+gst).toFixed(2),
-    partnerEarning:+partnerEarn.toFixed(2),
-    riderEarning:+riderEarn.toFixed(2),
-    deliveredAt:Date.now()
-  });
-
-  await creditWallet(order.partnerId,partnerEarn);
-  await creditWallet(order.riderId,riderEarn);
-}
-
-/* WALLET */
-async function creditWallet(uid,amount){
-  const ref=doc(db,"wallets",uid);
-  const snap=await getDoc(ref);
-  if(snap.exists()){
-    await updateDoc(ref,{balance:increment(amount)});
-  }else{
-    await setDoc(ref,{balance:amount});
-  }
-}
-</script>
-<!-- ===== QUICKPRESS GLOBAL UI ===== -->
-<link rel="stylesheet" href="../assets/ui.css">
-<script src="../assets/ui.js"></script>
-<!-- =============================== -->
-<script type="module">
-/* ===============================
-   QUICKPRESS ADMIN SESSION GUARD
-   Protects all admin pages
-================================ */
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-  authDomain: "quickpress-e486d.firebaseapp.com",
-  projectId: "quickpress-e486d"
+/* UPDATE STATUS */
+window.updateStatus = async (id,status)=>{
+  showLoader();
+  await updateDoc(doc(db,"orders",id),{ status });
+  hideLoader();
+  toast("Order updated","success");
 };
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-/* SESSION CHECK */
-onAuthStateChanged(auth, async (user) => {
-
-  // ❌ Not logged in
-  if (!user) {
-    location.replace("login.html");
-    return;
-  }
-
-  // 🔍 Fetch user profile
-  const snap = await getDoc(doc(db, "users", user.uid));
-
-  // ❌ No profile
-  if (!snap.exists()) {
-    await signOut(auth);
-    location.replace("login.html");
-    return;
-  }
-
-  const data = snap.data();
-
-  // ❌ Not admin
-  if (data.role !== "admin") {
-    await signOut(auth);
-    alert("Unauthorized access");
-    location.replace("login.html");
-    return;
-  }
-
-  // ❌ Admin blocked
-  if (data.status !== "active") {
-    await signOut(auth);
-    alert("Admin account disabled");
-    location.replace("login.html");
-    return;
-  }
-
-  // ✅ AUTHORIZED ADMIN
-  console.log("Admin session verified");
-
-});
 </script>
 
 </body>
