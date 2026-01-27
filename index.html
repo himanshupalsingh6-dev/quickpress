@@ -1,300 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>QuickPress</title>
-
-<!-- ICONS -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --yellow:#FFD84D;
   --dark:#111;
   --gray:#777;
-  --bg:#F7F7F7;
-  --card:#FFFFFF;
-  --green:#2DBE60;
-  --purple:#6739B7;
+  --card:#f8f8f8;
 }
 
-*{
-  box-sizing:border-box;
-  font-family:'Inter',sans-serif;
-}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto}
+body{margin:0;background:#fff;color:#111}
 
-body{
-  margin:0;
-  background:var(--bg);
-  color:#000;
-}
-
-/* ================= NAVBAR (PhonePe style) ================= */
-.navbar{
-  background:linear-gradient(135deg,#6A1B9A,#4527A0);
-  color:#fff;
-  padding:14px 16px;
-}
-
-.nav-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.location{
-  font-size:13px;
-  opacity:.9;
-}
-
-.logo{
-  font-size:20px;
-  font-weight:700;
-}
-
-.profile{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:#fff;
-  color:#6739B7;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-}
-
-/* SEARCH */
-.search-box{
-  margin-top:12px;
-  background:#fff;
-  border-radius:14px;
-  padding:10px 14px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:#555;
-}
-
-/* ================= HERO ================= */
-.hero{
-  padding:20px 16px 10px;
-}
-
-.hero h1{
-  font-size:28px;
-  margin:0;
-}
-
-.hero span{
-  color:#F9A825;
-}
-
-/* ================= SERVICE SLIDER ================= */
-.slider{
-  display:flex;
-  gap:12px;
-  padding:14px 16px;
-  overflow-x:auto;
-}
-
-.slider::-webkit-scrollbar{display:none;}
-
-.service{
-  min-width:120px;
-  background:linear-gradient(135deg,#FFE082,#FFD54F);
-  border-radius:18px;
-  padding:14px;
-  text-align:center;
-  box-shadow:0 6px 16px rgba(0,0,0,.1);
-}
-
-.service i{
-  font-size:28px;
-}
-
-.service p{
-  margin:8px 0 0;
-  font-weight:600;
-}
-
-/* ================= BESTSELLERS ================= */
-.section{
-  padding:8px 16px;
-}
-
-.section h2{
-  margin:12px 0;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
-
-.card{
-  background:var(--card);
-  border-radius:18px;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-
-.icon-box{
-  width:64px;
-  height:64px;
-  border-radius:16px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  color:#fff;
-}
-
-.green{background:#2DBE60;}
-.blue{background:#2196F3;}
-.orange{background:#FB8C00;}
-.purple{background:#8E24AA;}
-
-.card p{
-  margin-top:10px;
-  font-weight:600;
-}
-
-/* ================= WE ARE LIVE ================= */
-.live{
-  background:#fff;
-  margin:20px 16px;
-  border-radius:20px;
+/* ===== HEADER ===== */
+header{
+  background:linear-gradient(180deg,#fff7cc,#ffffff);
   padding:16px;
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+.top{
+  display:flex;justify-content:space-between;align-items:center;
+}
+.logo{font-size:26px;font-weight:800}
+.profile{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--yellow);display:flex;align-items:center;justify-content:center;
+  font-weight:700;
+}
+.sub{
+  margin-top:6px;font-weight:700;
+}
+.search{
+  margin-top:14px;
+  background:#fff;border-radius:14px;
+  padding:12px 14px;display:flex;gap:8px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+.search input{border:none;outline:none;width:100%;font-size:15px}
+
+/* ===== HERO ===== */
+.hero{padding:20px}
+.hero h1{font-size:30px;line-height:1.2}
+.hero span{color:#ff9f00;font-weight:900}
+
+/* ===== SLIDER ===== */
+.slider{
+  margin:10px 16px;
+  height:110px;border-radius:16px;
+  background:linear-gradient(135deg,#ffe58a,#ffd84d);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:20px;
 }
 
-.live h3{
-  margin:0 0 10px;
+/* ===== CATEGORIES ===== */
+.cats{
+  display:flex;gap:14px;padding:10px 16px;overflow-x:auto;
+}
+.cat{
+  min-width:70px;text-align:center;
+}
+.cat div{
+  width:56px;height:56px;border-radius:16px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+  margin:auto;font-size:26px;
 }
 
-.cities{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
+/* ===== BESTSELLERS ===== */
+.section{padding:20px}
+.section h2{margin-bottom:12px}
+.best{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+}
+.best .card{
+  background:#f2fbf7;border-radius:16px;padding:12px;text-align:center;
+}
+.card div{font-size:34px}
+
+/* ===== WE ARE LIVE ===== */
+.live{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+}
+.stat{
+  background:var(--card);
+  padding:16px;border-radius:16px;text-align:center;
+}
+.stat h3{margin:6px 0;font-size:22px}
+
+/* ===== CART POPUP ===== */
+#cart{
+  position:fixed;bottom:80px;left:50%;
+  transform:translateX(-50%);
+  background:#2e7d32;color:#fff;
+  padding:14px 18px;border-radius:30px;
+  display:none;font-weight:700;
 }
 
-.city{
-  background:#EEE;
-  padding:6px 12px;
-  border-radius:20px;
-  font-size:13px;
+/* ===== FOOTER NAV ===== */
+footer{
+  position:fixed;bottom:0;left:0;right:0;
+  background:#fff;border-top:1px solid #eee;
+  display:flex;justify-content:space-around;padding:10px 0;
 }
+footer div{text-align:center;font-size:12px}
 
-/* ================= BOTTOM NAV ================= */
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#fff;
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-  box-shadow:0 -4px 14px rgba(0,0,0,.1);
+/* ===== FOOTER LINKS ===== */
+.links{
+  padding:30px 16px 100px;
+  background:#111;color:#fff;
 }
-
-.bottom-nav div{
-  text-align:center;
-  font-size:12px;
-  color:#555;
-}
-
-.active{
-  color:#F9A825;
-  font-weight:600;
-}
-
-.spacer{
-  height:80px;
-}
+.links a{color:#ccc;text-decoration:none;display:block;margin:6px 0}
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="nav-top">
-    <div class="location">📍 Kasganj</div>
+<header>
+  <div class="top">
     <div class="logo">QuickPress</div>
     <div class="profile">H</div>
   </div>
+  <div class="sub">📍 <span id="loc">Detecting location…</span></div>
 
-  <div class="search-box">
-    🔍 Search "ironing", "wash"
+  <div class="search">
+    🔍 <input placeholder="Search ironing, wash…" />
   </div>
-</div>
+</header>
 
-<!-- HERO -->
 <div class="hero">
   <h1>Fresh Clothes.<br><span>Faster Than Ever.</span></h1>
+  Iron • Wash • Steam • Dry Clean
 </div>
 
-<!-- SERVICE SLIDER -->
-<div class="slider">
-  <div class="service"><i>👕</i><p>Iron</p></div>
-  <div class="service"><i>🫧</i><p>Wash</p></div>
-  <div class="service"><i>☁️</i><p>Steam</p></div>
-  <div class="service"><i>💧</i><p>Dry</p></div>
-  <div class="service"><i>⚡</i><p>Express</p></div>
-  <div class="service"><i>📅</i><p>Scheduled</p></div>
+<div class="slider">Fast Delivery in Your City</div>
+
+<div class="cats">
+  <div class="cat"><div>👕</div>Iron</div>
+  <div class="cat"><div>🧼</div>Wash</div>
+  <div class="cat"><div>☁️</div>Steam</div>
+  <div class="cat"><div>💧</div>Dry</div>
 </div>
 
-<!-- BESTSELLERS -->
 <div class="section">
   <h2>Bestsellers</h2>
-  <div class="grid">
-    <div class="card">
-      <div class="icon-box green">👕</div>
-      <p>Ironing</p>
-    </div>
-    <div class="card">
-      <div class="icon-box blue">🫧</div>
-      <p>Washing</p>
-    </div>
-    <div class="card">
-      <div class="icon-box orange">☁️</div>
-      <p>Steam Press</p>
-    </div>
-    <div class="card">
-      <div class="icon-box purple">💧</div>
-      <p>Dry Clean</p>
-    </div>
+  <div class="best">
+    <div class="card"><div>👕</div>Ironing</div>
+    <div class="card"><div>🧼</div>Washing</div>
+    <div class="card"><div>⚡</div>Express</div>
   </div>
 </div>
 
-<!-- WE ARE LIVE -->
-<div class="live">
-  <h3>We are live in</h3>
-  <div class="cities">
-    <div class="city">Kasganj</div>
-    <div class="city">Noida</div>
-    <div class="city">Delhi</div>
-    <div class="city">Agra</div>
-    <div class="city">Aligarh</div>
-    <div class="city">Badaun</div>
+<div class="section">
+  <h2>We Are Live</h2>
+  <div class="live">
+    <div class="stat"><h3>⭐ 4.8</h3>Rating</div>
+    <div class="stat"><h3>12k+</h3>Customers</div>
+    <div class="stat"><h3>40+</h3>Partners</div>
+    <div class="stat"><h3>Kasganj<br>Noida<br>Agra</h3>Cities</div>
   </div>
 </div>
 
-<div class="spacer"></div>
+<div class="links">
+  <h3>QuickPress</h3>
+  <a href="#">About us</a>
+  <a href="#">Join as Partner</a>
+  <a href="#">Join as Rider</a>
+  <a href="#">Help & Support</a>
+  <a href="#">Privacy Policy</a>
+</div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div class="active">🏠<br>Home</div>
-  <div>📂<br>Categories</div>
-  <div>🧾<br>Orders</div>
+<div id="cart">🧺 1 item added • View Cart</div>
+
+<footer>
+  <div>🏠<br>Home</div>
+  <div>📦<br>Orders</div>
   <div>👤<br>Account</div>
-</div>
+</footer>
+
+<script>
+/* Auto location */
+navigator.geolocation?.getCurrentPosition(p=>{
+  document.getElementById("loc").innerText=
+    "Near you ("+p.coords.latitude.toFixed(2)+")";
+},()=>{document.getElementById("loc").innerText="Kasganj"});
+
+/* Demo cart */
+setTimeout(()=>{document.getElementById("cart").style.display="block"},4000);
+</script>
 
 </body>
 </html>
