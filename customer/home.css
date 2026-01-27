@@ -1,124 +1,193 @@
-*{
-  box-sizing:border-box;
-  font-family: 'Segoe UI', sans-serif;
+/* =========================
+   QUICKPRESS – HOME UI
+   Blinkit Inspired
+   Brand: Yellow + White
+========================= */
+
+:root {
+  --yellow: #FFD400;
+  --yellow-soft: #FFF6CC;
+  --black: #111;
+  --gray: #666;
+  --card: #ffffff;
+  --bg: #fffdf5;
+  --radius: 18px;
 }
 
-body{
-  margin:0;
-  background:#fff;
-  color:#111;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* HEADER */
-.top-header{
-  background:linear-gradient(#FFE066,#FFF4C2);
-  padding:16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+body {
+  background: var(--bg);
+  color: var(--black);
 }
 
-.top-header h1{
-  margin:0;
+/* ================= HEADER ================= */
+
+.header {
+  padding: 18px;
+  background: linear-gradient(180deg, var(--yellow), var(--yellow-soft));
 }
 
-.profile{
-  font-size:28px;
+.brand {
+  font-size: 28px;
+  font-weight: 800;
 }
 
-/* SEARCH */
-.search-box{
-  margin:12px;
-  background:#f2f2f2;
-  border-radius:12px;
-  padding:10px;
-  display:flex;
-  gap:10px;
+.delivery-time {
+  font-size: 15px;
+  margin-top: 4px;
 }
 
-/* HERO */
-.hero{
-  padding:16px;
+.high-demand {
+  background: #ffef9f;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-left: 6px;
 }
 
-.hero span{
-  color:#FFD400;
+/* ================= SEARCH ================= */
+
+.search-box {
+  margin-top: 14px;
+  background: white;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-/* CATEGORY */
-.category-tabs{
-  display:flex;
-  justify-content:space-around;
-  padding:10px;
-  border-bottom:2px solid #eee;
+.search-box i {
+  font-size: 18px;
+  color: #555;
 }
 
-.category-tabs button{
-  border:none;
-  background:none;
-  font-weight:600;
-  padding:10px;
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  margin-left: 10px;
+  font-size: 15px;
 }
 
-.category-tabs .active{
-  background:#FFD400;
-  border-radius:10px;
+/* ================= CATEGORY BAR ================= */
+
+.categories {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  overflow-x: auto;
 }
 
-/* ITEMS */
-.section-title{
-  padding:16px;
+.category {
+  min-width: 70px;
+  background: white;
+  border-radius: 14px;
+  padding: 12px 8px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
 }
 
-.items-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  padding:16px;
+.category i {
+  font-size: 22px;
+  color: var(--black);
 }
 
-.item-card{
-  background:#f7f7f7;
-  border-radius:18px;
-  padding:20px;
-  text-align:center;
+.category span {
+  display: block;
+  font-size: 12px;
+  margin-top: 6px;
 }
 
-.item-icon{
-  font-size:36px;
-  color:#2ecc71;
+/* ================= SECTION TITLE ================= */
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  padding: 8px 16px;
 }
 
-.item-card button{
-  margin-top:10px;
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:12px;
-  background:#FFD400;
-  font-weight:bold;
+/* ================= SERVICE GRID ================= */
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  padding: 16px;
 }
 
-/* CART BAR */
-.cart-bar{
-  position:fixed;
-  bottom:15px;
-  left:15px;
-  right:15px;
-  background:#2e7d32;
-  color:#fff;
-  padding:14px;
-  border-radius:18px;
-  display:none;
-  justify-content:space-between;
-  align-items:center;
+.service-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.07);
 }
 
-.cart-bar button{
-  background:#fff;
-  color:#2e7d32;
-  border:none;
-  padding:8px 16px;
-  border-radius:12px;
-  font-weight:bold;
+.service-card i {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: var(--black);
+}
+
+.service-card h4 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.service-card p {
+  font-size: 13px;
+  color: var(--gray);
+}
+
+/* ================= CART FLOAT ================= */
+
+.cart-float {
+  position: fixed;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2e7d32;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  box-shadow: 0 -6px 18px rgba(0,0,0,0.1);
+}
+
+.bottom-nav i {
+  font-size: 22px;
+}
+
+.bottom-nav span {
+  font-size: 11px;
+}
+
+/* ================= SMOOTH ================= */
+
+::-webkit-scrollbar {
+  display: none;
 }
