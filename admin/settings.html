@@ -1,1 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Settings | QuickPress</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<style>
+body{margin:0;font-family:Arial;background:#f6f6f6}
+header{background:#FFD84D;padding:15px;font-weight:700}
+.card{
+  background:#fff;margin:15px;border-radius:12px;padding:16px
+}
+input{
+  width:100%;padding:10px;margin-bottom:10px;
+  border-radius:8px;border:1px solid #ddd
+}
+button{
+  background:#FFD84D;border:none;padding:12px;
+  border-radius:8px;font-weight:700;width:100%
+}
+</style>
+</head>
+
+<body>
+
+<header>⚙️ Admin Settings</header>
+
+<div class="card">
+  <label>Base Delivery Charge</label>
+  <input id="base">
+
+  <label>Delivery Per KM</label>
+  <input id="perkm">
+
+  <label>GST %</label>
+  <input id="gst">
+
+  <label>Partner %</label>
+  <input id="partner">
+
+  <label>Rider Per KM</label>
+  <input id="rider">
+
+  <button onclick="save()">Save Settings</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getFirestore,doc,getDoc,setDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+const app=initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
+const db=getFirestore(app);
+
+async function load(){
+  const snap=await getDoc(doc(db,"settings","app"));
+  if(!snap.exists()) return;
+  const d=snap.data();
+  base.value=d.baseDeliveryCharge;
+  perkm.value=d.deliveryPerKm;
+  gst.value=d.gstPercent;
+  partner.value=d.partnerPercent;
+  rider.value=d.riderPerKm;
+}
+load();
+
+async function save(){
+  await setDoc(doc(db,"settings","app"),{
+    baseDeliveryCharge:Number(base.value),
+    deliveryPerKm:Number(perkm.value),
+    gstPercent:Number(gst.value),
+    partnerPercent:Number(partner.value),
+    riderPerKm:Number(rider.value)
+  });
+  alert("Settings updated");
+}
+</script>
+
+</body>
+</html>
