@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Order Tracking</title>
+<link rel="stylesheet" href="../assets/ui.css">
+<style>
+.step{display:flex;gap:12px;margin:12px 0}
+.dot{
+  width:14px;height:14px;border-radius:50%;
+  background:#ccc;margin-top:4px
+}
+.active .dot{background:#FFD84D}
+</style>
+</head>
+
+<body>
+<h3>📦 Order Status</h3>
+<div id="timeline"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
+const db = getFirestore(app);
+
+const orderId = localStorage.getItem("trackOrderId");
+
+onSnapshot(doc(db,"orders",orderId),(snap)=>{
+  const data = snap.data();
+  const wrap = document.getElementById("timeline");
+  wrap.innerHTML="";
+  (data.timeline||[]).forEach(t=>{
+    wrap.innerHTML+=`
+      <div class="step active">
+        <div class="dot"></div>
+        <div>${t.step}</div>
+      </div>
+    `;
+  });
+});
+</script>
+</body>
+</html>
