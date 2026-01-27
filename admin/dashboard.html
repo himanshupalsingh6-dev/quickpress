@@ -1,289 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuickPress | Admin Dashboard</title>
+  <meta charset="UTF-8" />
+  <title>QuickPress Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- ===== BRAND THEME ===== -->
+  <style>
+    :root{
+      --yellow:#FFD84D;
+      --yellow-dark:#F4C400;
+      --text:#333;
+      --bg:#f7f7f7;
+      --card:#fff;
+    }
 
-<style>
-:root{
-  --yellow:#FFD400;
-  --text:#222;
-  --muted:#777;
-  --bg:#f6f6f6;
-}
+    *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+    }
 
-body{
-  background:var(--bg);
-  color:var(--text);
-}
+    /* ===== HEADER ===== */
+    .header{
+      background:var(--yellow);
+      padding:14px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow:0 2px 8px rgba(0,0,0,.15);
+    }
+    .header h1{
+      margin:0;
+      font-size:20px;
+      font-weight:700;
+    }
+    .logout{
+      background:#fff;
+      border:none;
+      padding:8px 14px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+    }
 
-/* LAYOUT */
-.wrapper{
-  display:flex;
-  min-height:100vh;
-}
+    /* ===== LAYOUT ===== */
+    .container{
+      padding:18px;
+      max-width:1200px;
+      margin:auto;
+    }
 
-/* SIDEBAR */
-.sidebar{
-  width:240px;
-  background:#fff;
-  border-right:1px solid #eee;
-  padding:20px;
-}
-.logo{
-  text-align:center;
-  margin-bottom:24px;
-}
-.logo img{
-  width:140px;
-}
-.nav a{
-  display:block;
-  padding:12px 14px;
-  border-radius:12px;
-  color:#333;
-  text-decoration:none;
-  font-size:14px;
-  margin-bottom:6px;
-}
-.nav a.active,
-.nav a:hover{
-  background:var(--yellow);
-  font-weight:600;
-}
+    /* ===== STATS ===== */
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:16px;
+      margin-bottom:22px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+    }
+    .card h3{
+      margin:0;
+      font-size:14px;
+      color:#777;
+    }
+    .card p{
+      margin:8px 0 0;
+      font-size:22px;
+      font-weight:700;
+    }
 
-/* MAIN */
-.main{
-  flex:1;
-  padding:20px;
-}
+    /* ===== MENU ===== */
+    .menu{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:14px;
+    }
+    .menu a{
+      text-decoration:none;
+      color:#000;
+    }
+    .menu .item{
+      background:#fff;
+      border-radius:14px;
+      padding:20px;
+      text-align:center;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      transition:.2s;
+    }
+    .menu .item:hover{
+      transform:translateY(-4px);
+      background:var(--yellow);
+    }
+    .menu .item span{
+      display:block;
+      margin-top:8px;
+      font-weight:600;
+    }
 
-/* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-.header b{
-  font-size:18px;
-}
-.admin{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.admin .avatar{
-  width:36px;
-  height:36px;
-  background:var(--yellow);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:600;
-}
-
-/* STATS */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:16px;
-  margin-bottom:22px;
-}
-.stat{
-  background:#fff;
-  padding:18px;
-  border-radius:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-}
-.stat small{
-  color:var(--muted);
-}
-.stat b{
-  display:block;
-  font-size:22px;
-  margin-top:6px;
-}
-
-/* ACTIONS */
-.actions{
-  display:flex;
-  gap:12px;
-  margin-bottom:22px;
-  flex-wrap:wrap;
-}
-.actions button{
-  background:var(--yellow);
-  border:none;
-  padding:12px 18px;
-  border-radius:14px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-/* TABLE */
-.card{
-  background:#fff;
-  padding:18px;
-  border-radius:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-  margin-bottom:22px;
-}
-.card h3{
-  margin-bottom:12px;
-  font-size:16px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
-}
-th,td{
-  padding:10px;
-  text-align:left;
-}
-th{
-  background:#f3f3f3;
-}
-.status{
-  padding:4px 8px;
-  border-radius:8px;
-  font-size:12px;
-  font-weight:600;
-}
-.active{background:#d1fae5;color:#065f46}
-.pending{background:#fde68a;color:#92400e}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .sidebar{display:none}
-}
-</style>
+    /* ===== MOBILE ===== */
+    @media(max-width:600px){
+      .header h1{font-size:16px}
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="wrapper">
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>QuickPress Admin</h1>
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <img src="../assets/logo.png" alt="QuickPress">
-    </div>
+<!-- ===== CONTENT ===== -->
+<div class="container">
 
-    <div class="nav">
-      <a class="active" href="#">Dashboard</a>
-      <a href="#">Orders</a>
-      <a href="#">Users</a>
-      <a href="#">Partners</a>
-      <a href="#">Riders</a>
-      <a href="#">Wallet / Payouts</a>
-      <a href="#">Ads Manager</a>
-      <a href="#">Settings</a>
-    </div>
-  </aside>
+  <!-- STATS -->
+  <div class="stats">
+    <div class="card"><h3>Total Users</h3><p id="usersCount">–</p></div>
+    <div class="card"><h3>Total Orders</h3><p id="ordersCount">–</p></div>
+    <div class="card"><h3>Partners</h3><p id="partnersCount">–</p></div>
+    <div class="card"><h3>Riders</h3><p id="ridersCount">–</p></div>
+  </div>
 
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- HEADER -->
-    <div class="header">
-      <b>Admin Dashboard</b>
-      <div class="admin">
-        <div class="avatar">A</div>
-        <span>Admin</span>
-      </div>
-    </div>
-
-    <!-- STATS -->
-    <div class="stats">
-      <div class="stat">
-        <small>Total Orders</small>
-        <b>12,430</b>
-      </div>
-      <div class="stat">
-        <small>Active Users</small>
-        <b>4,210</b>
-      </div>
-      <div class="stat">
-        <small>Partners</small>
-        <b>38</b>
-      </div>
-      <div class="stat">
-        <small>Total Revenue</small>
-        <b>₹2.4L</b>
-      </div>
-    </div>
-
-    <!-- ACTIONS -->
-    <div class="actions">
-      <button>Add New City</button>
-      <button>Run Ad</button>
-      <button>Block User</button>
-      <button>Set Payout Rate</button>
-    </div>
-
-    <!-- RECENT ORDERS -->
-    <div class="card">
-      <h3>Recent Orders</h3>
-      <table>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>City</th>
-          <th>Status</th>
-        </tr>
-        <tr>
-          <td>#QP1023</td>
-          <td>Himanshu</td>
-          <td>Kasganj</td>
-          <td><span class="status pending">In Process</span></td>
-        </tr>
-        <tr>
-          <td>#QP1022</td>
-          <td>Rohit</td>
-          <td>Etah</td>
-          <td><span class="status active">Delivered</span></td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- PARTNERS -->
-    <div class="card">
-      <h3>Partners / Riders Status</h3>
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Role</th>
-          <th>Status</th>
-        </tr>
-        <tr>
-          <td>Amit</td>
-          <td>Partner</td>
-          <td><span class="status active">Active</span></td>
-        </tr>
-        <tr>
-          <td>Rahul</td>
-          <td>Rider</td>
-          <td><span class="status pending">Offline</span></td>
-        </tr>
-      </table>
-    </div>
-
-  </main>
+  <!-- MENU -->
+  <div class="menu">
+    <a href="orders.html"><div class="item">📦<span>Orders</span></div></a>
+    <a href="users.html"><div class="item">👥<span>Users</span></div></a>
+    <a href="partners.html"><div class="item">🏪<span>Partners</span></div></a>
+    <a href="riders.html"><div class="item">🚴<span>Riders</span></div></a>
+    <a href="payouts.html"><div class="item">💰<span>Payouts</span></div></a>
+    <a href="ads.html"><div class="item">📢<span>Ads</span></div></a>
+    <a href="cities.html"><div class="item">🏙️<span>Cities</span></div></a>
+    <a href="settings.html"><div class="item">⚙️<span>Settings</span></div></a>
+  </div>
 
 </div>
+
+<!-- ===== FIREBASE ===== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+    authDomain: "quickpress-e486d.firebaseapp.com",
+    projectId: "quickpress-e486d",
+    storageBucket: "quickpress-e486d.firebasestorage.app",
+    messagingSenderId: "572695394794",
+    appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ===== AUTH CHECK =====
+  onAuthStateChanged(auth, async (user)=>{
+    if(!user){
+      window.location.href="../login.html";
+      return;
+    }
+
+    const snap = await getDoc(doc(db,"users",user.uid));
+    if(!snap.exists() || snap.data().role !== "admin"){
+      alert("Unauthorized Admin");
+      window.location.href="../login.html";
+      return;
+    }
+
+    loadStats();
+  });
+
+  // ===== LOAD STATS =====
+  async function loadStats(){
+    const usersSnap = await getDocs(collection(db,"users"));
+    document.getElementById("usersCount").innerText = usersSnap.size;
+
+    const ordersSnap = await getDocs(collection(db,"orders"));
+    document.getElementById("ordersCount").innerText = ordersSnap.size;
+
+    const partnersSnap = await getDocs(query(collection(db,"users"), where("role","==","partner")));
+    document.getElementById("partnersCount").innerText = partnersSnap.size;
+
+    const ridersSnap = await getDocs(query(collection(db,"users"), where("role","==","rider")));
+    document.getElementById("ridersCount").innerText = ridersSnap.size;
+  }
+
+  // ===== LOGOUT =====
+  window.logout = async ()=>{
+    await signOut(auth);
+    window.location.href="../login.html";
+  };
+</script>
 
 </body>
 </html>
