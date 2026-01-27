@@ -2,193 +2,57 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>QuickPress – Checkout</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuickPress | Checkout</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{box-sizing:border-box;font-family:system-ui,-apple-system,Arial}
-body{margin:0;background:#f5f6f7;color:#222}
-
-/* HEADER */
-.header{
-  background:#fff;
-  padding:12px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:700;
-  position:sticky;top:0;z-index:10;
-}
-.header span{font-size:18px;cursor:pointer}
-
-/* CARD */
-.card{
-  background:#fff;
-  margin:12px;
-  padding:14px;
-  border-radius:16px;
-}
-
-/* ADDRESS */
-.addr{
-  display:flex;justify-content:space-between;align-items:center;
-}
-.addr small{opacity:.7}
-.change{color:#16a34a;font-weight:700;cursor:pointer}
-
-/* CHIP */
-.chip{
-  display:inline-block;
-  background:#e8f7ec;color:#166534;
-  padding:4px 8px;border-radius:10px;
-  font-size:12px;margin-top:6px;
-}
-
-/* ITEMS */
-.item{
-  display:flex;justify-content:space-between;
-  margin:6px 0;font-size:14px;
-}
-.item small{opacity:.6}
-
-/* BILL */
-.bill .row{
-  display:flex;justify-content:space-between;margin:6px 0;
-}
-.bill b{font-size:15px}
-
-/* WALLET */
-.wallet{
-  display:flex;justify-content:space-between;align-items:center;
-}
-.switch{
-  width:44px;height:24px;border-radius:20px;background:#ddd;
-  position:relative;cursor:pointer;
-}
-.knob{
-  width:20px;height:20px;background:#fff;border-radius:50%;
-  position:absolute;top:2px;left:2px;transition:.2s;
-}
-.switch.on{background:#22c55e}
-.switch.on .knob{left:22px}
-
-/* PAYMENT */
-.pay{
-  display:flex;align-items:center;gap:10px;font-weight:700;
-}
-.radio{
-  width:18px;height:18px;border-radius:50%;
-  border:2px solid #22c55e;display:inline-block;
-}
-
-/* FOOTER BAR */
-.place{
-  position:fixed;bottom:0;left:0;right:0;
-  background:#fff;border-top:1px solid #ddd;
-  padding:10px 14px;
-  display:flex;justify-content:space-between;align-items:center;
-}
-.place button{
-  background:#22c55e;color:#fff;border:none;
-  padding:14px 22px;border-radius:26px;
-  font-weight:700;font-size:15px;
-}
-.total{font-weight:700}
-</style>
+<link rel="stylesheet" href="../assets/ui.css">
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <span onclick="goBack()">←</span>
-  <b>Checkout</b>
-</div>
+<div class="container">
+  <h2>🧺 Checkout</h2>
 
-<!-- ADDRESS -->
-<div class="card">
-  <div class="addr">
-    <div>
-      <b>Deliver to Home</b><br>
-      <small>Kasganj, UP</small>
-    </div>
-    <div class="change">Change</div>
-  </div>
-  <div class="chip">⏱ Delivery in 10 minutes</div>
-</div>
+  <p><b>City:</b> <span id="cityName"></span></p>
+  <p><b>Total Amount:</b> ₹299</p>
 
-<!-- ITEMS -->
-<div class="card">
-  <b>Order Summary</b>
-  <div class="item">
-    <span>Shirt Iron × <small id="q">1</small></span>
-    <span>₹<small id="it">5</small></span>
-  </div>
-</div>
-
-<!-- BILL -->
-<div class="card bill">
-  <div class="row"><span>Item total</span><span>₹<span id="itemTotal">5</span></span></div>
-  <div class="row"><span>Delivery charges</span><span>₹<span id="delivery">10</span></span></div>
-  <div class="row"><span>GST (18%)</span><span>₹<span id="gst">1</span></span></div>
-  <hr>
-  <div class="row"><b>To Pay</b><b>₹<span id="grand">16</span></b></div>
-</div>
-
-<!-- WALLET -->
-<div class="card wallet">
-  <div>
-    <b>Use Wallet</b><br>
-    <small>Balance ₹50</small>
-  </div>
-  <div class="switch" id="sw" onclick="toggleWallet()">
-    <div class="knob"></div>
-  </div>
-</div>
-
-<!-- PAYMENT -->
-<div class="card pay">
-  <span class="radio"></span>
-  Cash on Delivery
-</div>
-
-<!-- PLACE ORDER -->
-<div class="place">
-  <div class="total">₹<span id="final">16</span></div>
   <button onclick="placeOrder()">Place Order</button>
 </div>
 
-<script>
-let qty=1, price=5, delivery=10, walletOn=false;
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { createOrderWithAutoMapping } from "../assets/order-mapping.js";
 
-function calc(){
-  let item=qty*price;
-  let gst=Math.round(item*0.18);
-  let total=item+gst+delivery;
-  if(walletOn){ total=Math.max(0,total-10); } // demo wallet
-  itemTotal.innerText=item;
-  gstEl.innerText=gst;
-  grand.innerText=total;
-  final.innerText=total;
-}
-function toggleWallet(){
-  walletOn=!walletOn;
-  sw.classList.toggle("on",walletOn);
-  calc();
-}
-function placeOrder(){
-  alert("Order placed successfully (demo)");
-  location.href="orders.html";
-}
-function goBack(){history.back()}
-calc();
+/* FIREBASE CONFIG */
+const app = initializeApp({
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d"
+});
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* SHOW CITY */
+document.getElementById("cityName").innerText =
+  localStorage.getItem("selectedCity") || "Not selected";
+
+/* PLACE ORDER */
+window.placeOrder = async ()=>{
+  try{
+    await createOrderWithAutoMapping({
+      cityId: localStorage.getItem("selectedCity"),
+      totalAmount: 299
+    });
+    alert("✅ Order placed successfully");
+    location.href = "order-tracking.html";
+  }catch(e){
+    alert(e);
+  }
+};
 </script>
-<!-- ===== QUICKPRESS GLOBAL UI ===== -->
-<link rel="stylesheet" href="../assets/ui.css">
-<script src="../assets/ui.js"></script>
-<!-- =============================== -->
-<script type="module" src="../assets/admin-mapping.js"></script>
-<script type="module" src="../assets/order-mapping.js"></script>
 
 </body>
 </html>
