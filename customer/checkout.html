@@ -9,10 +9,10 @@
 
 <body>
 <div class="container">
-  <h2>🧾 Checkout</h2>
+  <h2>Checkout</h2>
 
   <p><b>City:</b> <span id="city"></span></p>
-  <p><b>Total:</b> ₹<span id="total">0</span></p>
+  <p><b>Total Amount:</b> ₹<span id="total"></span></p>
 
   <button onclick="placeOrder()">Place Order</button>
 </div>
@@ -40,12 +40,12 @@ const total = getTotal();
 document.getElementById("total").innerText = total;
 
 window.placeOrder = async ()=>{
-  if(!city){
-    alert("Select city first");
+  if (!city) {
+    alert("Please select city");
     return;
   }
-  if(total <= 0){
-    alert("Cart empty");
+  if (total <= 0) {
+    alert("Cart is empty");
     return;
   }
 
@@ -54,7 +54,7 @@ window.placeOrder = async ()=>{
     totalAmount: total
   });
 
-  alert("✅ Order placed");
+  alert("Order placed successfully");
 };
 </script>
 </body>
