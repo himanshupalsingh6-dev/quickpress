@@ -83,6 +83,69 @@ async function save(){
 <link rel="stylesheet" href="../assets/ui.css">
 <script src="../assets/ui.js"></script>
 <!-- =============================== -->
+<script type="module">
+/* ===============================
+   QUICKPRESS ADMIN SESSION GUARD
+   Protects all admin pages
+================================ */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain: "quickpress-e486d.firebaseapp.com",
+  projectId: "quickpress-e486d"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* SESSION CHECK */
+onAuthStateChanged(auth, async (user) => {
+
+  // ❌ Not logged in
+  if (!user) {
+    location.replace("login.html");
+    return;
+  }
+
+  // 🔍 Fetch user profile
+  const snap = await getDoc(doc(db, "users", user.uid));
+
+  // ❌ No profile
+  if (!snap.exists()) {
+    await signOut(auth);
+    location.replace("login.html");
+    return;
+  }
+
+  const data = snap.data();
+
+  // ❌ Not admin
+  if (data.role !== "admin") {
+    await signOut(auth);
+    alert("Unauthorized access");
+    location.replace("login.html");
+    return;
+  }
+
+  // ❌ Admin blocked
+  if (data.status !== "active") {
+    await signOut(auth);
+    alert("Admin account disabled");
+    location.replace("login.html");
+    return;
+  }
+
+  // ✅ AUTHORIZED ADMIN
+  console.log("Admin session verified");
+
+});
+</script>
 
 </body>
 </html>
