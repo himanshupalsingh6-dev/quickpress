@@ -1,120 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuickPress</title>
+<meta charset="UTF-8">
+<title>QuickPress</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ICONS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="home.css">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="../assets/home.css">
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header class="top-header">
-  <div>
-    <h1>QuickPress</h1>
-    <p><strong>12 minutes</strong> • High demand</p>
+<!-- ================= HEADER ================= -->
+<header class="qp-header">
+  <div class="qp-top">
+    <div>
+      <h1>QuickPress</h1>
+      <p><b>12 minutes</b> • High demand</p>
+    </div>
+    <i class="fa fa-user-circle user-icon"></i>
   </div>
-  <i class="fa-solid fa-user-circle profile"></i>
+
+  <div class="qp-search">
+    <i class="fa fa-search"></i>
+    <input placeholder='Search "ironing", "wash"' />
+    <i class="fa fa-microphone"></i>
+  </div>
 </header>
 
-<!-- SEARCH -->
-<div class="search-box">
-  <i class="fa fa-search"></i>
-  <input type="text" placeholder='Search "ironing", "wash"'>
-  <i class="fa fa-microphone"></i>
-</div>
-
-<!-- HERO -->
+<!-- ================= HERO ================= -->
 <section class="hero">
   <h2>Fresh Clothes.<br><span>Faster Than Ever.</span></h2>
   <p>Iron • Wash • Steam • Dry Clean</p>
 </section>
 
-<!-- CATEGORY TABS -->
-<div class="category-tabs">
-  <button class="active" onclick="filterItems('all')"><i class="fa fa-layer-group"></i><br>All</button>
-  <button onclick="filterItems('iron')"><i class="fa fa-tshirt"></i><br>Iron</button>
-  <button onclick="filterItems('wash')"><i class="fa fa-soap"></i><br>Wash</button>
-  <button onclick="filterItems('steam')"><i class="fa fa-cloud"></i><br>Steam</button>
-  <button onclick="filterItems('dry')"><i class="fa fa-tint"></i><br>Dry</button>
-</div>
+<!-- ================= QUICK ICON MENU ================= -->
+<section class="quick-icons">
+  <div class="qi active"><i class="fa fa-layer-group"></i><span>All</span></div>
+  <div class="qi"><i class="fa fa-shirt"></i><span>Iron</span></div>
+  <div class="qi"><i class="fa fa-soap"></i><span>Wash</span></div>
+  <div class="qi"><i class="fa fa-cloud"></i><span>Steam</span></div>
+  <div class="qi"><i class="fa fa-droplet"></i><span>Dry</span></div>
+</section>
 
-<!-- BESTSELLERS -->
-<h3 class="section-title">Bestsellers</h3>
+<!-- ================= BESTSELLERS ================= -->
+<section class="section">
+  <h3>Bestsellers</h3>
+  <div class="card-grid">
+    <div class="service-card"><i class="fa fa-shirt"></i><p>Ironing</p></div>
+    <div class="service-card"><i class="fa fa-soap"></i><p>Washing</p></div>
+    <div class="service-card"><i class="fa fa-cloud"></i><p>Steam Press</p></div>
+    <div class="service-card"><i class="fa fa-droplet"></i><p>Dry Clean</p></div>
+    <div class="service-card"><i class="fa fa-bolt"></i><p>Express</p></div>
+    <div class="service-card"><i class="fa fa-calendar"></i><p>Scheduled</p></div>
+  </div>
+</section>
 
-<div class="items-grid" id="items"></div>
+<!-- ================= CATEGORY ================= -->
+<section class="section soft-bg">
+  <h3>Laundry Categories</h3>
+  <div class="category-grid">
+    <div class="cat"><i class="fa fa-bed"></i><span>Bedsheet</span></div>
+    <div class="cat"><i class="fa fa-suitcase"></i><span>Office</span></div>
+    <div class="cat"><i class="fa fa-child"></i><span>Kids</span></div>
+    <div class="cat"><i class="fa fa-snowflake"></i><span>Winter</span></div>
+    <div class="cat"><i class="fa fa-vest"></i><span>Daily</span></div>
+    <div class="cat"><i class="fa fa-hotel"></i><span>Hotel</span></div>
+  </div>
+</section>
 
-<!-- CART BAR -->
-<div id="cartBar" class="cart-bar">
-  <span id="cartText"></span>
+<!-- ================= FLOAT CART ================= -->
+<div class="cart-float" id="cartFloat">
+  <span>🧺 3 items added</span>
   <button>View Cart</button>
 </div>
 
-<!-- JS -->
-<script>
-/* 🚫 AUTO LOCATION COMPLETELY DISABLED */
-navigator.geolocation = null;
+<!-- ================= BOTTOM NAV ================= -->
+<nav class="bottom-nav">
+  <div class="nav-item active"><i class="fa fa-house"></i><span>Home</span></div>
+  <div class="nav-item"><i class="fa fa-grid"></i><span>Categories</span></div>
+  <div class="nav-item"><i class="fa fa-receipt"></i><span>Orders</span></div>
+  <div class="nav-item"><i class="fa fa-user"></i><span>Account</span></div>
+</nav>
 
-/* ITEMS */
-const items = [
-  {id:1, name:"Shirt", price:10, cat:"iron", icon:"fa-tshirt"},
-  {id:2, name:"Pant", price:12, cat:"iron", icon:"fa-user-tie"},
-  {id:3, name:"Saree", price:25, cat:"wash", icon:"fa-shirt"},
-  {id:4, name:"Coat", price:30, cat:"dry", icon:"fa-user-secret"},
-  {id:5, name:"Sweater", price:20, cat:"steam", icon:"fa-mitten"}
-];
-
-let cart = {};
-
-function renderItems(filter="all") {
-  const box = document.getElementById("items");
-  box.innerHTML = "";
-
-  items.filter(i => filter==="all" || i.cat===filter)
-    .forEach(i=>{
-      box.innerHTML += `
-      <div class="item-card">
-        <i class="fa ${i.icon} item-icon"></i>
-        <h4>${i.name}</h4>
-        <p>₹${i.price}</p>
-        <button onclick="addToCart(${i.id})">ADD</button>
-      </div>`;
-    });
-}
-
-function filterItems(cat){
-  document.querySelectorAll(".category-tabs button")
-    .forEach(b=>b.classList.remove("active"));
-  event.target.closest("button").classList.add("active");
-  renderItems(cat);
-}
-
-function addToCart(id){
-  cart[id] = (cart[id] || 0) + 1;
-  updateCart();
-}
-
-function updateCart(){
-  const total = Object.values(cart).reduce((a,b)=>a+b,0);
-  const bar = document.getElementById("cartBar");
-  const text = document.getElementById("cartText");
-
-  if(total>0){
-    bar.style.display="flex";
-    text.innerText = `${total} items added`;
-  } else {
-    bar.style.display="none";
-  }
-}
-
-renderItems();
-</script>
-
+<script src="home.js"></script>
 </body>
 </html>
