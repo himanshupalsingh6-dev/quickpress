@@ -1,54 +1,41 @@
-const items = [
-  { id: 1, name: "Shirt", price: 10, category: "iron" },
-  { id: 2, name: "Pant", price: 12, category: "iron" },
-  { id: 3, name: "Saree", price: 25, category: "wash" },
-  { id: 4, name: "Coat", price: 30, category: "dry" },
-  { id: 5, name: "Sweater", price: 20, category: "winter" }
-];
+let cartCount = 0;
 
-let cart = {};
-
-function renderItems(filter = "all") {
-  const container = document.getElementById("items");
-  container.innerHTML = "";
-
-  items
-    .filter(i => filter === "all" || i.category === filter)
-    .forEach(i => {
-      container.innerHTML += `
-        <div class="item-card">
-          <div class="item-icon">👕</div>
-          <h4>${i.name}</h4>
-          <p>₹${i.price}</p>
-          <button onclick="addToCart(${i.id})">ADD</button>
-        </div>
-      `;
-    });
+/* CATEGORY OPEN */
+function openCategory(cat){
+  window.location.href = "category.html?cat=" + cat;
 }
 
-/* CATEGORY CLICK */
-document.querySelectorAll(".category").forEach(btn => {
-  btn.onclick = () => {
-    renderItems(btn.dataset.cat);
-  };
-});
+/* NAV */
+function goHome(){
+  location.href = "home.html";
+}
+
+function goOrders(){
+  location.href = "orders.html";
+}
+
+function openProfile(){
+  location.href = "profile.html";
+}
 
 /* CART LOGIC */
-function addToCart(id) {
-  cart[id] = (cart[id] || 0) + 1;
-  updateCartUI();
+function addToCart(){
+  cartCount++;
+  updateCartPopup();
 }
 
-function updateCartUI() {
-  const totalItems = Object.values(cart).reduce((a,b)=>a+b,0);
-  const cartBar = document.getElementById("cartBar");
+function updateCartPopup(){
+  const popup = document.getElementById("cartPopup");
+  const text = document.getElementById("cartText");
 
-  if (totalItems > 0) {
-    cartBar.style.display = "flex";
-    cartBar.innerHTML = `🧺 ${totalItems} items <button>View Cart</button>`;
+  if(cartCount > 0){
+    popup.style.display = "flex";
+    text.innerText = `${cartCount} item(s) added`;
   } else {
-    cartBar.style.display = "none";
+    popup.style.display = "none";
   }
 }
 
-renderItems();
+function goCart(){
+  location.href = "cart.html";
+}
