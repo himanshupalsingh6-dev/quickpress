@@ -1,188 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>QuickPress Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>QuickPress | Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #FFD93D; /* Soft Yellow */
-      font-family: Arial, sans-serif;
-    }
+<!-- GLOBAL UI -->
+<link rel="stylesheet" href="assets/ui.css">
 
-    .card {
-      background: #fff;
-      width: 340px;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      text-align: center;
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-      color: #E53935;
-      margin-bottom: 8px;
-    }
-
-    h2 {
-      margin: 6px 0 20px;
-      font-size: 18px;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 14px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      background: #FFD93D;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #ffcc00;
-    }
-
-    .switch {
-      margin-top: 12px;
-      font-size: 14px;
-      cursor: pointer;
-      color: #444;
-    }
-
-    .error {
-      color: red;
-      font-size: 13px;
-      margin-top: 10px;
-    }
-  </style>
+<style>
+.login-wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#FFD84D,#fff6cc);
+}
+.login-card{
+  width:100%;
+  max-width:380px;
+  background:#fff;
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 25px 60px rgba(0,0,0,.15);
+  animation:pop .4s ease;
+}
+@keyframes pop{
+  from{transform:scale(.9);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.logo{
+  text-align:center;
+  margin-bottom:20px;
+}
+.logo img{
+  height:60px;
+}
+.logo h2{
+  margin:10px 0 4px;
+}
+.sub{
+  font-size:13px;
+  color:#777;
+}
+.btn{
+  width:100%;
+  margin-top:10px;
+}
+.link{
+  text-align:center;
+  margin-top:14px;
+  font-size:13px;
+}
+.link a{
+  color:#000;
+  font-weight:700;
+  text-decoration:none;
+}
+</style>
 </head>
 
 <body>
 
-<div class="card">
-  <div class="logo">QuickPress</div>
-  <h2 id="title">Login with Email</h2>
+<div class="login-wrap">
+  <div class="login-card">
 
-  <input type="email" id="email" placeholder="Email address" />
-  <input type="password" id="password" placeholder="Password" />
+    <div class="logo">
+      <img src="assets/logo.png" alt="QuickPress">
+      <h2>Welcome Back</h2>
+      <div class="sub">Login to continue</div>
+    </div>
 
-  <button onclick="login()">Login</button>
+    <input id="email" type="email" placeholder="Email address">
+    <input id="password" type="password" placeholder="Password">
 
-  <div class="switch" onclick="toggleMode()">
-    New user? Register here
+    <button class="btn" onclick="login()">Login</button>
+
+    <div class="link">
+      New here? <a href="register.html">Create account</a>
+    </div>
+
   </div>
-
-  <div class="error" id="error"></div>
 </div>
 
-<!-- 🔥 FIREBASE -->
+<script src="assets/ui.js"></script>
+
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-  import {
-    getAuth,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword
-  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    getDoc
-  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-    authDomain: "quickpress-e486d.firebaseapp.com",
-    projectId: "quickpress-e486d",
-    storageBucket: "quickpress-e486d.firebasestorage.app",
-    messagingSenderId: "572695394794",
-    appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
-  };
+const app = initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
+const auth=getAuth(app);
+const db=getFirestore(app);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+window.login = async ()=>{
+  showLoader();
+  try{
+    const email=email.value;
+    const pass=password.value;
 
-  let isRegister = false;
+    const res=await signInWithEmailAndPassword(auth,email,pass);
+    const snap=await getDoc(doc(db,"users",res.user.uid));
 
-  window.toggleMode = () => {
-    isRegister = !isRegister;
-    document.getElementById("title").innerText =
-      isRegister ? "Register Account" : "Login with Email";
-    document.querySelector("button").innerText =
-      isRegister ? "Register" : "Login";
-    document.querySelector(".switch").innerText =
-      isRegister ? "Already have account? Login" : "New user? Register here";
-  };
+    hideLoader();
 
-  window.login = async () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const errorBox = document.getElementById("error");
-
-    errorBox.innerText = "";
-
-    try {
-      let userCred;
-
-      if (isRegister) {
-        userCred = await createUserWithEmailAndPassword(auth, email, password);
-
-        // Default user data
-        await setDoc(doc(db, "users", userCred.user.uid), {
-          email,
-          role: "customer", // admin / partner / rider
-          status: "active",
-          createdAt: Date.now()
-        });
-
-      } else {
-        userCred = await signInWithEmailAndPassword(auth, email, password);
-      }
-
-      // Fetch role
-      const snap = await getDoc(doc(db, "users", userCred.user.uid));
-      const role = snap.data().role;
-
-      // Redirect
-      if (role === "admin") {
-        location.href = "/quickpress/admin/dashboard.html";
-      } else if (role === "partner") {
-        location.href = "/quickpress/partner/dashboard.html";
-      } else if (role === "rider") {
-        location.href = "/quickpress/rider/dashboard.html";
-      } else {
-        location.href = "/quickpress/customer/home.html";
-      }
-
-    } catch (err) {
-      errorBox.innerText = err.message;
+    if(!snap.exists()){
+      toast("User profile not found");
+      return;
     }
-  };
+
+    const role=snap.data().role;
+
+    if(role==="admin") location.href="admin/dashboard.html";
+    else if(role==="partner") location.href="partner/dashboard.html";
+    else if(role==="rider") location.href="rider/dashboard.html";
+    else location.href="customer/home.html";
+
+  }catch(e){
+    hideLoader();
+    toast(e.message);
+  }
+}
 </script>
-<!-- ===== QUICKPRESS GLOBAL UI ===== -->
-<link rel="stylesheet" href="/assets/ui.css">
-<script src="/assets/ui.js"></script>
-<!-- =============================== -->
 
 </body>
 </html>
