@@ -5,316 +5,173 @@
 <title>QuickPress | City & Hub Management</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="stylesheet" href="../assets/ui.css">
+
 <style>
-:root{
-  --yellow:#FFD84D;
-  --bg:#f6f6f6;
-  --card:#fff;
-  --text:#222;
-  --muted:#777;
-  --danger:#ff7675;
-  --success:#55efc4;
-}
-
-*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{margin:0;background:var(--bg);color:var(--text)}
-
-/* HEADER */
-.header{
-  background:var(--yellow);
-  padding:14px 18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-.header h2{margin:0;font-size:18px}
-.back{
-  background:#fff;border:none;padding:8px 14px;border-radius:8px;
-  cursor:pointer;font-weight:600;
-}
-
-/* CONTAINER */
 .container{max-width:1200px;margin:auto;padding:16px}
-
-/* ADD FORM */
-.form-card{
-  background:#fff;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:0 4px 12px rgba(0,0,0,.08);
+.topbar{
+  background:#FFD84D;padding:14px 16px;border-radius:14px;
+  display:flex;justify-content:space-between;align-items:center
 }
-.form-card h3{margin:0 0 10px;font-size:16px}
-.form{
+.grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:10px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;margin-top:16px
 }
-.form input{
-  padding:10px;border-radius:8px;border:1px solid #ddd;
+.card h3{margin-bottom:8px}
+input,select{
+  width:100%;padding:8px;margin:6px 0;
+  border-radius:8px;border:1px solid #ddd
 }
-.form button{
-  padding:10px;border:none;border-radius:8px;
-  background:var(--yellow);font-weight:700;cursor:pointer;
+button{margin-top:8px}
+.city-card{
+  border:1px solid #eee;border-radius:14px;
+  padding:14px;background:#fff
 }
-
-/* TABLE */
-.table-wrap{overflow-x:auto}
-table{
-  width:100%;border-collapse:collapse;background:#fff;
-  border-radius:12px;overflow:hidden
+.switch{
+  display:flex;align-items:center;gap:8px;margin-top:6px
 }
-th,td{
-  padding:12px;border-bottom:1px solid #eee;text-align:left
-}
-th{background:#fafafa;font-size:13px}
-
-.badge{
-  padding:4px 10px;border-radius:20px;
-  font-size:12px;font-weight:700
-}
-.active{background:var(--success)}
-.disabled{background:var(--danger);color:#fff}
-
-/* ACTIONS */
-.actions button{
-  padding:6px 10px;border:none;border-radius:6px;
-  cursor:pointer;font-size:12px;margin-right:4px
-}
-.enable{background:var(--success)}
-.disable{background:var(--danger);color:#fff}
-.edit{background:var(--yellow)}
-.small{font-size:12px;color:var(--muted)}
-
-@media(max-width:600px){
-  th,td{font-size:12px}
-}
+.switch input{width:auto}
+.small{font-size:12px;color:#777}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <h2>🏙️ City & Hub Management</h2>
-  <button class="back" onclick="goBack()">Dashboard</button>
-</div>
-
 <div class="container">
 
-  <!-- ADD CITY -->
-  <div class="form-card">
-    <h3>Add / Update City</h3>
-    <div class="form">
-      <input id="cityName" placeholder="City name (e.g. Kasganj)">
-      <input id="deliveryCharge" type="number" placeholder="Delivery charge ₹">
-      <input id="hubName" placeholder="Hub name">
-      <button onclick="saveCity()">Save City</button>
-    </div>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <b>🏙️ City & Hub Management (Advanced)</b>
+    <a href="dashboard.html">⬅ Dashboard</a>
   </div>
 
-  <!-- TABLE -->
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>City</th>
-          <th>Hub</th>
-          <th>Delivery ₹</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="cityBody">
-        <tr><td colspan="5">Loading cities...</td></tr>
-      </tbody>
-    </table>
+  <!-- ADD CITY -->
+  <div class="card">
+    <h3>Add New City</h3>
+    <input id="cityName" placeholder="City name">
+    <input id="hubName" placeholder="Hub name">
+    <input id="baseCharge" type="number" placeholder="Base delivery charge">
+    <input id="perKm" type="number" placeholder="Charge per KM">
+    <button onclick="addCity()">Add City</button>
+  </div>
+
+  <!-- CITY LIST -->
+  <div class="grid" id="cityList">
+    <div>Loading cities...</div>
   </div>
 
 </div>
+
+<!-- GLOBAL UI -->
+<script src="../assets/ui.js"></script>
 
 <!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 import {
-  getFirestore, collection, getDocs, doc, getDoc,
-  setDoc, updateDoc
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 /* CONFIG */
-const firebaseConfig = {
-  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-  authDomain: "quickpress-e486d.firebaseapp.com",
-  projectId: "quickpress-e486d",
-  storageBucket: "quickpress-e486d.firebasestorage.app",
-  messagingSenderId: "572695394794",
-  appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
-};
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* AUTH CHECK */
+/* SESSION GUARD */
 onAuthStateChanged(auth, async (user)=>{
-  if(!user){ location.href="../login.html"; return; }
+  if(!user){ location.replace("login.html"); return; }
   const snap = await getDoc(doc(db,"users",user.uid));
   if(!snap.exists() || snap.data().role!=="admin"){
-    alert("Unauthorized Admin");
-    location.href="../login.html";
+    await signOut(auth);
+    location.replace("login.html");
     return;
   }
   loadCities();
 });
 
-window.goBack = ()=> location.href="dashboard.html";
+/* ADD CITY */
+window.addCity = async ()=>{
+  const name = cityName.value.trim();
+  const hub = hubName.value.trim();
+  const base = Number(baseCharge.value);
+  const km = Number(perKm.value);
+
+  if(!name || !hub) return toast("Fill all fields","error");
+
+  showLoader();
+  await addDoc(collection(db,"cities"),{
+    name,
+    hub,
+    baseCharge: base,
+    perKm: km,
+    active:true,
+    createdAt: new Date()
+  });
+  hideLoader();
+  toast("City added","success");
+  cityName.value=hubName.value=baseCharge.value=perKm.value="";
+  loadCities();
+};
 
 /* LOAD CITIES */
 async function loadCities(){
-  const body = document.getElementById("cityBody");
-  body.innerHTML="<tr><td colspan='5'>Loading...</td></tr>";
-
+  showLoader();
   const snap = await getDocs(collection(db,"cities"));
-  body.innerHTML="";
+  const wrap = document.getElementById("cityList");
+  wrap.innerHTML="";
+  snap.forEach(d=>{
+    const c=d.data();
+    wrap.innerHTML+=`
+      <div class="city-card">
+        <h3>${c.name}</h3>
+        <div class="small">Hub: ${c.hub}</div>
 
-  snap.forEach(s=>{
-    const d = s.data();
-    body.innerHTML += `
-      <tr>
-        <td>${d.name}</td>
-        <td>${d.hub || "-"}</td>
-        <td>₹${d.deliveryCharge || 0}</td>
-        <td>
-          <span class="badge ${d.active?'active':'disabled'}">
-            ${d.active?'active':'disabled'}
-          </span>
-        </td>
-        <td class="actions">
-          ${
-            d.active
-            ? `<button class="disable" onclick="setStatus('${s.id}',false)">Disable</button>`
-            : `<button class="enable" onclick="setStatus('${s.id}',true)">Enable</button>`
-          }
-          <button class="edit" onclick="editCity('${s.id}','${d.name}','${d.hub||""}','${d.deliveryCharge||0}')">
-            Edit
-          </button>
-        </td>
-      </tr>
+        <label>Base Charge</label>
+        <input type="number" value="${c.baseCharge}"
+          onchange="update('${d.id}','baseCharge',this.value)">
+
+        <label>Per KM Charge</label>
+        <input type="number" value="${c.perKm}"
+          onchange="update('${d.id}','perKm',this.value)">
+
+        <div class="switch">
+          <input type="checkbox" ${c.active?"checked":""}
+            onchange="toggle('${d.id}',this.checked)">
+          <span>${c.active?"Active":"Inactive"}</span>
+        </div>
+      </div>
     `;
   });
-
-  if(!body.innerHTML){
-    body.innerHTML="<tr><td colspan='5'>No cities added</td></tr>";
-  }
+  hideLoader();
 }
 
-/* SAVE CITY */
-window.saveCity = async ()=>{
-  const name = document.getElementById("cityName").value.trim();
-  const hub = document.getElementById("hubName").value.trim();
-  const charge = Number(document.getElementById("deliveryCharge").value);
-
-  if(!name){
-    alert("City name required");
-    return;
-  }
-
-  await setDoc(doc(db,"cities",name.toLowerCase()),{
-    name,
-    hub,
-    deliveryCharge:charge || 0,
-    active:true,
-    updatedAt:Date.now()
+/* UPDATE FIELD */
+window.update = async (id,field,value)=>{
+  await updateDoc(doc(db,"cities",id),{
+    [field]: Number(value)
   });
-
-  document.getElementById("cityName").value="";
-  document.getElementById("hubName").value="";
-  document.getElementById("deliveryCharge").value="";
-
-  loadCities();
+  toast("Updated","success");
 };
 
-/* ENABLE / DISABLE */
-window.setStatus = async (id,active)=>{
-  await updateDoc(doc(db,"cities",id),{active});
-  loadCities();
+/* TOGGLE CITY */
+window.toggle = async (id,val)=>{
+  await updateDoc(doc(db,"cities",id),{
+    active: val
+  });
+  toast(val?"City enabled":"City disabled","success");
 };
-
-/* EDIT */
-window.editCity = (id,name,hub,charge)=>{
-  document.getElementById("cityName").value=name;
-  document.getElementById("hubName").value=hub;
-  document.getElementById("deliveryCharge").value=charge;
-};
-</script>
-<!-- ===== QUICKPRESS GLOBAL UI ===== -->
-<link rel="stylesheet" href="../assets/ui.css">
-<script src="../assets/ui.js"></script>
-<!-- =============================== -->
-<script type="module">
-/* ===============================
-   QUICKPRESS ADMIN SESSION GUARD
-   Protects all admin pages
-================================ */
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-  authDomain: "quickpress-e486d.firebaseapp.com",
-  projectId: "quickpress-e486d"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-/* SESSION CHECK */
-onAuthStateChanged(auth, async (user) => {
-
-  // ❌ Not logged in
-  if (!user) {
-    location.replace("login.html");
-    return;
-  }
-
-  // 🔍 Fetch user profile
-  const snap = await getDoc(doc(db, "users", user.uid));
-
-  // ❌ No profile
-  if (!snap.exists()) {
-    await signOut(auth);
-    location.replace("login.html");
-    return;
-  }
-
-  const data = snap.data();
-
-  // ❌ Not admin
-  if (data.role !== "admin") {
-    await signOut(auth);
-    alert("Unauthorized access");
-    location.replace("login.html");
-    return;
-  }
-
-  // ❌ Admin blocked
-  if (data.status !== "active") {
-    await signOut(auth);
-    alert("Admin account disabled");
-    location.replace("login.html");
-    return;
-  }
-
-  // ✅ AUTHORIZED ADMIN
-  console.log("Admin session verified");
-
-});
 </script>
 
 </body>
