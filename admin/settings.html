@@ -1,150 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin Settings | QuickPress</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuickPress | Admin Settings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../assets/ui.css">
 
 <style>
-body{margin:0;font-family:Arial;background:#f6f6f6}
-header{background:#FFD84D;padding:15px;font-weight:700}
-.card{
-  background:#fff;margin:15px;border-radius:12px;padding:16px
+.container{max-width:900px;margin:auto;padding:16px}
+.topbar{
+  background:#FFD84D;padding:14px 16px;border-radius:14px;
+  display:flex;justify-content:space-between;align-items:center
 }
+.form{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px
+}
+label{font-size:13px;color:#555}
 input{
-  width:100%;padding:10px;margin-bottom:10px;
-  border-radius:8px;border:1px solid #ddd
+  width:100%;padding:10px;margin-top:6px;
+  border-radius:10px;border:1px solid #ddd
 }
-button{
-  background:#FFD84D;border:none;padding:12px;
-  border-radius:8px;font-weight:700;width:100%
+.card h3{margin-bottom:10px}
+.save{
+  margin-top:20px;
+  width:100%;
+  font-size:16px
+}
+.note{
+  font-size:12px;color:#777;margin-top:6px
 }
 </style>
 </head>
 
 <body>
 
-<header>⚙️ Admin Settings</header>
+<div class="container">
 
-<div class="card">
-  <label>Base Delivery Charge</label>
-  <input id="base">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <b>⚙️ Admin Settings (Advanced)</b>
+    <a href="dashboard.html">⬅ Dashboard</a>
+  </div>
 
-  <label>Delivery Per KM</label>
-  <input id="perkm">
+  <!-- SETTINGS FORM -->
+  <div class="card">
+    <h3>Pricing & Commission Controls</h3>
 
-  <label>GST %</label>
-  <input id="gst">
+    <div class="form">
+      <div>
+        <label>GST (%)</label>
+        <input id="gst" type="number" step="0.1">
+        <div class="note">Applied on order total</div>
+      </div>
 
-  <label>Partner %</label>
-  <input id="partner">
+      <div>
+        <label>Partner Commission (%)</label>
+        <input id="partnerCommission" type="number">
+        <div class="note">Deducted from order value</div>
+      </div>
 
-  <label>Rider Per KM</label>
-  <input id="rider">
+      <div>
+        <label>Rider Per KM Rate (₹)</label>
+        <input id="riderPerKm" type="number">
+        <div class="note">Distance based earning</div>
+      </div>
 
-  <button onclick="save()">Save Settings</button>
+      <div>
+        <label>Base Delivery Charge (₹)</label>
+        <input id="baseDelivery" type="number">
+        <div class="note">Minimum delivery charge</div>
+      </div>
+    </div>
+
+    <button class="save" onclick="save()">Save Settings</button>
+  </div>
+
 </div>
 
+<!-- GLOBAL UI -->
+<script src="../assets/ui.js"></script>
+
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getFirestore,doc,getDoc,setDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-const app=initializeApp({
+/* CONFIG */
+const app = initializeApp({
   apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
   authDomain:"quickpress-e486d.firebaseapp.com",
   projectId:"quickpress-e486d"
 });
-const db=getFirestore(app);
-
-async function load(){
-  const snap=await getDoc(doc(db,"settings","app"));
-  if(!snap.exists()) return;
-  const d=snap.data();
-  base.value=d.baseDeliveryCharge;
-  perkm.value=d.deliveryPerKm;
-  gst.value=d.gstPercent;
-  partner.value=d.partnerPercent;
-  rider.value=d.riderPerKm;
-}
-load();
-
-async function save(){
-  await setDoc(doc(db,"settings","app"),{
-    baseDeliveryCharge:Number(base.value),
-    deliveryPerKm:Number(perkm.value),
-    gstPercent:Number(gst.value),
-    partnerPercent:Number(partner.value),
-    riderPerKm:Number(rider.value)
-  });
-  alert("Settings updated");
-}
-</script>
-<!-- ===== QUICKPRESS GLOBAL UI ===== -->
-<link rel="stylesheet" href="../assets/ui.css">
-<script src="../assets/ui.js"></script>
-<!-- =============================== -->
-<script type="module">
-/* ===============================
-   QUICKPRESS ADMIN SESSION GUARD
-   Protects all admin pages
-================================ */
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-  authDomain: "quickpress-e486d.firebaseapp.com",
-  projectId: "quickpress-e486d"
-};
-
-const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* SESSION CHECK */
-onAuthStateChanged(auth, async (user) => {
-
-  // ❌ Not logged in
-  if (!user) {
-    location.replace("login.html");
-    return;
-  }
-
-  // 🔍 Fetch user profile
-  const snap = await getDoc(doc(db, "users", user.uid));
-
-  // ❌ No profile
-  if (!snap.exists()) {
+/* SESSION GUARD */
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){ location.replace("login.html"); return; }
+  const snap = await getDoc(doc(db,"users",user.uid));
+  if(!snap.exists() || snap.data().role!=="admin"){
     await signOut(auth);
     location.replace("login.html");
     return;
   }
-
-  const data = snap.data();
-
-  // ❌ Not admin
-  if (data.role !== "admin") {
-    await signOut(auth);
-    alert("Unauthorized access");
-    location.replace("login.html");
-    return;
-  }
-
-  // ❌ Admin blocked
-  if (data.status !== "active") {
-    await signOut(auth);
-    alert("Admin account disabled");
-    location.replace("login.html");
-    return;
-  }
-
-  // ✅ AUTHORIZED ADMIN
-  console.log("Admin session verified");
-
+  load();
 });
+
+/* LOAD SETTINGS */
+async function load(){
+  showLoader();
+  const ref = doc(db,"settings","app");
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    const s = snap.data();
+    gst.value = s.gst ?? 5;
+    partnerCommission.value = s.partnerCommission ?? 20;
+    riderPerKm.value = s.riderPerKm ?? 8;
+    baseDelivery.value = s.baseDelivery ?? 30;
+  }else{
+    gst.value = 5;
+    partnerCommission.value = 20;
+    riderPerKm.value = 8;
+    baseDelivery.value = 30;
+  }
+  hideLoader();
+}
+
+/* SAVE SETTINGS */
+window.save = async ()=>{
+  showLoader();
+  await setDoc(doc(db,"settings","app"),{
+    gst: Number(gst.value),
+    partnerCommission: Number(partnerCommission.value),
+    riderPerKm: Number(riderPerKm.value),
+    baseDelivery: Number(baseDelivery.value),
+    updatedAt: new Date()
+  });
+  hideLoader();
+  toast("Settings saved","success");
+};
 </script>
 
 </body>
