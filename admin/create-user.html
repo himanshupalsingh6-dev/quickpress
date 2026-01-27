@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create Partner / Rider</title>
+<link rel="stylesheet" href="../assets/ui.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Create Partner / Rider</h2>
+
+  <input id="email" placeholder="Email">
+  <input id="password" placeholder="Password">
+  <select id="role">
+    <option value="partner">Partner</option>
+    <option value="rider">Rider</option>
+  </select>
+
+  <button onclick="createUser()">Create</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+function genId(){
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
+window.createUser = async ()=>{
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const role = document.getElementById("role").value;
+
+  const cred = await createUserWithEmailAndPassword(auth,email,password);
+
+  await setDoc(doc(db,"users",cred.user.uid),{
+    email,
+    role,
+    status:"active",
+    qpId: genId(),
+    createdAt: new Date()
+  });
+
+  alert("User created");
+};
+</script>
+
+</body>
+</html>
