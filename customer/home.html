@@ -6,7 +6,8 @@
 <title>QuickPress</title>
 
 <link rel="stylesheet" href="../assets/home.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -18,13 +19,12 @@
       <h1>QuickPress</h1>
       <p><b>12 minutes</b> • High demand</p>
     </div>
-    <i class="fa-solid fa-user-circle profile"></i>
+    <i class="fa fa-user-circle profile" onclick="openProfile()"></i>
   </div>
 
   <div class="search">
     <i class="fa fa-search"></i>
     <input placeholder='Search "iron", "wash"' />
-    <i class="fa fa-microphone"></i>
   </div>
 </header>
 
@@ -36,111 +36,101 @@
 
 <!-- CATEGORY SLIDER -->
 <section class="category-slider">
-  <div class="cat active"><i class="fa fa-layer-group"></i><span>All</span></div>
-  <div class="cat"><i class="fa fa-shirt"></i><span>Iron</span></div>
-  <div class="cat"><i class="fa fa-soap"></i><span>Wash</span></div>
-  <div class="cat"><i class="fa fa-cloud"></i><span>Steam</span></div>
-  <div class="cat"><i class="fa fa-droplet"></i><span>Dry</span></div>
+  <div class="cat active" onclick="openCategory('all')">
+    <i class="fa fa-layer-group"></i><span>All</span>
+  </div>
+  <div class="cat" onclick="openCategory('iron')">
+    <i class="fa fa-shirt"></i><span>Iron</span>
+  </div>
+  <div class="cat" onclick="openCategory('steam')">
+    <i class="fa fa-cloud"></i><span>Steam</span>
+  </div>
+  <div class="cat" onclick="openCategory('wash')">
+    <i class="fa fa-soap"></i><span>Wash</span>
+  </div>
+  <div class="cat" onclick="openCategory('dry')">
+    <i class="fa fa-droplet"></i><span>Dry</span>
+  </div>
 </section>
 
-<!-- BEST SELLER -->
+<!-- BESTSELLERS -->
 <section class="section">
 <h3>Bestsellers</h3>
 
 <div class="best-grid">
-  <div class="best-card">
+  <div class="best-card" onclick="openCategory('iron')">
     <div class="icon-box green"><i class="fa fa-shirt"></i></div>
-    <h4>Ironing</h4>
+    <p>Ironing</p>
   </div>
-  <div class="best-card">
-    <div class="icon-box blue"><i class="fa fa-soap"></i></div>
-    <h4>Washing</h4>
-  </div>
-  <div class="best-card">
+  <div class="best-card" onclick="openCategory('steam')">
     <div class="icon-box purple"><i class="fa fa-cloud"></i></div>
-    <h4>Steam</h4>
+    <p>Steam</p>
   </div>
-  <div class="best-card">
+  <div class="best-card" onclick="openCategory('wash')">
+    <div class="icon-box blue"><i class="fa fa-soap"></i></div>
+    <p>Wash</p>
+  </div>
+  <div class="best-card" onclick="openCategory('dry')">
     <div class="icon-box pink"><i class="fa fa-droplet"></i></div>
-    <h4>Dry Clean</h4>
-  </div>
-  <div class="best-card">
-    <div class="icon-box yellow"><i class="fa fa-bolt"></i></div>
-    <h4>Express</h4>
-  </div>
-  <div class="best-card">
-    <div class="icon-box violet"><i class="fa fa-calendar"></i></div>
-    <h4>Scheduled</h4>
+    <p>Dry Clean</p>
   </div>
 </div>
 </section>
 
-<!-- CITY GRAPH -->
-<section class="section city-section">
-<h3>📍 We are live in</h3>
+<!-- WE ARE LIVE -->
+<section class="section live">
+<h3>We are live in</h3>
 
-<div class="city-graph">
+<div class="stats">
+  <div>
+    <strong>⭐ 4.8</strong>
+    <span>Rating</span>
+  </div>
+  <div>
+    <strong>25k+</strong>
+    <span>Deliveries</span>
+  </div>
+  <div>
+    <strong>180+</strong>
+    <span>Partners</span>
+  </div>
+  <div>
+    <strong>9k+</strong>
+    <span>Active Users</span>
+  </div>
+</div>
+
+<div class="bar-graph">
   <div style="height:70%">Kasganj</div>
   <div style="height:90%">Noida</div>
-  <div style="height:60%">Agra</div>
+  <div style="height:65%">Agra</div>
   <div style="height:50%">Badaun</div>
-  <div style="height:65%">Aligarh</div>
-  <div style="height:100%">Delhi</div>
+  <div style="height:80%">Delhi</div>
 </div>
 </section>
 
 <!-- CART POPUP -->
-<div class="cart-popup" id="cart">
-  <span>🧺 3 items added</span>
-  <button>View Cart</button>
+<div class="cart-popup" id="cartPopup">
+  <span id="cartText"></span>
+  <button onclick="goCart()">View Cart</button>
 </div>
 
-<!-- FOOTER -->
-<footer class="footer">
-
-<div class="footer-col">
-<h4>QuickPress</h4>
-<a href="#">About Us</a>
-<a href="#">Careers</a>
-<a href="#">Blog</a>
-<a href="#">Press</a>
-</div>
-
-<div class="footer-col">
-<h4>Join Us</h4>
-<a href="#">Become Partner</a>
-<a href="#">Become Rider</a>
-<a href="#">Franchise</a>
-</div>
-
-<div class="footer-col">
-<h4>Support</h4>
-<a href="#">Help Center</a>
-<a href="#">Contact</a>
-<a href="#">FAQs</a>
-<a href="#">Report issue</a>
-</div>
-
-<div class="footer-col">
-<h4>Legal</h4>
-<a href="#">Privacy</a>
-<a href="#">Terms</a>
-<a href="#">Refund</a>
-</div>
-
-</footer>
-
-<!-- BOTTOM NAV -->
+<!-- NAVBAR -->
 <nav class="bottom-nav">
-  <div class="active"><i class="fa fa-home"></i><span>Home</span></div>
-  <div><i class="fa fa-grid"></i><span>Categories</span></div>
-  <div><i class="fa fa-receipt"></i><span>Orders</span></div>
-  <div><i class="fa fa-user"></i><span>Account</span></div>
+  <div onclick="goHome()" class="active">
+    <i class="fa fa-home"></i><span>Home</span>
+  </div>
+  <div onclick="openCategory('all')">
+    <i class="fa fa-grid"></i><span>Categories</span>
+  </div>
+  <div onclick="goOrders()">
+    <i class="fa fa-receipt"></i><span>Orders</span>
+  </div>
+  <div onclick="openProfile()">
+    <i class="fa fa-user"></i><span>Account</span>
+  </div>
 </nav>
 
-<script>
-setTimeout(()=>{document.getElementById("cart").style.display="flex"},2000);
-</script>
-
+<script src="home.js"></script>
 </body>
 </html>
