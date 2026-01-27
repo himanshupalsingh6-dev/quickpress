@@ -191,3 +191,21 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+/* REMOVE ORANGE COMPLETELY */
+.orange,
+.text-orange,
+.highlight {
+  color: #FFD400 !important;
+}
+
+button,
+.add-btn {
+  background: #FFD400 !important;
+  color: #111 !important;
+}
+
+/* Fix heading accent */
+.hero span,
+.hero strong {
+  color: #FFD400;
+}
