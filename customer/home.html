@@ -1,90 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>QuickPress</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuickPress</title>
 
-<link rel="stylesheet" href="home.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="../assets/home.css">
 
-<link rel="stylesheet"
- href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-
 <body>
 
-<!-- ================= HEADER ================= -->
-<header class="qp-header">
-  <div class="qp-top">
+<!-- HEADER -->
+<header class="header">
+  <div class="header-top">
     <div>
       <h1>QuickPress</h1>
-      <p><b>12 minutes</b> • High demand</p>
+      <p><strong>12 minutes</strong> • High demand</p>
     </div>
-    <i class="fa fa-user-circle user-icon"></i>
+    <i class="fa-solid fa-user-circle user-icon"></i>
   </div>
 
-  <div class="qp-search">
-    <i class="fa fa-search"></i>
-    <input placeholder='Search "ironing", "wash"' />
-    <i class="fa fa-microphone"></i>
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" placeholder='Search "ironing", "wash"' />
+    <i class="fa-solid fa-microphone"></i>
   </div>
 </header>
 
-<!-- ================= HERO ================= -->
+<!-- HERO -->
 <section class="hero">
-  <h2>Fresh Clothes.<br><span>Faster Than Ever.</span></h2>
+  <h2>
+    Fresh Clothes.<br>
+    <span>Faster Than Ever.</span>
+  </h2>
   <p>Iron • Wash • Steam • Dry Clean</p>
 </section>
 
-<!-- ================= QUICK ICON MENU ================= -->
-<section class="quick-icons">
-  <div class="qi active"><i class="fa fa-layer-group"></i><span>All</span></div>
-  <div class="qi"><i class="fa fa-shirt"></i><span>Iron</span></div>
-  <div class="qi"><i class="fa fa-soap"></i><span>Wash</span></div>
-  <div class="qi"><i class="fa fa-cloud"></i><span>Steam</span></div>
-  <div class="qi"><i class="fa fa-droplet"></i><span>Dry</span></div>
+<!-- CATEGORY TABS -->
+<section class="tabs">
+  <button class="active"><i class="fa-solid fa-layer-group"></i><span>All</span></button>
+  <button><i class="fa-solid fa-shirt"></i><span>Iron</span></button>
+  <button><i class="fa-solid fa-soap"></i><span>Wash</span></button>
+  <button><i class="fa-solid fa-cloud"></i><span>Steam</span></button>
+  <button><i class="fa-solid fa-droplet"></i><span>Dry</span></button>
 </section>
 
-<!-- ================= BESTSELLERS ================= -->
+<!-- BESTSELLERS -->
 <section class="section">
   <h3>Bestsellers</h3>
-  <div class="card-grid">
-    <div class="service-card"><i class="fa fa-shirt"></i><p>Ironing</p></div>
-    <div class="service-card"><i class="fa fa-soap"></i><p>Washing</p></div>
-    <div class="service-card"><i class="fa fa-cloud"></i><p>Steam Press</p></div>
-    <div class="service-card"><i class="fa fa-droplet"></i><p>Dry Clean</p></div>
-    <div class="service-card"><i class="fa fa-bolt"></i><p>Express</p></div>
-    <div class="service-card"><i class="fa fa-calendar"></i><p>Scheduled</p></div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="icon shirt"></div>
+      <h4>Ironing</h4>
+    </div>
+    <div class="card">
+      <div class="icon wash"></div>
+      <h4>Washing</h4>
+    </div>
+    <div class="card">
+      <div class="icon steam"></div>
+      <h4>Steam Press</h4>
+    </div>
+    <div class="card">
+      <div class="icon dry"></div>
+      <h4>Dry Clean</h4>
+    </div>
+    <div class="card">
+      <div class="icon express"></div>
+      <h4>Express</h4>
+    </div>
+    <div class="card">
+      <div class="icon schedule"></div>
+      <h4>Scheduled</h4>
+    </div>
   </div>
 </section>
 
-<!-- ================= CATEGORY ================= -->
-<section class="section soft-bg">
-  <h3>Laundry Categories</h3>
-  <div class="category-grid">
-    <div class="cat"><i class="fa fa-bed"></i><span>Bedsheet</span></div>
-    <div class="cat"><i class="fa fa-suitcase"></i><span>Office</span></div>
-    <div class="cat"><i class="fa fa-child"></i><span>Kids</span></div>
-    <div class="cat"><i class="fa fa-snowflake"></i><span>Winter</span></div>
-    <div class="cat"><i class="fa fa-vest"></i><span>Daily</span></div>
-    <div class="cat"><i class="fa fa-hotel"></i><span>Hotel</span></div>
-  </div>
-</section>
-
-<!-- ================= FLOAT CART ================= -->
-<div class="cart-float" id="cartFloat">
+<!-- CART POPUP -->
+<div class="cart-popup" id="cartPopup">
   <span>🧺 3 items added</span>
   <button>View Cart</button>
 </div>
 
-<!-- ================= BOTTOM NAV ================= -->
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <div class="nav-item active"><i class="fa fa-house"></i><span>Home</span></div>
-  <div class="nav-item"><i class="fa fa-grid"></i><span>Categories</span></div>
-  <div class="nav-item"><i class="fa fa-receipt"></i><span>Orders</span></div>
-  <div class="nav-item"><i class="fa fa-user"></i><span>Account</span></div>
+  <div class="active"><i class="fa-solid fa-house"></i><span>Home</span></div>
+  <div><i class="fa-solid fa-grid"></i><span>Categories</span></div>
+  <div><i class="fa-solid fa-receipt"></i><span>Orders</span></div>
+  <div><i class="fa-solid fa-user"></i><span>Account</span></div>
 </nav>
 
-<script src="home.js"></script>
+<script>
+  // demo cart popup
+  setTimeout(()=>{
+    document.getElementById("cartPopup").style.display="flex";
+  },2000);
+</script>
+
 </body>
 </html>
