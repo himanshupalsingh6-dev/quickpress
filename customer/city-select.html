@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Select City</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="../assets/ui.css">
 </head>
 
 <body>
 <div class="container">
-  <h2>Select City</h2>
+  <h2>Select Your City</h2>
 
   <button onclick="selectCity('Kasganj')">Kasganj</button>
   <button onclick="selectCity('Delhi')">Delhi</button>
+  <button onclick="selectCity('Agra')">Agra</button>
 </div>
 
 <script>
 function selectCity(city){
-  localStorage.setItem("selectedCity",city);
+  localStorage.setItem("selectedCity", city);
   alert("City selected: " + city);
   location.href = "checkout.html";
 }
