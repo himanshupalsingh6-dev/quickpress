@@ -1,229 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuickPress | Partner Wallet</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Partner Wallet | QuickPress</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root{
-  --yellow:#FFD400;
-  --text:#222;
-  --muted:#777;
-  --bg:#f6f6f6;
+body{margin:0;font-family:Arial;background:#f6f6f6}
+header{background:#FFD84D;padding:15px;font-weight:700}
+.card{background:#fff;margin:15px;border-radius:12px;padding:16px}
+.balance{font-size:28px;font-weight:700}
+button{
+  background:#FFD84D;border:none;padding:10px 14px;
+  border-radius:8px;font-weight:700;cursor:pointer
 }
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-}
-
-/* HEADER */
-.header{
-  background:#fff;
-  padding:14px 16px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,.08);
-}
-.header img{height:26px}
-.header b{font-size:16px}
-
-/* MAIN */
-.main{
-  padding:16px 14px 90px;
-}
-
-/* BALANCE CARD */
-.balance{
-  background:var(--yellow);
-  border-radius:22px;
-  padding:20px;
-  color:#000;
-  margin-bottom:16px;
-}
-.balance small{
-  font-size:13px;
-}
-.balance b{
-  display:block;
-  font-size:28px;
-  margin-top:6px;
-}
-
-/* STATS */
-.stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-bottom:16px;
-}
-.stat{
-  background:#fff;
-  padding:14px;
-  border-radius:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-}
-.stat small{color:var(--muted)}
-.stat b{
-  display:block;
-  margin-top:4px;
-  font-size:18px;
-}
-
-/* BUTTON */
-.btn{
-  width:100%;
-  padding:14px;
-  background:var(--yellow);
-  border:none;
-  border-radius:18px;
-  font-weight:600;
-  cursor:pointer;
-  margin-bottom:16px;
-}
-
-/* CARD */
-.card{
-  background:#fff;
-  padding:16px;
-  border-radius:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,.08);
-  margin-bottom:16px;
-}
-.card h3{
-  font-size:15px;
-  margin-bottom:10px;
-}
-
-/* PAYOUT ITEM */
-.payout{
-  display:flex;
-  justify-content:space-between;
-  padding:10px 0;
-  border-bottom:1px solid #eee;
-  font-size:13px;
-}
-.payout:last-child{border:none}
-
-.badge{
-  padding:4px 8px;
-  border-radius:8px;
-  font-size:11px;
-  font-weight:600;
-}
-.paid{background:#bbf7d0}
-.pending{background:#fde68a}
-
-/* BANK */
-.bank small{color:var(--muted)}
-.bank b{display:block;margin-top:4px}
-
-/* BOTTOM NAV */
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#fff;
-  border-top:1px solid #ddd;
-  display:flex;
-}
-.bottom-nav div{
-  flex:1;
-  text-align:center;
-  padding:8px 0;
-  font-size:12px;
-}
-.bottom-nav span{
-  display:block;
-  font-size:18px;
-}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+td,th{padding:8px;border-bottom:1px solid #eee;font-size:14px}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <img src="../assets/logo.png" alt="QuickPress">
-  <b>Wallet & Payouts</b>
+<header>💰 Partner Wallet</header>
+
+<div class="card">
+  <div>Available Balance</div>
+  <div class="balance">₹<span id="balance">0</span></div>
+  <br>
+  <button onclick="requestPayout()">Request Payout</button>
 </div>
 
-<div class="main">
-
-  <!-- BALANCE -->
-  <div class="balance">
-    <small>Available Balance</small>
-    <b>₹1,250</b>
-  </div>
-
-  <!-- STATS -->
-  <div class="stats">
-    <div class="stat">
-      <small>Today Earnings</small>
-      <b>₹180</b>
-    </div>
-    <div class="stat">
-      <small>This Week</small>
-      <b>₹920</b>
-    </div>
-  </div>
-
-  <!-- REQUEST PAYOUT -->
-  <button class="btn" onclick="requestPayout()">Request Payout</button>
-
-  <!-- PAYOUT HISTORY -->
-  <div class="card">
-    <h3>Payout History</h3>
-
-    <div class="payout">
-      <span>₹500<br><small>20 Jan</small></span>
-      <span class="badge paid">Paid</span>
-    </div>
-
-    <div class="payout">
-      <span>₹300<br><small>18 Jan</small></span>
-      <span class="badge pending">Pending</span>
-    </div>
-  </div>
-
-  <!-- BANK DETAILS -->
-  <div class="card bank">
-    <h3>Bank Account</h3>
-    <small>Account Holder</small>
-    <b>Partner Name</b>
-
-    <small>Account Number</small>
-    <b>XXXXXX4321</b>
-
-    <small>IFSC</small>
-    <b>SBIN0001234</b>
-  </div>
-
+<div class="card">
+  <h3>Payout History</h3>
+  <table>
+    <thead>
+      <tr><th>Amount</th><th>Status</th></tr>
+    </thead>
+    <tbody id="payouts"></tbody>
+  </table>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div onclick="location.href='dashboard.html'"><span>🏠</span>Home</div>
-  <div onclick="location.href='orders.html'"><span>📦</span>Orders</div>
-  <div><span>💰</span>Wallet</div>
-  <div onclick="location.href='profile.html'"><span>👤</span>Profile</div>
-</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore,doc,getDoc,collection,addDoc,getDocs,query,where } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-<script>
-function requestPayout(){
-  alert("Payout request sent (Admin approval pending)");
+const app=initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+let currentUser;
+
+onAuthStateChanged(auth,async user=>{
+  if(!user){location.href="../login.html";return;}
+  currentUser=user;
+  loadWallet();
+  loadPayouts();
+});
+
+async function loadWallet(){
+  const snap=await getDoc(doc(db,"wallets",currentUser.uid));
+  if(snap.exists()) document.getElementById("balance").innerText=snap.data().balance||0;
+}
+
+async function requestPayout(){
+  const amount=prompt("Enter payout amount");
+  if(!amount) return;
+
+  await addDoc(collection(db,"payouts"),{
+    userId:currentUser.uid,
+    role:"partner",
+    amount:Number(amount),
+    status:"pending",
+    createdAt:Date.now()
+  });
+  alert("Payout requested");
+  loadPayouts();
+}
+
+async function loadPayouts(){
+  const q=query(collection(db,"payouts"),where("userId","==",currentUser.uid));
+  const snap=await getDocs(q);
+  const body=document.getElementById("payouts");
+  body.innerHTML="";
+  snap.forEach(s=>{
+    const d=s.data();
+    body.innerHTML+=`<tr><td>₹${d.amount}</td><td>${d.status}</td></tr>`;
+  });
 }
 </script>
 
