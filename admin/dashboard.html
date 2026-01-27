@@ -1,273 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>QuickPress Admin Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>QuickPress | Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ===== BRAND THEME ===== -->
-  <style>
-    :root{
-      --yellow:#FFD84D;
-      --yellow-dark:#F4C400;
-      --text:#333;
-      --bg:#f7f7f7;
-      --card:#fff;
-    }
+<!-- GLOBAL UI -->
+<link rel="stylesheet" href="../assets/ui.css">
 
-    *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-    }
-
-    /* ===== HEADER ===== */
-    .header{
-      background:var(--yellow);
-      padding:14px 18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      box-shadow:0 2px 8px rgba(0,0,0,.15);
-    }
-    .header h1{
-      margin:0;
-      font-size:20px;
-      font-weight:700;
-    }
-    .logout{
-      background:#fff;
-      border:none;
-      padding:8px 14px;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
-    }
-
-    /* ===== LAYOUT ===== */
-    .container{
-      padding:18px;
-      max-width:1200px;
-      margin:auto;
-    }
-
-    /* ===== STATS ===== */
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-      gap:16px;
-      margin-bottom:22px;
-    }
-    .card{
-      background:var(--card);
-      border-radius:14px;
-      padding:16px;
-      box-shadow:0 4px 12px rgba(0,0,0,.08);
-    }
-    .card h3{
-      margin:0;
-      font-size:14px;
-      color:#777;
-    }
-    .card p{
-      margin:8px 0 0;
-      font-size:22px;
-      font-weight:700;
-    }
-
-    /* ===== MENU ===== */
-    .menu{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-      gap:14px;
-    }
-    .menu a{
-      text-decoration:none;
-      color:#000;
-    }
-    .menu .item{
-      background:#fff;
-      border-radius:14px;
-      padding:20px;
-      text-align:center;
-      box-shadow:0 4px 12px rgba(0,0,0,.08);
-      transition:.2s;
-    }
-    .menu .item:hover{
-      transform:translateY(-4px);
-      background:var(--yellow);
-    }
-    .menu .item span{
-      display:block;
-      margin-top:8px;
-      font-weight:600;
-    }
-
-    /* ===== MOBILE ===== */
-    @media(max-width:600px){
-      .header h1{font-size:16px}
-    }
-  </style>
+<style>
+.container{max-width:1200px;margin:0 auto;padding:16px}
+.topbar{
+  background:#FFD84D;padding:14px 16px;border-radius:14px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;margin-top:16px
+}
+.card h3{font-size:14px;color:#777;margin-bottom:6px}
+.card .num{font-size:28px;font-weight:800}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.actions a{
+  background:#fff;border-radius:12px;padding:12px 14px;
+  box-shadow:var(--shadow);text-decoration:none;color:#111;font-weight:700
+}
+.table-card{margin-top:20px}
+table{width:100%}
+th{color:#777;font-size:13px}
+</style>
 </head>
 
 <body>
 
-<!-- ===== HEADER ===== -->
-<div class="header">
-  <h1>QuickPress Admin</h1>
-  <button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<!-- ===== CONTENT ===== -->
 <div class="container">
 
-  <!-- STATS -->
-  <div class="stats">
-    <div class="card"><h3>Total Users</h3><p id="usersCount">–</p></div>
-    <div class="card"><h3>Total Orders</h3><p id="ordersCount">–</p></div>
-    <div class="card"><h3>Partners</h3><p id="partnersCount">–</p></div>
-    <div class="card"><h3>Riders</h3><p id="ridersCount">–</p></div>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div><b>👑 Admin Dashboard</b></div>
+    <button onclick="logout()">Logout</button>
   </div>
 
-  <!-- MENU -->
-  <div class="menu">
-    <a href="orders.html"><div class="item">📦<span>Orders</span></div></a>
-    <a href="users.html"><div class="item">👥<span>Users</span></div></a>
-    <a href="partners.html"><div class="item">🏪<span>Partners</span></div></a>
-    <a href="riders.html"><div class="item">🚴<span>Riders</span></div></a>
-    <a href="payouts.html"><div class="item">💰<span>Payouts</span></div></a>
-    <a href="ads.html"><div class="item">📢<span>Ads</span></div></a>
-    <a href="cities.html"><div class="item">🏙️<span>Cities</span></div></a>
-    <a href="settings.html"><div class="item">⚙️<span>Settings</span></div></a>
+  <!-- STATS -->
+  <div class="grid">
+    <div class="card">
+      <h3>Total Users</h3>
+      <div class="num" id="usersCount">0</div>
+    </div>
+    <div class="card">
+      <h3>Total Orders</h3>
+      <div class="num" id="ordersCount">0</div>
+    </div>
+    <div class="card">
+      <h3>Completed Orders</h3>
+      <div class="num" id="completedCount">0</div>
+    </div>
+    <div class="card">
+      <h3>Total Revenue</h3>
+      <div class="num">₹<span id="revenue">0</span></div>
+    </div>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="actions">
+    <a href="orders.html">📦 Orders</a>
+    <a href="users.html">👥 Users</a>
+    <a href="partners.html">🏪 Partners</a>
+    <a href="riders.html">🚴 Riders</a>
+    <a href="payouts.html">💰 Payouts</a>
+    <a href="cities.html">🏙️ Cities</a>
+    <a href="settings.html">⚙️ Settings</a>
+  </div>
+
+  <!-- RECENT ORDERS -->
+  <div class="card table-card">
+    <h3>Recent Orders</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Status</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="recentOrders">
+        <tr><td colspan="3">Loading...</td></tr>
+      </tbody>
+    </table>
   </div>
 
 </div>
 
-<!-- ===== FIREBASE ===== -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-    authDomain: "quickpress-e486d.firebaseapp.com",
-    projectId: "quickpress-e486d",
-    storageBucket: "quickpress-e486d.firebasestorage.app",
-    messagingSenderId: "572695394794",
-    appId: "1:572695394794:web:f3f35cfb4f9ddec1c31a93"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // ===== AUTH CHECK =====
-  onAuthStateChanged(auth, async (user)=>{
-    if(!user){
-      window.location.href="../login.html";
-      return;
-    }
-
-    const snap = await getDoc(doc(db,"users",user.uid));
-    if(!snap.exists() || snap.data().role !== "admin"){
-      alert("Unauthorized Admin");
-      window.location.href="../login.html";
-      return;
-    }
-
-    loadStats();
-  });
-
-  // ===== LOAD STATS =====
-  async function loadStats(){
-    const usersSnap = await getDocs(collection(db,"users"));
-    document.getElementById("usersCount").innerText = usersSnap.size;
-
-    const ordersSnap = await getDocs(collection(db,"orders"));
-    document.getElementById("ordersCount").innerText = ordersSnap.size;
-
-    const partnersSnap = await getDocs(query(collection(db,"users"), where("role","==","partner")));
-    document.getElementById("partnersCount").innerText = partnersSnap.size;
-
-    const ridersSnap = await getDocs(query(collection(db,"users"), where("role","==","rider")));
-    document.getElementById("ridersCount").innerText = ridersSnap.size;
-  }
-
-  // ===== LOGOUT =====
-  window.logout = async ()=>{
-    await signOut(auth);
-    window.location.href="../login.html";
-  };
-</script>
-<!-- ===== QUICKPRESS GLOBAL UI ===== -->
-<link rel="stylesheet" href="../assets/ui.css">
+<!-- GLOBAL UI -->
 <script src="../assets/ui.js"></script>
-<!-- =============================== -->
-<script type="module">
-/* ===============================
-   QUICKPRESS ADMIN SESSION GUARD
-   Protects all admin pages
-================================ */
 
+<!-- FIREBASE + AUTH (SESSION GUARD INCLUDED) -->
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import {
+  getFirestore, collection, getDocs, query, orderBy, limit, doc, getDoc
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-  apiKey: "AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
-  authDomain: "quickpress-e486d.firebaseapp.com",
-  projectId: "quickpress-e486d"
-};
-
-const app = initializeApp(firebaseConfig);
+/* CONFIG */
+const app = initializeApp({
+  apiKey:"AIzaSyCqrOXjuQIgfSKS7_YBb_ft-Z6ubsGpAqs",
+  authDomain:"quickpress-e486d.firebaseapp.com",
+  projectId:"quickpress-e486d"
+});
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* SESSION CHECK */
-onAuthStateChanged(auth, async (user) => {
-
-  // ❌ Not logged in
-  if (!user) {
-    location.replace("login.html");
-    return;
-  }
-
-  // 🔍 Fetch user profile
-  const snap = await getDoc(doc(db, "users", user.uid));
-
-  // ❌ No profile
-  if (!snap.exists()) {
+/* SESSION GUARD */
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){ location.replace("login.html"); return; }
+  const snap = await getDoc(doc(db,"users",user.uid));
+  if(!snap.exists() || snap.data().role!=="admin" || snap.data().status!=="active"){
     await signOut(auth);
     location.replace("login.html");
     return;
   }
-
-  const data = snap.data();
-
-  // ❌ Not admin
-  if (data.role !== "admin") {
-    await signOut(auth);
-    alert("Unauthorized access");
-    location.replace("login.html");
-    return;
-  }
-
-  // ❌ Admin blocked
-  if (data.status !== "active") {
-    await signOut(auth);
-    alert("Admin account disabled");
-    location.replace("login.html");
-    return;
-  }
-
-  // ✅ AUTHORIZED ADMIN
-  console.log("Admin session verified");
-
+  loadStats();
+  loadRecent();
 });
+
+/* LOAD STATS */
+async function loadStats(){
+  showLoader();
+
+  const usersSnap = await getDocs(collection(db,"users"));
+  document.getElementById("usersCount").innerText = usersSnap.size;
+
+  const ordersSnap = await getDocs(collection(db,"orders"));
+  document.getElementById("ordersCount").innerText = ordersSnap.size;
+
+  let completed=0, revenue=0;
+  ordersSnap.forEach(d=>{
+    const o=d.data();
+    if(o.status==="completed"){
+      completed++;
+      revenue += Number(o.totalAmount||0);
+    }
+  });
+
+  document.getElementById("completedCount").innerText = completed;
+  document.getElementById("revenue").innerText = revenue.toFixed(2);
+
+  hideLoader();
+}
+
+/* RECENT ORDERS */
+async function loadRecent(){
+  const q = query(collection(db,"orders"), orderBy("createdAt","desc"), limit(5));
+  const snap = await getDocs(q);
+  const body = document.getElementById("recentOrders");
+  body.innerHTML="";
+  snap.forEach(d=>{
+    const o=d.data();
+    body.innerHTML += `
+      <tr>
+        <td>${d.id.slice(0,6)}...</td>
+        <td>${o.status}</td>
+        <td>₹${o.totalAmount||0}</td>
+      </tr>
+    `;
+  });
+}
+
+/* LOGOUT */
+window.logout = async ()=>{
+  await signOut(auth);
+  location.replace("login.html");
+};
 </script>
 
 </body>
