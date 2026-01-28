@@ -1,49 +1,79 @@
-const params=new URLSearchParams(location.search);
-const cat=params.get("cat")||"iron";
+const params = new URLSearchParams(location.search);
+const cat = params.get("cat") || "iron";
 
-document.getElementById("title").innerText=cat.toUpperCase()+" Service";
+document.getElementById("pageTitle").innerText =
+  cat.toUpperCase() + " Service";
 
-const data={
- iron:[{n:"Shirt",p:10},{n:"Pant",p:12}],
- wash:[{n:"Normal Wash",p:30},{n:"Premium Wash",p:50}],
- steam:[{n:"Steam Press",p:20}],
- dry:[{n:"Dry Clean",p:60}],
- express:[{n:"Express Service",p:25}],
- scheduled:[{n:"Scheduled Service",p:15}]
+const products = {
+  iron: [
+    {name:"Shirt Iron", price:10, icon:"👕"},
+    {name:"Pant Iron", price:12, icon:"👖"},
+    {name:"T-Shirt Iron", price:9, icon:"👚"},
+    {name:"Kurta Iron", price:15, icon:"🥻"}
+  ],
+  wash: [
+    {name:"Shirt Wash", price:30, icon:"🧼"},
+    {name:"Pant Wash", price:35, icon:"🧴"},
+    {name:"T-Shirt Wash", price:25, icon:"👕"},
+    {name:"Jeans Wash", price:40, icon:"👖"}
+  ],
+  steam: [
+    {name:"Steam Shirt", price:20, icon:"☁️"},
+    {name:"Steam Pant", price:22, icon:"🌫️"},
+    {name:"Steam Saree", price:30, icon:"🥻"}
+  ],
+  dry: [
+    {name:"Dry Clean Shirt", price:60, icon:"💧"},
+    {name:"Dry Clean Pant", price:70, icon:"🧥"},
+    {name:"Dry Clean Saree", price:120, icon:"👗"}
+  ],
+  express: [
+    {name:"Express Iron", price:25, icon:"⚡"}
+  ],
+  scheduled: [
+    {name:"Scheduled Service", price:15, icon:"📅"}
+  ]
 };
 
-let cart=JSON.parse(localStorage.getItem("cart")||"[]");
-const list=document.getElementById("list");
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-data[cat].forEach((i,idx)=>{
-  const d=document.createElement("div");
-  d.className="product";
-  d.innerHTML=`
-   <div class="row">
-    <div><b>${i.n}</b><br>₹${i.p}</div>
-    <div class="qty">
+const list = document.getElementById("productList");
+
+products[cat].forEach((p, idx) => {
+  const div = document.createElement("div");
+  div.className = "product";
+  div.innerHTML = `
+    <div class="left">
+      <div class="icon">${p.icon}</div>
+      <div>
+        <div class="name">${p.name}</div>
+        <div class="price">₹${p.price}</div>
+      </div>
+    </div>
+    <div class="right">
       <button onclick="add(${idx})">ADD</button>
     </div>
-   </div>`;
-  list.appendChild(d);
+  `;
+  list.appendChild(div);
 });
 
 function add(i){
- cart.push({...data[cat][i],qty:1});
- localStorage.setItem("cart",JSON.stringify(cart));
- updateBar();
+  cart.push({...products[cat][i], qty:1});
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartBar();
 }
 
-function updateBar(){
- if(cart.length>0){
-  document.getElementById("cartBar").style.display="flex";
-  const total=cart.reduce((s,i)=>s+i.p*i.qty,0);
-  document.getElementById("cartText").innerText=
-    `${cart.length} item(s) • ₹${total}`;
- }
+function updateCartBar(){
+  if(cart.length > 0){
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    document.getElementById("cartBar").style.display = "flex";
+    document.getElementById("cartText").innerText =
+      `${cart.length} item(s) • ₹${total}`;
+  }
 }
-updateBar();
 
 function openCart(){
- location.href="cart.html";
+  location.href = "cart.html";
 }
+
+updateCartBar();
