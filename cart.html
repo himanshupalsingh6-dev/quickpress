@@ -1,33 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cart</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body{margin:0;font-family:system-ui;padding-bottom:100px}
-header{padding:16px;font-size:22px;font-weight:800}
-.item{padding:16px;margin:12px;border-radius:16px;background:#f8f8f8}
-.row{display:flex;justify-content:space-between;align-items:center}
-.qty{display:flex;gap:10px;align-items:center}
-button{border:none;background:#FFD84D;padding:6px 12px;border-radius:10px}
-.checkout{
- position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
- background:#2e7d32;color:#fff;padding:14px 18px;border-radius:30px
-}
-</style>
-</head>
+  <meta charset="UTF-8" />
+  <title>QuickPress Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- CSS -->
+  <link rel="stylesheet" href="../assets/cart.css" />
+</head>
 <body>
 
-<header>My Cart</header>
-<div id="items"></div>
+<!-- Overlay -->
+<div id="cartOverlay" class="overlay" onclick="closeCart()"></div>
 
-<div class="checkout">
-  <span id="total"></span>
-  <button onclick="goCheckout()">Checkout</button>
+<!-- CART DRAWER -->
+<div id="cartDrawer" class="cart-drawer">
+
+  <!-- Header -->
+  <div class="cart-header">
+    <h3>My Cart</h3>
+    <span class="close-btn" onclick="closeCart()">✕</span>
+  </div>
+
+  <!-- Delivery Info -->
+  <div class="delivery-box">
+    <div class="timer">⏱</div>
+    <div>
+      <strong>Fast delivery</strong><br/>
+      <small id="itemCountText">0 items</small>
+    </div>
+  </div>
+
+  <!-- Cart Items -->
+  <div id="cartItems" class="cart-items">
+    <!-- JS se items aayenge -->
+  </div>
+
+  <!-- Premium Packing -->
+  <div class="packing-box">
+    <label>
+      <input type="checkbox" id="premiumPacking" onchange="togglePacking()" />
+      <span>Premium Packing</span>
+    </label>
+    <span class="price">₹20</span>
+  </div>
+
+  <!-- Bill Details -->
+  <div class="bill-box">
+    <h4>Bill details</h4>
+
+    <div class="bill-row">
+      <span>Items total</span>
+      <span id="itemsTotal">₹0</span>
+    </div>
+
+    <div class="bill-row">
+      <span>Premium packing</span>
+      <span id="packingCharge">₹0</span>
+    </div>
+
+    <div class="bill-row">
+      <span>Handling charge</span>
+      <span>₹5</span>
+    </div>
+
+    <div class="bill-row grand">
+      <span>Grand total</span>
+      <span id="grandTotal">₹0</span>
+    </div>
+  </div>
+
+  <!-- Cancellation -->
+  <div class="policy-box">
+    <strong>Cancellation Policy</strong>
+    <p>
+      Orders can be cancelled before pickup.  
+      Once clothes are collected, cancellation will not be allowed.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div class="cart-footer">
+    <div>
+      <strong id="footerTotal">₹0</strong>
+      <small>Total</small>
+    </div>
+    <button onclick="checkout()">Proceed</button>
+  </div>
+
 </div>
 
-<script src="assets/cart.js"></script>
+<!-- JS -->
+<script src="../assets/cart.js"></script>
 </body>
 </html>
