@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Select Items – QuickPress</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/category.css">
+<meta charset="UTF-8">
+<title>Select Category</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="assets/category.css">
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <h1>Select Items</h1>
-  <div class="tabs">
-    <button class="tab active" data-cat="all">All</button>
-    <button class="tab" data-cat="clothes">Clothes</button>
-    <button class="tab" data-cat="winter">Winter</button>
-  </div>
+<header>
+  <h2>Select Service</h2>
 </header>
 
-<!-- PRODUCTS -->
-<section class="products" id="productList">
-  <!-- JS se load hoga -->
-</section>
-
-<!-- CART BAR -->
-<div class="cart-bar" id="cartBar">
-  <span id="cartInfo">0 items • ₹0</span>
-  <button onclick="goCart()">View Cart</button>
+<div class="categories">
+  <div onclick="openProduct('iron')">👕 Iron</div>
+  <div onclick="openProduct('wash')">🧼 Wash</div>
+  <div onclick="openProduct('steam')">☁️ Steam</div>
+  <div onclick="openProduct('dry')">💧 Dry Clean</div>
+  <div onclick="openProduct('express')">⚡ Express</div>
+  <div onclick="openProduct('scheduled')">📅 Scheduled</div>
 </div>
 
-<script src="assets/category.js"></script>
+<script>
+function openProduct(type){
+  window.location.href = "product.html?cat=" + type;
+}
+</script>
+
 </body>
 </html>
