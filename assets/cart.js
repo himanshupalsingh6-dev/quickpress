@@ -1,44 +1,32 @@
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart=JSON.parse(localStorage.getItem("cart")||"[]");
+const items=document.getElementById("items");
 
-function save() {
-  localStorage.setItem("cart", JSON.stringify(cart));
+function render(){
+ items.innerHTML="";
+ let total=0;
+ cart.forEach((i,idx)=>{
+  total+=i.p*i.qty;
+  items.innerHTML+=`
+   <div class="item">
+    <div class="row">
+      <div>${i.n}<br>₹${i.p}</div>
+      <div class="qty">
+        <button onclick="chg(${idx},-1)">-</button>
+        ${i.qty}
+        <button onclick="chg(${idx},1)">+</button>
+      </div>
+    </div>
+   </div>`;
+ });
+ document.getElementById("total").innerText=`₹${total}`;
+ localStorage.setItem("cart",JSON.stringify(cart));
 }
-
-export function addToCart(product) {
-  const item = cart.find(p => p.id === product.id);
-  if (item) {
-    item.qty += 1;
-  } else {
-    cart.push({ ...product, qty: 1 });
-  }
-  save();
+function chg(i,d){
+ cart[i].qty+=d;
+ if(cart[i].qty<=0)cart.splice(i,1);
+ render();
 }
-
-export function increaseQty(id) {
-  const item = cart.find(p => p.id === id);
-  if (!item) return;
-  item.qty += 1;
-  save();
+function goCheckout(){
+ location.href="checkout.html";
 }
-
-export function decreaseQty(id) {
-  const item = cart.find(p => p.id === id);
-  if (!item) return;
-  item.qty -= 1;
-  if (item.qty <= 0) {
-    cart = cart.filter(p => p.id !== id);
-  }
-  save();
-}
-
-export function getCart() {
-  return cart;
-}
-
-export function getTotal() {
-  let total = 0;
-  cart.forEach(i => {
-    total += i.price * i.qty;
-  });
-  return total;
-}
+render();
