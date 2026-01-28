@@ -1,30 +1,41 @@
 let cart = [];
 let packingSelected = false;
-const PACKING_PRICE = 20;
-const HANDLING_CHARGE = 5;
+const packingPrice = 20;
+const handlingCharge = 5;
+
+function addToCart(id){
+  const product = products.find(p=>p.id===id);
+  const item = cart.find(i=>i.id===id);
+
+  if(item){
+    item.qty++;
+  }else{
+    cart.push({...product, qty:1});
+  }
+  updateCartBar();
+}
+
+function updateCartBar(){
+  if(cart.length===0){
+    cartBar.style.display="none";
+    return;
+  }
+  let count = cart.reduce((a,b)=>a+b.qty,0);
+  let total = cart.reduce((a,b)=>a+b.price*b.qty,0);
+  cartBar.style.display="flex";
+  cartText.innerText = `${count} items • ₹${total}`;
+}
 
 function openCart(){
-  if(cart.length === 0) return;
-  document.getElementById("cartDrawer").style.right = "0";
-  document.getElementById("cartOverlay").style.display = "block";
+  if(cart.length===0) return;
   renderCart();
+  cartDrawer.style.right="0";
+  cartOverlay.style.display="block";
 }
 
 function closeCart(){
-  document.getElementById("cartDrawer").style.right = "-420px";
-  document.getElementById("cartOverlay").style.display = "none";
-}
-
-function addToCart(name, price){
-  let item = cart.find(i => i.name === name);
-  if(item) item.qty++;
-  else cart.push({name, price, qty:1});
-}
-
-function changeQty(index, value){
-  cart[index].qty += value;
-  if(cart[index].qty <= 0) cart.splice(index,1);
-  renderCart();
+  cartDrawer.style.right="-420px";
+  cartOverlay.style.display="none";
 }
 
 function togglePacking(){
@@ -33,33 +44,22 @@ function togglePacking(){
 }
 
 function renderCart(){
-  const box = document.getElementById("cartItems");
-  box.innerHTML = "";
+  cartItems.innerHTML="";
+  let itemsTotal = 0;
 
-  let total = 0;
-  let count = 0;
-
-  cart.forEach((item,i)=>{
-    total += item.price * item.qty;
-    count += item.qty;
-
-    box.innerHTML += `
+  cart.forEach(i=>{
+    itemsTotal += i.price*i.qty;
+    cartItems.innerHTML += `
       <div class="cart-item">
-        <div class="name">${item.name}</div>
-        <div class="qty">
-          <button onclick="changeQty(${i},-1)">−</button>
-          ${item.qty}
-          <button onclick="changeQty(${i},1)">+</button>
-        </div>
-      </div>
-    `;
+        ${i.name} × ${i.qty}
+        <span>₹${i.price*i.qty}</span>
+      </div>`;
   });
 
-  document.getElementById("cartItemCount").innerText = count+" items";
-  document.getElementById("itemsTotal").innerText = "₹"+total;
-  document.getElementById("packingFee").innerText =
-    packingSelected ? "₹"+PACKING_PRICE : "₹0";
-
-  let grand = total + HANDLING_CHARGE + (packingSelected ? PACKING_PRICE : 0);
-  document.getElementById("grandTotal").innerText = "₹"+grand;
+  itemsTotalEl.innerText = itemsTotal;
+  packingTotal.innerText = packingSelected ? packingPrice : 0;
+  grandTotal.innerText =
+    itemsTotal +
+    (packingSelected ? packingPrice : 0) +
+    handlingCharge;
 }
