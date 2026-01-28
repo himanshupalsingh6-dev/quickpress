@@ -1,60 +1,49 @@
-const params = new URLSearchParams(window.location.search);
-const cat = params.get("cat") || "iron";
+const params=new URLSearchParams(location.search);
+const cat=params.get("cat")||"iron";
 
-const title = document.getElementById("title");
-title.innerText = cat.toUpperCase() + " Service";
+document.getElementById("title").innerText=cat.toUpperCase()+" Service";
 
-const productData = {
-  iron: [
-    {name:"Shirt", price:10},
-    {name:"Pant", price:12}
-  ],
-  wash: [
-    {name:"Normal Wash", price:30},
-    {name:"Premium Wash", price:50}
-  ],
-  steam: [
-    {name:"Steam Press", price:20}
-  ],
-  dry: [
-    {name:"Dry Clean", price:60}
-  ],
-  express: [
-    {name:"Express Iron", price:20}
-  ],
-  scheduled: [
-    {name:"Scheduled Service", price:15}
-  ]
+const data={
+ iron:[{n:"Shirt",p:10},{n:"Pant",p:12}],
+ wash:[{n:"Normal Wash",p:30},{n:"Premium Wash",p:50}],
+ steam:[{n:"Steam Press",p:20}],
+ dry:[{n:"Dry Clean",p:60}],
+ express:[{n:"Express Service",p:25}],
+ scheduled:[{n:"Scheduled Service",p:15}]
 };
 
-let cartCount = 0;
-let total = 0;
+let cart=JSON.parse(localStorage.getItem("cart")||"[]");
+const list=document.getElementById("list");
 
-const container = document.getElementById("products");
-
-productData[cat].forEach(p=>{
-  const div = document.createElement("div");
-  div.className="product";
-  div.innerHTML=`
-    <div class="left">${p.name}<br>₹${p.price}</div>
-    <div class="right">
-      <button onclick="add(${p.price})">ADD</button>
+data[cat].forEach((i,idx)=>{
+  const d=document.createElement("div");
+  d.className="product";
+  d.innerHTML=`
+   <div class="row">
+    <div><b>${i.n}</b><br>₹${i.p}</div>
+    <div class="qty">
+      <button onclick="add(${idx})">ADD</button>
     </div>
-  `;
-  container.appendChild(div);
+   </div>`;
+  list.appendChild(d);
 });
 
-function add(price){
-  cartCount++;
-  total += price;
-
-  const cart = document.getElementById("cartPopup");
-  const text = document.getElementById("cartText");
-
-  text.innerText = `${cartCount} item(s) • ₹${total}`;
-  cart.style.display="flex";
+function add(i){
+ cart.push({...data[cat][i],qty:1});
+ localStorage.setItem("cart",JSON.stringify(cart));
+ updateBar();
 }
 
-function goCart(){
-  alert("Cart page next step 🙂");
+function updateBar(){
+ if(cart.length>0){
+  document.getElementById("cartBar").style.display="flex";
+  const total=cart.reduce((s,i)=>s+i.p*i.qty,0);
+  document.getElementById("cartText").innerText=
+    `${cart.length} item(s) • ₹${total}`;
+ }
+}
+updateBar();
+
+function openCart(){
+ location.href="cart.html";
 }
