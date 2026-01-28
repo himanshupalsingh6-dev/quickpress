@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,44 +138,5 @@ header{
 </div>
 
 <script src="assets/product.js"></script>
-<!-- CART OVERLAY -->
-<div id="cartOverlay" onclick="closeCart()"></div>
-
-<!-- CART DRAWER -->
-<div id="cartDrawer">
-  <div class="cart-header">
-    <h3>My Cart</h3>
-    <button class="close-btn" onclick="closeCart()">✕</button>
-  </div>
-
-  <div class="cart-sub">
-    <span class="delivery-tag">⚡ Fast delivery</span>
-    <span id="cartCount">0 items</span>
-  </div>
-
-  <div id="cartItems"></div>
-
-  <div class="packing">
-    <label>
-      <input type="checkbox" id="packingCheck" onchange="togglePacking()">
-      Premium Packing ₹20
-    </label>
-  </div>
-
-  <div class="bill">
-    <p>Items total <span id="itemsTotal">₹0</span></p>
-    <p>Premium packing <span id="packingFee">₹0</span></p>
-    <p>Handling charge <span>₹5</span></p>
-    <hr>
-    <p class="grand">Grand total <span id="grandTotal">₹0</span></p>
-  </div>
-
-  <div class="policy">
-    Orders can be cancelled before pickup.  
-    Once clothes are collected, cancellation not allowed.
-  </div>
-
-  <button class="proceed-btn">Proceed</button>
-</div>
 </body>
 </html>
