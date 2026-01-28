@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Products</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="assets/product.css">
+<style>
+body{margin:0;font-family:system-ui;padding-bottom:100px}
+header{padding:16px;font-size:22px;font-weight:800}
+.product{padding:16px;margin:12px;border-radius:16px;background:#f8f8f8}
+.row{display:flex;justify-content:space-between;align-items:center}
+.qty{display:flex;gap:10px;align-items:center}
+button{border:none;background:#FFD84D;padding:6px 12px;border-radius:10px;font-weight:700}
+.cart-bar{
+ position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+ background:#2e7d32;color:#fff;padding:14px 18px;border-radius:30px;
+ display:none;gap:10px
+}
+.cart-bar button{background:#fff}
+</style>
 </head>
 
 <body>
 
-<header>
-  <h2 id="title">Products</h2>
-</header>
+<header id="title">Products</header>
 
-<div id="products"></div>
+<div id="list"></div>
 
-<div id="cartPopup" class="cart-popup">
+<div class="cart-bar" id="cartBar">
   <span id="cartText"></span>
-  <button onclick="goCart()">View Cart</button>
+  <button onclick="openCart()">View Cart</button>
 </div>
 
 <script src="assets/product.js"></script>
