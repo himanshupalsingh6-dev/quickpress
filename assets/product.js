@@ -1,37 +1,15 @@
 const params = new URLSearchParams(location.search);
 const cat = params.get("cat") || "iron";
 
-document.getElementById("pageTitle").innerText =
-  cat.toUpperCase() + " Service";
+document.getElementById("pageTitle").innerText = "Select Items";
 
 const products = {
   iron: [
-    {name:"Shirt Iron", price:10, icon:"👕"},
-    {name:"Pant Iron", price:12, icon:"👖"},
-    {name:"T-Shirt Iron", price:9, icon:"👚"},
-    {name:"Kurta Iron", price:15, icon:"🥻"}
-  ],
-  wash: [
-    {name:"Shirt Wash", price:30, icon:"🧼"},
-    {name:"Pant Wash", price:35, icon:"🧴"},
-    {name:"T-Shirt Wash", price:25, icon:"👕"},
-    {name:"Jeans Wash", price:40, icon:"👖"}
-  ],
-  steam: [
-    {name:"Steam Shirt", price:20, icon:"☁️"},
-    {name:"Steam Pant", price:22, icon:"🌫️"},
-    {name:"Steam Saree", price:30, icon:"🥻"}
-  ],
-  dry: [
-    {name:"Dry Clean Shirt", price:60, icon:"💧"},
-    {name:"Dry Clean Pant", price:70, icon:"🧥"},
-    {name:"Dry Clean Saree", price:120, icon:"👗"}
-  ],
-  express: [
-    {name:"Express Iron", price:25, icon:"⚡"}
-  ],
-  scheduled: [
-    {name:"Scheduled Service", price:15, icon:"📅"}
+    {name:"Shirt", price:10, icon:"👕"},
+    {name:"Pant", price:12, icon:"👖"},
+    {name:"Saree", price:25, icon:"🥻"},
+    {name:"Coat", price:30, icon:"🧥"},
+    {name:"Sweater", price:20, icon:"🧶"}
   ]
 };
 
@@ -39,20 +17,14 @@ let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
 const list = document.getElementById("productList");
 
-products[cat].forEach((p, idx) => {
+products[cat].forEach((p,i)=>{
   const div = document.createElement("div");
-  div.className = "product";
+  div.className = "card";
   div.innerHTML = `
-    <div class="left">
-      <div class="icon">${p.icon}</div>
-      <div>
-        <div class="name">${p.name}</div>
-        <div class="price">₹${p.price}</div>
-      </div>
-    </div>
-    <div class="right">
-      <button onclick="add(${idx})">ADD</button>
-    </div>
+    <div class="icon-wrap">${p.icon}</div>
+    <div class="name">${p.name}</div>
+    <div class="price">₹${p.price}</div>
+    <button class="add-btn" onclick="add(${i})">ADD</button>
   `;
   list.appendChild(div);
 });
@@ -60,20 +32,47 @@ products[cat].forEach((p, idx) => {
 function add(i){
   cart.push({...products[cat][i], qty:1});
   localStorage.setItem("cart", JSON.stringify(cart));
+  render();
+}
+
+function render(){
+  const cards = document.querySelectorAll(".card");
+  cards.forEach((card,idx)=>{
+    const item = cart.find(c=>c.name===products[cat][idx].name);
+    if(item){
+      card.querySelector(".add-btn").outerHTML = `
+        <div class="qty">
+          <button onclick="change(${idx},-1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="change(${idx},1)">+</button>
+        </div>
+      `;
+    }
+  });
   updateCartBar();
 }
 
+function change(i,d){
+  const item = cart.find(c=>c.name===products[cat][i].name);
+  item.qty += d;
+  if(item.qty<=0){
+    cart = cart.filter(c=>c!==item);
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  location.reload();
+}
+
 function updateCartBar(){
-  if(cart.length > 0){
+  if(cart.length>0){
     const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-    document.getElementById("cartBar").style.display = "flex";
+    document.getElementById("cartBar").style.display="flex";
     document.getElementById("cartText").innerText =
-      `${cart.length} item(s) • ₹${total}`;
+      `${cart.length} items • ₹${total}`;
   }
 }
 
 function openCart(){
-  location.href = "cart.html";
+  location.href="cart.html";
 }
 
-updateCartBar();
+render();
