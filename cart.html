@@ -1,96 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>QuickPress Cart</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="./assets/cart.css" />
-</head>
-<body>
-
-<!-- Overlay -->
-<div id="cartOverlay" class="overlay" onclick="closeCart()"></div>
+<!-- CART OVERLAY -->
+<div id="cartOverlay" onclick="closeCart()"></div>
 
 <!-- CART DRAWER -->
-<div id="cartDrawer" class="cart-drawer">
-
-  <!-- Header -->
+<div id="cartDrawer">
   <div class="cart-header">
-    <h3>My Cart</h3>
-    <span class="close-btn" onclick="closeCart()">✕</span>
+    <h2>My Cart</h2>
+    <span class="close" onclick="closeCart()">✕</span>
   </div>
 
-  <!-- Delivery Info -->
-  <div class="delivery-box">
-    <div class="timer">⏱</div>
-    <div>
-      <strong>Fast delivery</strong><br/>
-      <small id="itemCountText">0 items</small>
-    </div>
+  <div class="delivery-info">
+    ⚡ Fast delivery
+    <span id="cartItemCount">0 items</span>
   </div>
 
-  <!-- Cart Items -->
-  <div id="cartItems" class="cart-items">
-    <!-- JS se items aayenge -->
-  </div>
+  <!-- CART ITEMS -->
+  <div id="cartItems"></div>
 
-  <!-- Premium Packing -->
+  <!-- PACKING -->
   <div class="packing-box">
     <label>
-      <input type="checkbox" id="premiumPacking" onchange="togglePacking()" />
-      <span>Premium Packing</span>
+      <input type="checkbox" id="packingCheck" onchange="togglePacking()">
+      Premium Packing ₹20
     </label>
-    <span class="price">₹20</span>
   </div>
 
-  <!-- Bill Details -->
+  <!-- BILL -->
   <div class="bill-box">
-    <h4>Bill details</h4>
-
-    <div class="bill-row">
-      <span>Items total</span>
-      <span id="itemsTotal">₹0</span>
-    </div>
-
-    <div class="bill-row">
-      <span>Premium packing</span>
-      <span id="packingCharge">₹0</span>
-    </div>
-
-    <div class="bill-row">
-      <span>Handling charge</span>
-      <span>₹5</span>
-    </div>
-
-    <div class="bill-row grand">
+    <div><span>Items total</span><span id="itemsTotal">₹0</span></div>
+    <div><span>Packing</span><span id="packingFee">₹0</span></div>
+    <div><span>Handling charge</span><span>₹5</span></div>
+    <hr>
+    <div class="grand">
       <span>Grand total</span>
       <span id="grandTotal">₹0</span>
     </div>
   </div>
 
-  <!-- Cancellation -->
-  <div class="policy-box">
-    <strong>Cancellation Policy</strong>
-    <p>
-      Orders can be cancelled before pickup.  
-      Once clothes are collected, cancellation will not be allowed.
-    </p>
+  <!-- POLICY -->
+  <div class="policy">
+    Orders can be cancelled before pickup.  
+    After pickup, cancellation not allowed.
   </div>
 
-  <!-- Footer -->
-  <div class="cart-footer">
-    <div>
-      <strong id="footerTotal">₹0</strong>
-      <small>Total</small>
-    </div>
-    <button onclick="checkout()">Proceed</button>
-  </div>
-
+  <button class="proceed-btn">Proceed</button>
 </div>
-
-<!-- JS -->
-<script src="./assets/cart.js"></script>
-</body>
-</html>
