@@ -9,14 +9,15 @@
 :root{
   --yellow:#FFD84D;
   --green:#2e7d32;
-  --bg:#f7f7f7;
+  --bg:#f5f6f8;
 }
 
 *{box-sizing:border-box;font-family:system-ui}
+
 body{
   margin:0;
   background:var(--bg);
-  padding-bottom:110px;
+  padding-bottom:120px;
 }
 
 /* HEADER */
@@ -28,57 +29,76 @@ header{
   box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
-/* PRODUCT CARD */
-.product{
-  background:#fff;
-  margin:14px;
-  padding:16px;
-  border-radius:18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 6px 18px rgba(0,0,0,.08);
-}
-
-.left{
-  display:flex;
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
   gap:14px;
+  padding:14px;
+}
+
+/* PRODUCT CARD (MATCHING IMAGE) */
+.card{
+  background:#fff;
+  border-radius:22px;
+  padding:14px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  display:flex;
+  flex-direction:column;
   align-items:center;
 }
 
-.icon{
-  width:60px;
-  height:60px;
-  border-radius:16px;
-  background:linear-gradient(135deg,#fff3b0,var(--yellow));
+/* ICON */
+.icon-wrap{
+  width:90px;
+  height:90px;
+  background:#fff;
+  border-radius:18px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:30px;
+  font-size:48px;
 }
 
+/* TEXT */
 .name{
+  margin-top:10px;
   font-size:16px;
   font-weight:800;
 }
 .price{
   font-size:14px;
-  color:#555;
+  margin:6px 0 12px;
 }
 
-/* ADD / QTY */
-.right button{
+/* ADD BUTTON */
+.add-btn{
   background:var(--yellow);
   border:none;
-  padding:8px 14px;
-  border-radius:14px;
-  font-weight:800;
+  padding:10px 24px;
+  border-radius:20px;
+  font-weight:900;
+  width:100%;
 }
 
+/* QTY CONTROLS */
 .qty{
   display:flex;
-  gap:10px;
   align-items:center;
+  justify-content:space-between;
+  width:100%;
+}
+.qty button{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:none;
+  font-size:20px;
+  background:#000;
+  color:#fff;
+}
+.qty span{
+  font-weight:800;
 }
 
 /* CART BAR */
@@ -92,13 +112,13 @@ header{
   padding:14px 20px;
   border-radius:30px;
   display:none;
-  gap:12px;
+  gap:14px;
   box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 .cart-bar button{
   background:#fff;
   border:none;
-  padding:6px 14px;
+  padding:6px 16px;
   border-radius:14px;
   font-weight:800;
 }
@@ -107,9 +127,9 @@ header{
 
 <body>
 
-<header id="pageTitle">Products</header>
+<header id="pageTitle">Select Items</header>
 
-<div id="productList"></div>
+<div class="grid" id="productList"></div>
 
 <div class="cart-bar" id="cartBar">
   <span id="cartText"></span>
