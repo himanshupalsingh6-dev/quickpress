@@ -1,12 +1,8 @@
-let cart = [
-  { id: 1, name: "Shirt (Ironing)", price: 10, qty: 1 }
-];
-
+let cart = [];
 let packingSelected = false;
 const packingPrice = 20;
 const handlingCharge = 5;
 
-/* OPEN / CLOSE */
 function openCart() {
   if (cart.length === 0) return;
   document.getElementById("cartDrawer").style.right = "0";
@@ -19,59 +15,53 @@ function closeCart() {
   document.getElementById("cartOverlay").style.display = "none";
 }
 
-/* RENDER */
+function addToCart(name, price) {
+  const item = cart.find(i => i.name === name);
+  if (item) item.qty++;
+  else cart.push({ name, price, qty: 1 });
+}
+
+function changeQty(i, delta) {
+  cart[i].qty += delta;
+  if (cart[i].qty <= 0) cart.splice(i,1);
+  renderCart();
+}
+
+function togglePacking() {
+  packingSelected = document.getElementById("packingCheck").checked;
+  renderCart();
+}
+
 function renderCart() {
   const itemsDiv = document.getElementById("cartItems");
   itemsDiv.innerHTML = "";
-
   let itemsTotal = 0;
-  let totalQty = 0;
+  let count = 0;
 
-  cart.forEach((item, index) => {
+  cart.forEach((item, i) => {
     itemsTotal += item.price * item.qty;
-    totalQty += item.qty;
-
+    count += item.qty;
     itemsDiv.innerHTML += `
       <div class="cart-item">
-        <div>
-          <h5>${item.name}</h5>
-          <small>₹${item.price}</small>
-        </div>
-        <div class="qty-box">
-          <button onclick="changeQty(${index}, -1)">−</button>
-          <span>${item.qty}</span>
-          <button onclick="changeQty(${index}, 1)">+</button>
+        <span>${item.name}</span>
+        <div class="qty">
+          <button onclick="changeQty(${i},-1)">−</button>
+          ${item.qty}
+          <button onclick="changeQty(${i},1)">+</button>
         </div>
       </div>
     `;
   });
 
-  document.getElementById("itemCountText").innerText = `${totalQty} items`;
-  document.getElementById("itemsTotal").innerText = `₹${itemsTotal}`;
+  document.getElementById("cartCount").innerText = count + " items";
+  document.getElementById("itemsTotal").innerText = "₹" + itemsTotal;
+  document.getElementById("packingFee").innerText =
+    packingSelected ? "₹" + packingPrice : "₹0";
 
-  const packing = packingSelected ? packingPrice : 0;
-  document.getElementById("packingCharge").innerText = `₹${packing}`;
+  const grand =
+    itemsTotal +
+    handlingCharge +
+    (packingSelected ? packingPrice : 0);
 
-  const grand = itemsTotal + packing + handlingCharge;
-  document.getElementById("grandTotal").innerText = `₹${grand}`;
-  document.getElementById("footerTotal").innerText = `₹${grand}`;
-}
-
-/* QTY */
-function changeQty(index, delta) {
-  cart[index].qty += delta;
-  if (cart[index].qty <= 0) cart.splice(index, 1);
-  if (cart.length === 0) closeCart();
-  renderCart();
-}
-
-/* PACKING */
-function togglePacking() {
-  packingSelected = document.getElementById("premiumPacking").checked;
-  renderCart();
-}
-
-/* CHECKOUT */
-function checkout() {
-  alert("Proceeding to checkout 🚀");
+  document.getElementById("grandTotal").innerText = "₹" + grand;
 }
